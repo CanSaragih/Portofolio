@@ -4,17 +4,143 @@ import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState, useEffect } from "react";
 import ProfileCard from "@/components/ProfileCard";
+import { useRef } from "react";
+import VariableProximity from "@/components/VariableProximity";
+import Carousel from "@/components/Carousel";
+import SkillsNetwork from "@/components/SkillsNetwork";
+
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const [activeProject, setActiveProject] = useState<number | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
+  const [activeCategory, setActiveCategory] = useState("Frontend");
 
   const typewriterTexts = ["Fullstack Developer", "Software Engineer"];
+
+  const skillCategories = {
+    Frontend: [
+      {
+        name: "React.js",
+        icon: "⚛️",
+        color: "from-cyan-500/20 to-blue-500/20",
+      },
+      { name: "Next.js", icon: "▲", color: "from-gray-500/20 to-black/20" },
+      { name: "Redux", icon: "🔄", color: "from-purple-500/20 to-pink-500/20" },
+      {
+        name: "React Native",
+        icon: "📱",
+        color: "from-blue-500/20 to-cyan-500/20",
+      },
+      { name: "EJS", icon: "🔧", color: "from-green-500/20 to-teal-500/20" },
+      { name: "HTML", icon: "📄", color: "from-orange-600/20 to-red-500/20" },
+      { name: "CSS", icon: "🎨", color: "from-blue-500/20 to-indigo-500/20" },
+      {
+        name: "Tailwind CSS",
+        icon: "🌊",
+        color: "from-teal-500/20 to-cyan-500/20",
+      },
+      {
+        name: "Bootstrap",
+        icon: "🅱️",
+        color: "from-purple-600/20 to-blue-600/20",
+      },
+      {
+        name: "Apollo Client",
+        icon: "🚀",
+        color: "from-indigo-500/20 to-purple-500/20",
+      },
+    ],
+    Backend: [
+      {
+        name: "Node.js",
+        icon: "🟢",
+        color: "from-green-600/20 to-green-400/20",
+      },
+      {
+        name: "Express.js",
+        icon: "🚄",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
+      {
+        name: "GraphQL",
+        icon: "🔷",
+        color: "from-pink-500/20 to-purple-500/20",
+      },
+      {
+        name: "Apollo Server",
+        icon: "🛰️",
+        color: "from-blue-600/20 to-indigo-600/20",
+      },
+      {
+        name: "Sequelize",
+        icon: "🗃️",
+        color: "from-blue-500/20 to-cyan-500/20",
+      },
+      {
+        name: "PostgreSQL",
+        icon: "🐘",
+        color: "from-blue-700/20 to-blue-500/20",
+      },
+      {
+        name: "MongoDB",
+        icon: "🍃",
+        color: "from-green-500/20 to-emerald-500/20",
+      },
+      { name: "Redis", icon: "🔴", color: "from-red-500/20 to-pink-500/20" },
+      {
+        name: "REST API",
+        icon: "🌐",
+        color: "from-orange-500/20 to-yellow-500/20",
+      },
+    ],
+    Tools: [
+      { name: "Git", icon: "🌿", color: "from-orange-600/20 to-red-600/20" },
+      {
+        name: "Vite",
+        icon: "⚡",
+        color: "from-yellow-500/20 to-orange-500/20",
+      },
+      {
+        name: "Expo Go",
+        icon: "📲",
+        color: "from-blue-600/20 to-purple-600/20",
+      },
+      {
+        name: "Socket.IO",
+        icon: "🔌",
+        color: "from-gray-600/20 to-blue-600/20",
+      },
+    ],
+    Design: [
+      {
+        name: "After Effects",
+        icon: "🎬",
+        color: "from-purple-600/20 to-blue-600/20",
+      },
+      {
+        name: "Premiere Pro",
+        icon: "🎥",
+        color: "from-indigo-600/20 to-purple-600/20",
+      },
+      {
+        name: "Photoshop",
+        icon: "🖼️",
+        color: "from-blue-600/20 to-cyan-600/20",
+      },
+      {
+        name: "CorelDRAW",
+        icon: "✏️",
+        color: "from-red-500/20 to-pink-500/20",
+      },
+    ],
+  };
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -46,54 +172,6 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, textIndex, typewriterTexts]);
-
-  const skills = {
-    languages: [
-      "JavaScript",
-      "TypeScript",
-      "Python",
-      "SQL",
-      "HTML",
-      "CSS",
-      "Java",
-      "C++",
-    ],
-    frontend: [
-      "React",
-      "React Native",
-      "Next.js",
-      "Tailwind CSS",
-      "Bootstrap",
-      "Vue.js",
-      "Angular",
-    ],
-    backend: [
-      "Node.js",
-      "Express.js",
-      "GraphQL",
-      "Apollo Server",
-      "PostgreSQL",
-      "MongoDB",
-      "Redis",
-    ],
-    tools: [
-      "Git",
-      "Docker",
-      "Socket.IO",
-      "Expo",
-      "Figma",
-      "Adobe Creative Suite",
-      "VS Code",
-    ],
-    design: [
-      "Figma",
-      "Adobe XD",
-      "Photoshop",
-      "After Effects",
-      "Premiere Pro",
-      "CorelDRAW",
-    ],
-  };
 
   const projects = [
     {
@@ -177,31 +255,17 @@ export default function Home() {
       ],
       category: "Web App",
     },
+    {
+      name: "QuickKick",
+      url: "https://github.com/andikarahmadisaputra/quickkick",
+      description:
+        "A fullstack web-based football match schedule application with real-time updates.",
+      tech: ["HTML", "CSS Bootstrap", "Javascript DOM"],
+      category: "Web App",
+    },
   ];
 
   const workExperience = [
-    {
-      position: "FullStack Developer and Web Designer",
-      company: "WhiteBox Indonesia",
-      duration: "Oct 2021 - Feb 2022",
-      responsibilities: [
-        "Contributed to application and website development with a focus on creating user-friendly interfaces.",
-        "Collaborated on the frontend development of Mercu Buana University's website, demonstrating strong CSS/SCSS skills and supporting backend debugging.",
-        "Designed website and mobile UI/UX for Ichiro Ramen Restaurant, aligning with client specifications to enhance customer experience.",
-        "Assisted in redesigning existing brand interfaces to improve visual appeal and user engagement.",
-      ],
-    },
-    {
-      position: "Frontend Engineer",
-      company: "Prixa.ai",
-      duration: "March 2022 - Oct 2022",
-      responsibilities: [
-        "Contributed to the maintenance and development of a doctor-patient online consultation platform, including appointment booking and AI-powered symptom checking.",
-        "Coordinated with the team to debug and resolve frontend issues, ensuring smooth user experience.",
-        "Implemented responsive design principles to optimize the platform for various devices.",
-        "Collaborated with backend developers to integrate APIs and ensure seamless data flow.",
-      ],
-    },
     {
       position: "Video Editor & Graphic Designer",
       company: "Custom Kekinian",
@@ -259,6 +323,32 @@ export default function Home() {
       },
     },
   };
+
+  const schoolExperience = [
+    {
+      institution: "SMK Bintang Timur Pematang Siantar",
+      program: "RPL (Rekayasa Perangkat Lunak)",
+      duration: "Jun 2016 - Apr 2019",
+      totalDuration: "3 years ",
+      description:
+        "Focused on software engineering fundamentals and programming basics.",
+    },
+    {
+      institution: "University IBBI",
+      program: "Teknik Informatika ",
+      duration: "Sep 2019 - Dec 2023",
+      totalDuration: "4 years ",
+      description:
+        "Bachelor's degree in Informatics Engineering with computer science principles.",
+    },
+    {
+      institution: "Bootcamp Hacktiv8",
+      program: "Fullstack Javascript Immersive",
+      duration: "Feb 2025 - Jun 2025",
+      totalDuration: "4 months",
+      description: "Intensive bootcamp focused on modern JavaScript ecosystem.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -601,9 +691,20 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
+              ref={containerRef}
+              style={{ position: "relative" }}
             >
-              Passionate about building seamless digital experiences from robust
-              backend systems to interactive frontend interfaces.
+              <VariableProximity
+                label={
+                  "Passionate about building seamless digital experiences from robust backend systems to interactive frontend interfaces."
+                }
+                className={"variable-proximity-demo"}
+                fromFontVariationSettings="'wght' 400, 'opsz' 9"
+                toFontVariationSettings="'wght' 1000, 'opsz' 40"
+                containerRef={containerRef}
+                radius={100}
+                falloff="linear"
+              />
             </motion.p>
 
             <motion.div
@@ -636,7 +737,7 @@ export default function Home() {
             <ProfileCard
               name="Can Saragih"
               title="Fullstack Developer"
-              handle="@can_saragih"
+              handle="can_saragih"
               status="Online"
               contactText="Contact Me"
               avatarUrl="/image.png"
@@ -658,181 +759,170 @@ export default function Home() {
         variants={staggerContainer}
         className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-16">
             <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
               ABOUT ME
             </p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">
-              A Glimpse Into My World
-            </h2>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-8">About me</h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* My Reads */}
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white/5 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/20"
-            >
-              <div className="flex items-center mb-6">
-                <span className="text-2xl mr-3">✨</span>
-                <h3 className="text-2xl font-semibold">My Reads</h3>
-              </div>
-              <p className="text-gray-400 mb-6">
-                Explore the books shaping my perspectives
+          {/* About Text */}
+          <motion.div
+            variants={fadeInUp}
+            className="max-w-4xl mx-auto text-center mb-20"
+          >
+            <div className="space-y-6">
+              <p className="text-gray-300 text-lg leading-relaxed">
+                Hi! I'm Can Saragih a passionate Frontend Developer with a
+                strong focus on crafting modern and responsive user interfaces
+                using React, Next.js, TypeScript, and Tailwind CSS. I love
+                building seamless user experiences and clean design systems that
+                not only look good but also perform efficiently.
               </p>
-              <div className="bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl p-6 text-center">
-                <div className="text-white font-bold text-2xl mb-2">1984</div>
-                <div className="text-white/80">George Orwell</div>
-              </div>
+
+              <p className="text-gray-300 text-lg leading-relaxed">
+                Beyond technical skills, I enjoy turning ideas into visual
+                experiences, and I'm always exploring tools like Framer Motion
+                and Lottie to bring animations to life. My goal is to keep
+                growing as a developer, contribute to meaningful projects, and
+                eventually work on large-scale applications that make a
+                difference.
+              </p>
+
+              <p className="text-gray-300 text-lg leading-relaxed">
+                When I'm not coding, you'll find me learning new frameworks,
+                tweaking UI/UX designs, or exploring open-source projects on
+                GitHub.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* School Experience with animated cards */}
+          <div className="relative">
+            <motion.div variants={fadeInUp} className="text-center mb-12">
+              <h2 className="text-2xl font-bold text-white">
+                Education Experience
+              </h2>
             </motion.div>
 
-            {/* My Toolbox */}
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white/5 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/20"
-            >
-              <div className="flex items-center mb-6">
-                <span className="text-2xl mr-3">🛠</span>
-                <h3 className="text-2xl font-semibold">My Toolbox</h3>
-              </div>
-              <p className="text-gray-400 mb-6">
-                Explore the technologies and tools I use to craft digital
-                experiences
-              </p>
-              <div className="grid grid-cols-3 gap-3">
-                {[
-                  "React",
-                  "Node.js",
-                  "CSS3",
-                  "Figma",
-                  "JavaScript",
-                  "Next.js",
-                ].map((tool, index) => (
-                  <div
-                    key={index}
-                    className="bg-purple-500/20 rounded-lg p-3 text-center text-sm"
-                  >
-                    {tool}
-                  </div>
-                ))}
-              </div>
-            </motion.div>
+            {/* Left gradient mask */}
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
 
-            {/* Beyond the Code */}
-            <motion.div
-              variants={fadeInUp}
-              className="bg-white/5 backdrop-blur-lg rounded-3xl p-8 border border-purple-500/20"
-            >
-              <div className="flex items-center mb-6">
-                <span className="text-2xl mr-3">🎯</span>
-                <h3 className="text-2xl font-semibold">Beyond the Code</h3>
-              </div>
-              <p className="text-gray-400 mb-6">
-                Explore my interests and hobbies beyond the digital realms
-              </p>
-              <div className="space-y-3">
+            {/* Right gradient mask */}
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+
+            <div className="overflow-hidden">
+              <motion.div
+                animate={{ x: [-200, 200] }}
+                transition={{
+                  duration: 35,
+                  repeat: Infinity,
+                  ease: "linear",
+                }}
+                className="flex space-x-8 whitespace-nowrap"
+                style={{ width: "300%" }}
+              >
                 {[
-                  "Painting 🎨",
-                  "Guitar 🎸",
-                  "Drawing ✏️",
-                  "Crocheting 🧶",
-                  "Hiking 🥾",
-                  "Gaming 🎮",
-                  "Fitness 💪",
-                ].map((hobby, index) => (
+                  ...schoolExperience,
+                  ...schoolExperience,
+                  ...schoolExperience,
+                ].map((school, index) => (
                   <div
                     key={index}
-                    className="bg-blue-500/20 rounded-full px-4 py-2 text-sm inline-block mr-2 mb-2"
+                    className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-80 shadow-lg shadow-purple-500/10"
                   >
-                    {hobby}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                        <svg
+                          className="w-5 h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 14l9-5-9-5-9 5 9 5z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                          />
+                        </svg>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-gray-400 text-xs">
+                          {school.duration}
+                        </p>
+                        <p className="text-purple-400 text-xs font-medium">
+                          {school.totalDuration}
+                        </p>
+                      </div>
+                    </div>
+
+                    <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
+                      {school.institution}
+                    </h4>
+                    <p className="text-purple-400 text-sm mb-3 whitespace-normal">
+                      {school.program}
+                    </p>
+                    <p className="text-gray-300 text-sm leading-relaxed whitespace-normal">
+                      {school.description}
+                    </p>
                   </div>
                 ))}
-              </div>
-              <div className="mt-6 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl p-4">
-                <div className="text-center text-white">
-                  <div className="text-sm mb-1">📍 Jakarta, Indonesia</div>
-                  <div className="text-xs opacity-80">
-                    Available for remote work
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </motion.section>
 
-      {/* Skills Section with Animated Rows */}
+      {/* Skills Section with Filter and Animated Connections */}
       <motion.section
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
         variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden"
+        className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden"
       >
         <div className="max-w-7xl mx-auto">
-          <motion.h2
-            variants={fadeInUp}
-            className="text-4xl font-bold text-center mb-16"
-          >
-            Skills & Technologies
-          </motion.h2>
+          <motion.div variants={fadeInUp} className="text-center mb-12">
+            <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
+              MY SKILLS
+            </p>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-8">Skills</h2>
+          </motion.div>
 
-          {/* Animated skill rows */}
-          <div className="space-y-8">
-            {/* Row 1 - Moving Right */}
-            <motion.div
-              animate={{ x: [-100, 100] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-              className="flex space-x-6 whitespace-nowrap"
-            >
-              {[...skills.languages, ...skills.frontend].map((skill, index) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-r from-purple-500/20 to-blue-500/20 backdrop-blur-lg rounded-full px-6 py-3 border border-purple-500/30"
+          {/* Filter Buttons */}
+          <motion.div variants={fadeInUp} className="flex justify-center mb-12">
+            <div className="flex flex-wrap gap-4 p-2 bg-white/5 backdrop-blur-lg rounded-2xl border border-purple-500/20">
+              {Object.keys(skillCategories).map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+                    activeCategory === category
+                      ? "bg-purple-500 text-white shadow-lg shadow-purple-500/30"
+                      : "text-gray-300 hover:text-white hover:bg-white/10"
+                  }`}
                 >
-                  <span className="text-white font-medium">{skill}</span>
-                </div>
+                  {category}
+                </button>
               ))}
-            </motion.div>
+            </div>
+          </motion.div>
 
-            {/* Row 2 - Moving Left */}
-            <motion.div
-              animate={{ x: [100, -100] }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="flex space-x-6 whitespace-nowrap"
-            >
-              {[...skills.backend, ...skills.tools].map((skill, index) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-lg rounded-full px-6 py-3 border border-blue-500/30"
-                >
-                  <span className="text-white font-medium">{skill}</span>
-                </div>
-              ))}
-            </motion.div>
-
-            {/* Row 3 - Moving Right */}
-            <motion.div
-              animate={{ x: [-100, 100] }}
-              transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-              className="flex space-x-6 whitespace-nowrap"
-            >
-              {[
-                ...skills.design,
-                "Problem Solving",
-                "Team Collaboration",
-                "Project Management",
-              ].map((skill, index) => (
-                <div
-                  key={index}
-                  className="bg-gradient-to-r from-pink-500/20 to-purple-500/20 backdrop-blur-lg rounded-full px-6 py-3 border border-pink-500/30"
-                >
-                  <span className="text-white font-medium">{skill}</span>
-                </div>
-              ))}
-            </motion.div>
-          </div>
+          {/* Skills Network */}
+          <SkillsNetwork
+            skills={
+              skillCategories[activeCategory as keyof typeof skillCategories]
+            }
+            key={activeCategory}
+          />
         </div>
       </motion.section>
 
@@ -921,12 +1011,18 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <Carousel
+            itemsPerView={3}
+            autoPlay={true}
+            autoPlayInterval={6000}
+            showDots={true}
+            showArrows={true}
+            className="px-16"
+          >
             {projects.map((project, index) => (
-              <motion.div
+              <div
                 key={index}
-                variants={fadeInUp}
-                className="group bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-500"
+                className="group bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-500 mx-2 flex flex-col justify-between min-h-[420px]"
                 onMouseEnter={() => setActiveProject(index)}
                 onMouseLeave={() => setActiveProject(null)}
               >
@@ -942,7 +1038,7 @@ export default function Home() {
                   <h3 className="text-2xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors">
                     {project.name}
                   </h3>
-                  <p className="text-gray-300 mb-6 line-clamp-3 leading-relaxed">
+                  <p className="text-gray-300 mb-6 leading-relaxed line-clamp-3 min-h-[72px]">
                     {project.description}
                   </p>
 
@@ -967,15 +1063,15 @@ export default function Home() {
                       href={project.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 text-white py-2 px-4 rounded-xl text-center hover:from-purple-600 hover:to-blue-600 transition-all duration-300"
+                      className="flex-1 bg-gradient-to-r from-purple-700/30 to-indigo-700/30 text-white border border-purple-500/30 backdrop-blur-md py-2 px-4 rounded-xl text-center hover:from-purple-600/40 hover:to-indigo-600/40 hover:border-purple-400/50 transition-all duration-300 shadow-inner shadow-purple-800/20"
                     >
                       View Project →
                     </a>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </div>
+          </Carousel>
         </div>
       </motion.section>
 
@@ -994,56 +1090,74 @@ export default function Home() {
           >
             Certifications
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <Carousel
+            itemsPerView={2}
+            autoPlay={true}
+            autoPlayInterval={7000}
+            showDots={true}
+            showArrows={true}
+            className="px-16"
+          >
             {certificates.map((cert, index) => (
-              <motion.div
+              <div
                 key={index}
-                variants={fadeInUp}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300"
+                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 mx-2 h-full"
               >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                    <svg
+                      className="w-6 h-6 text-white"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
+                    Verified
+                  </span>
+                </div>
+
                 <h3 className="text-xl font-semibold text-white mb-3">
                   {cert.name}
                 </h3>
-                <p className="text-gray-300 mb-4">{cert.description}</p>
-                <a
-                  href={cert.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center text-green-400 hover:text-green-300 transition-colors"
-                >
-                  View Certificate →
-                </a>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
+                <p className="text-gray-300 mb-6 leading-relaxed">
+                  {cert.description}
+                </p>
 
-      {/* Contact Footer */}
-      <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true }}
-        variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div variants={fadeInUp} className="mb-16">
-            <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
-              GET IN TOUCH
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">Contact.</h2>
-            <p className="text-gray-400 text-lg mb-8">
-              Ready to bring your ideas to life? Let's collaborate and create
-              something amazing together.
-            </p>
-            <a
-              href="mailto:canwhardana@gmail.com"
-              className="inline-block bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105"
-            >
-              Say Hello 👋
-            </a>
-          </motion.div>
+                <div className="mt-auto">
+                  <a
+                    href={cert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center text-green-400 hover:text-green-300 transition-colors group"
+                  >
+                    <span>View Certificate</span>
+                    <svg
+                      className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            ))}
+          </Carousel>
         </div>
       </motion.section>
 
@@ -1064,7 +1178,7 @@ export default function Home() {
             viewport={{ once: true }}
             className="text-gray-500"
           >
-            © 2024 Can Saragih. All rights reserved.
+            © 2025 Can Saragih. All rights reserved.
           </motion.p>
         </div>
       </footer>
