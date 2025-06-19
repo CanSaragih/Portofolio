@@ -8,6 +8,10 @@ import { useRef } from "react";
 import VariableProximity from "@/components/VariableProximity";
 import Carousel from "@/components/Carousel";
 import SkillsNetwork from "@/components/SkillsNetwork";
+import ContactForm from "@/components/ContactForm";
+import Lanyard from "@/components/Landyard";
+import Footer from "@/components/navbar/Footer";
+import Nav from "@/components/navbar/Nav";
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
@@ -28,116 +32,149 @@ export default function Home() {
     Frontend: [
       {
         name: "React.js",
-        icon: "⚛️",
-        color: "from-cyan-500/20 to-blue-500/20",
+        icon: "/react.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
-      { name: "Next.js", icon: "▲", color: "from-gray-500/20 to-black/20" },
-      { name: "Redux", icon: "🔄", color: "from-purple-500/20 to-pink-500/20" },
+      {
+        name: "Next.js",
+        icon: "/nextjs.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
+      {
+        name: "Redux",
+        icon: "/redux.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
       {
         name: "React Native",
-        icon: "📱",
-        color: "from-blue-500/20 to-cyan-500/20",
+        icon: "/react.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
-      { name: "EJS", icon: "🔧", color: "from-green-500/20 to-teal-500/20" },
-      { name: "HTML", icon: "📄", color: "from-orange-600/20 to-red-500/20" },
-      { name: "CSS", icon: "🎨", color: "from-blue-500/20 to-indigo-500/20" },
+      {
+        name: "EJS",
+        icon: "/ejs.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
+      {
+        name: "HTML",
+        icon: "/html.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
+      {
+        name: "CSS",
+        icon: "/css.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
       {
         name: "Tailwind CSS",
-        icon: "🌊",
-        color: "from-teal-500/20 to-cyan-500/20",
+        icon: "/tailwind.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Bootstrap",
-        icon: "🅱️",
-        color: "from-purple-600/20 to-blue-600/20",
+        icon: "/bootstrap.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Apollo Client",
-        icon: "🚀",
-        color: "from-indigo-500/20 to-purple-500/20",
+        icon: "/apollo client.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
     ],
     Backend: [
       {
         name: "Node.js",
-        icon: "🟢",
-        color: "from-green-600/20 to-green-400/20",
+        icon: "/nodejs.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
+      {
+        name: "TypeScript",
+        icon: "/typescript.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Express.js",
-        icon: "🚄",
+        icon: "/express.png",
         color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "GraphQL",
-        icon: "🔷",
-        color: "from-pink-500/20 to-purple-500/20",
+        icon: "/graphql.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Apollo Server",
-        icon: "🛰️",
-        color: "from-blue-600/20 to-indigo-600/20",
+        icon: "/apollo client.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Sequelize",
-        icon: "🗃️",
-        color: "from-blue-500/20 to-cyan-500/20",
+        icon: "/sequelize.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "PostgreSQL",
-        icon: "🐘",
-        color: "from-blue-700/20 to-blue-500/20",
+        icon: "/postgresql.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "MongoDB",
-        icon: "🍃",
-        color: "from-green-500/20 to-emerald-500/20",
+        icon: "/mongodb.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
-      { name: "Redis", icon: "🔴", color: "from-red-500/20 to-pink-500/20" },
+      {
+        name: "Redis",
+        icon: "/redis.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
       {
         name: "REST API",
-        icon: "🌐",
-        color: "from-orange-500/20 to-yellow-500/20",
+        icon: "/rest.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
     ],
     Tools: [
-      { name: "Git", icon: "🌿", color: "from-orange-600/20 to-red-600/20" },
+      {
+        name: "Git",
+        icon: "/github.png",
+        color: "from-gray-600/20 to-gray-400/20",
+      },
       {
         name: "Vite",
-        icon: "⚡",
-        color: "from-yellow-500/20 to-orange-500/20",
+        icon: "/vite.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Expo Go",
-        icon: "📲",
-        color: "from-blue-600/20 to-purple-600/20",
+        icon: "/expo.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Socket.IO",
-        icon: "🔌",
-        color: "from-gray-600/20 to-blue-600/20",
+        icon: "/socketio.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
     ],
     Design: [
       {
         name: "After Effects",
-        icon: "🎬",
-        color: "from-purple-600/20 to-blue-600/20",
+        icon: "/after effect.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Premiere Pro",
-        icon: "🎥",
-        color: "from-indigo-600/20 to-purple-600/20",
+        icon: "/premiere.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "Photoshop",
-        icon: "🖼️",
-        color: "from-blue-600/20 to-cyan-600/20",
+        icon: "/photoshop.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
       {
         name: "CorelDRAW",
-        icon: "✏️",
-        color: "from-red-500/20 to-pink-500/20",
+        icon: "/coreldraw.png",
+        color: "from-gray-600/20 to-gray-400/20",
       },
     ],
   };
@@ -175,6 +212,7 @@ export default function Home() {
 
   const projects = [
     {
+      image: "/img-project/ParkGo.png",
       name: "ParkGo",
       url: "https://github.com/orgs/Parkir-Cepat/repositories",
       description:
@@ -193,22 +231,27 @@ export default function Home() {
       category: "Mobile App",
     },
     {
+      image: "/img-project/ShopHub.png",
       name: "Shophub",
       url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
       description:
         "Web-based e-commerce platform that allows you to browse products and manage wish lists.",
       tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
       category: "Web App",
+      demo: "https://www.itscan.my.id/",
     },
     {
+      image: "/img-project/SocialMediaApp.png",
       name: "Social Media App",
       url: "https://github.com/H8-FSJS-P3S5/gc01-CanSaragih",
       description:
         "A fullstack mobile-based social media application built with React Native",
       tech: ["React Native", "Apollo Server", "GraphQL", "MongoDB", "Redis"],
       category: "Mobile App",
+      demo: "https://shorturl.at/IAYEp",
     },
     {
+      image: "/img-project/ChatVerse.png",
       name: "ChatVerse",
       url: "https://github.com/GROP-PROJECT-P2",
       description:
@@ -225,6 +268,7 @@ export default function Home() {
       category: "Web App",
     },
     {
+      image: "/img-project/Planorama.png",
       name: "Planorama",
       url: "https://github.com/CanSaragih/IP-RMT60",
       description:
@@ -241,6 +285,7 @@ export default function Home() {
       category: "Web App",
     },
     {
+      image: "/img-project/InstaLook.png",
       name: "InstaLook",
       url: "https://github.com/CanSaragih/SocialMedia-Instagram",
       description: "A fullstack web-based Instagram-like social media platform",
@@ -256,6 +301,7 @@ export default function Home() {
       category: "Web App",
     },
     {
+      image: "/img-project/quickkick.png",
       name: "QuickKick",
       url: "https://github.com/andikarahmadisaputra/quickkick",
       description:
@@ -378,79 +424,13 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-sm border-b border-purple-500/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="text-2xl font-bold"
-            >
-              <span className="text-purple-100">Can Saragih</span>
-            </motion.div>
-            <div className="flex space-x-4">
-              {[
-                {
-                  name: "Instagram",
-                  url: "https://www.instagram.com/can_whardana/",
-                  icon: (
-                    <svg
-                      className="w-7 h-7 fill-current"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                    </svg>
-                  ),
-                },
-                {
-                  name: "LinkedIn",
-                  url: "https://www.linkedin.com/in/can-saragih/",
-                  icon: (
-                    <svg
-                      className="w-7 h-7 fill-current"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                    </svg>
-                  ),
-                },
-                {
-                  name: "GitHub",
-                  url: "https://github.com/CanSaragih",
-                  icon: (
-                    <svg
-                      className="w-7 h-7 fill-current"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                  ),
-                },
-              ].map((social) => (
-                <motion.a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.15, rotate: 5 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="text-gray-300 hover:text-purple-400 transition-all duration-300 p-3 rounded-xl hover:bg-purple-500/10 backdrop-blur-sm"
-                  title={social.name}
-                >
-                  {social.icon}
-                </motion.a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 overflow-hidden">
+      <section
+        id="home"
+        className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 overflow-hidden"
+      >
         {/* Abstract Wave Background */}
         <div className="absolute inset-0 z-0">
           <svg
@@ -753,6 +733,7 @@ export default function Home() {
 
       {/* About Me Section */}
       <motion.section
+        id="about"
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
@@ -770,18 +751,18 @@ export default function Home() {
           {/* About Text */}
           <motion.div
             variants={fadeInUp}
-            className="max-w-4xl mx-auto text-center mb-20"
+            className="w-full max-w-7xl px-4 mx-auto text-center mb-20"
           >
             <div className="space-y-6">
-              <p className="text-gray-300 text-lg leading-relaxed">
-                Hi! I'm Can Saragih a passionate Frontend Developer with a
+              <p className="text-gray-300 text-xl leading-relaxed text-justify">
+                Hi! I'm Can Saragih, a passionate Frontend Developer with a
                 strong focus on crafting modern and responsive user interfaces
                 using React, Next.js, TypeScript, and Tailwind CSS. I love
                 building seamless user experiences and clean design systems that
                 not only look good but also perform efficiently.
               </p>
 
-              <p className="text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-300 text-xl leading-relaxed text-justify">
                 Beyond technical skills, I enjoy turning ideas into visual
                 experiences, and I'm always exploring tools like Framer Motion
                 and Lottie to bring animations to life. My goal is to keep
@@ -790,7 +771,7 @@ export default function Home() {
                 difference.
               </p>
 
-              <p className="text-gray-300 text-lg leading-relaxed">
+              <p className="text-gray-300 text-xl  text-justify">
                 When I'm not coding, you'll find me learning new frameworks,
                 tweaking UI/UX designs, or exploring open-source projects on
                 GitHub.
@@ -801,9 +782,7 @@ export default function Home() {
           {/* School Experience with animated cards */}
           <div className="relative">
             <motion.div variants={fadeInUp} className="text-center mb-12">
-              <h2 className="text-2xl font-bold text-white">
-                Education Experience
-              </h2>
+              <h2 className="text-2xl font-bold text-white">Education</h2>
             </motion.div>
 
             {/* Left gradient mask */}
@@ -830,7 +809,7 @@ export default function Home() {
                 ].map((school, index) => (
                   <div
                     key={index}
-                    className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-80 shadow-lg shadow-purple-500/10"
+                    className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
                   >
                     <div className="flex items-center justify-between mb-4">
                       <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
@@ -870,7 +849,7 @@ export default function Home() {
                     <p className="text-purple-400 text-sm mb-3 whitespace-normal">
                       {school.program}
                     </p>
-                    <p className="text-gray-300 text-sm leading-relaxed whitespace-normal">
+                    <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
                       {school.description}
                     </p>
                   </div>
@@ -883,6 +862,7 @@ export default function Home() {
 
       {/* Skills Section with Filter and Animated Connections */}
       <motion.section
+        id="skills"
         initial="initial"
         whileInView="animate"
         viewport={{ once: true }}
@@ -1002,7 +982,7 @@ export default function Home() {
             <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
               MY WORK
             </p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">Projects.</h2>
+            <h2 className="text-4xl sm:text-5xl font-bold mb-8">Projects</h2>
             <p className="text-gray-400 max-w-3xl mx-auto">
               Following projects showcases my skills and experience through
               real-world examples of my work. It reflects my ability to solve
@@ -1013,8 +993,7 @@ export default function Home() {
 
           <Carousel
             itemsPerView={3}
-            autoPlay={true}
-            autoPlayInterval={6000}
+            autoPlay={false}
             showDots={true}
             showArrows={true}
             className="px-16"
@@ -1026,14 +1005,25 @@ export default function Home() {
                 onMouseEnter={() => setActiveProject(index)}
                 onMouseLeave={() => setActiveProject(null)}
               >
-                {/* Project image placeholder */}
-                <div className="h-48 bg-gradient-to-br from-purple-500/20 to-blue-500/20 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute top-4 left-4 bg-purple-500/80 text-white px-3 py-1 rounded-full text-sm">
+                {/* Project Image */}
+                <div className="h-48 relative overflow-hidden">
+                  {/* Gambar */}
+                  <img
+                    src={project.image}
+                    alt={project.name}
+                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                  />
+
+                  {/* Overlay black transparan saat hover */}
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  {/* Label kategori */}
+                  <div className="absolute top-4 left-4 bg-purple-500/80 text-white px-3 py-1 rounded-full text-sm z-10">
                     {project.category}
                   </div>
                 </div>
 
+                {/* Konten Card */}
                 <div className="p-6">
                   <h3 className="text-2xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors">
                     {project.name}
@@ -1067,6 +1057,30 @@ export default function Home() {
                     >
                       View Project →
                     </a>
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-sm text-purple-300 hover:text-purple-500 transition-colors"
+                        title="Live Demo"
+                      >
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 0c0 4.418 1.79 8 4 8s4-3.582 4-8m-8 0c0 4.418-1.79 8-4 8s-4-3.582-4-8"
+                          />
+                        </svg>
+                        Live Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1081,7 +1095,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: true }}
         variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
+        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mb-10"
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
@@ -1093,8 +1107,7 @@ export default function Home() {
 
           <Carousel
             itemsPerView={2}
-            autoPlay={true}
-            autoPlayInterval={7000}
+            autoPlay={false}
             showDots={true}
             showArrows={true}
             className="px-16"
@@ -1102,7 +1115,7 @@ export default function Home() {
             {certificates.map((cert, index) => (
               <div
                 key={index}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-purple-500/20 hover:border-purple-500/50 transition-all duration-300 mx-2 h-full"
+                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-green-600/20 hover:border-green-600/50 transition-all duration-300 mx-2 h-full"
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
@@ -1161,27 +1174,44 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Footer */}
-      <footer className="py-12 px-4 sm:px-6 lg:px-8 border-t border-purple-500/20 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-gray-400 mb-4"
-          >
-            Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion
-          </motion.p>
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className="text-gray-500"
-          >
-            © 2025 Can Saragih. All rights reserved.
-          </motion.p>
+      {/* Contact Section */}
+      <motion.section
+        id="contact"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+        className="relative z-10 min-h-screen text-black bg-white bg-[url('/textures/beige-paper.png')] bg-repeat"
+      >
+        {/* Full-width container for the lanyard */}
+        <div className="absolute left-0 w-full lg:w-1/2 h-full">
+          <div className="w-full h-full relative -mt-12 min-h-screen">
+            <Lanyard position={[0, 0, 25]} gravity={[0, -40, 0]} />
+          </div>
         </div>
-      </footer>
+
+        {/* Content container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+            {/* Empty spacer for the lanyard column */}
+            <div className="hidden lg:block"></div>
+
+            {/* Right Column - Contact Form (with padding) */}
+            <motion.div
+              variants={fadeInUp}
+              className="flex flex-col justify-start w-full p-4  mt-30 lg:pt-16 lg:pl-8"
+            >
+              <h2 className="text-4xl sm:text-5xl font-bold mb-8 text-black">
+                Contact Me
+              </h2>
+              <ContactForm />
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 }

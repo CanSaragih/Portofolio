@@ -58,9 +58,9 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="bg-gradient-to-br from-gray-800/95 to-gray-900/95 backdrop-blur-lg rounded-3xl px-12 py-8 border border-purple-500/40 shadow-2xl"
+          className="bg-[#1b1b1b] px-13 py-6 rounded-[28px] border border-[#2d2d2d] shadow-[0_0_40px_rgba(128,128,255,0.2)]"
         >
-          <h3 className="text-4xl sm:text-5xl font-black bg-gradient-to-r from-purple-400 via-white to-blue-400 bg-clip-text text-transparent">
+          <h3 className="text-[52px] sm:text-[64px] font-extrabold text-center bg-gradient-to-b from-gray-100 to-gray-500 bg-clip-text text-transparent tracking-wide drop-shadow-[0_2px_1px_rgba(255,255,255,0.1)]">
             Skills
           </h3>
         </motion.div>
@@ -258,13 +258,11 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     }
                   `}
                 >
-                  <span
-                    className={`text-2xl sm:text-3xl transition-all duration-300 ${
-                      isActive ? "scale-110" : ""
-                    }`}
-                  >
-                    {skill.icon}
-                  </span>
+                  <img
+                    src={skill.icon}
+                    alt={skill.name}
+                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain transition-all duration-300"
+                  />
                 </div>
 
                 {/* Tooltip */}
@@ -352,13 +350,11 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     }
                   `}
                 >
-                  <span
-                    className={`text-2xl sm:text-3xl transition-all duration-300 ${
-                      isActive ? "scale-110" : ""
-                    }`}
-                  >
-                    {skill.icon}
-                  </span>
+                  <img
+                    src={skill.icon}
+                    alt={skill.name}
+                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain transition-all duration-300"
+                  />
                 </div>
               </motion.div>
             );
