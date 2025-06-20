@@ -12,6 +12,7 @@ import ContactForm from "@/components/ContactForm";
 import Lanyard from "@/components/Landyard";
 import Footer from "@/components/navbar/Footer";
 import Nav from "@/components/navbar/Nav";
+import { ChatBox } from "@/components/ChatBot";
 
 // Dynamically import Lottie to avoid SSR issues
 const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
@@ -424,6 +425,7 @@ export default function Home() {
         ))}
       </div>
 
+      <ChatBox />
       <Nav />
 
       {/* Hero Section */}
