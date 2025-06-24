@@ -1,11 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import { useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
 import ProfileCard from "@/components/ProfileCard";
-import { useRef } from "react";
-import VariableProximity from "@/components/VariableProximity";
 import Carousel from "@/components/Carousel";
 import SkillsNetwork from "@/components/SkillsNetwork";
 import ContactForm from "@/components/ContactForm";
@@ -14,18 +11,20 @@ import Footer from "@/components/navbar/Footer";
 import Nav from "@/components/navbar/Nav";
 import { ChatBox } from "@/components/ChatBot";
 
-// Dynamically import Lottie to avoid SSR issues
-const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
-
 export default function Home() {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const [activeProject, setActiveProject] = useState<number | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [textIndex, setTextIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("Frontend");
+  const [mounted, setMounted] = useState(false);
+  const [backgroundParticles, setBackgroundParticles] = useState<
+    Array<{ left: string; top: string }>
+  >([]);
+  const contactRef = useRef(null);
+  const isInView = useInView(contactRef, {
+    once: false,
+    amount: 0.0,
+  });
 
   const typewriterTexts = ["Fullstack Developer", "Software Engineer"];
 
@@ -180,14 +179,6 @@ export default function Home() {
     ],
   };
 
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   // Typewriter effect
   useEffect(() => {
     const currentFullText = typewriterTexts[textIndex];
@@ -210,6 +201,17 @@ export default function Home() {
 
     return () => clearTimeout(timer);
   }, [currentText, isDeleting, textIndex, typewriterTexts]);
+
+  // Initialize particles setelah mount
+  useEffect(() => {
+    setMounted(true);
+    setBackgroundParticles(
+      Array.from({ length: 50 }, () => ({
+        left: Math.random() * 100 + "%",
+        top: Math.random() * 100 + "%",
+      }))
+    );
+  }, []);
 
   const projects = [
     {
@@ -358,15 +360,22 @@ export default function Home() {
   ];
 
   const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 },
+    initial: { opacity: 0, y: 40 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
   };
 
   const staggerContainer = {
+    initial: {},
     animate: {
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.2,
       },
     },
   };
@@ -397,32 +406,57 @@ export default function Home() {
     },
   ];
 
+  // Typewriter effect
+  useEffect(() => {
+    const currentFullText = typewriterTexts[textIndex];
+
+    const typeSpeed = isDeleting ? 50 : 100;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting && currentText === currentFullText) {
+        // Pause at the end
+        setTimeout(() => setIsDeleting(true), 2000);
+      } else if (isDeleting && currentText === "") {
+        setIsDeleting(false);
+        setTextIndex((prev) => (prev + 1) % typewriterTexts.length);
+      } else if (isDeleting) {
+        setCurrentText(currentFullText.substring(0, currentText.length - 1));
+      } else {
+        setCurrentText(currentFullText.substring(0, currentText.length + 1));
+      }
+    }, typeSpeed);
+
+    return () => clearTimeout(timer);
+  }, [currentText, isDeleting, textIndex, typewriterTexts]);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Animated Background */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-blue-900/20" />
-        {/* Floating particles */}
-        {[...Array(50)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-purple-400/30 rounded-full"
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 3 + 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            style={{
-              left: Math.random() * 100 + "%",
-              top: Math.random() * 100 + "%",
-            }}
-          />
-        ))}
+
+        {/* Floating particles dengan data yang sudah di-generate */}
+        {mounted &&
+          backgroundParticles.map((particle, i) => (
+            <motion.div
+              key={`bg-particle-${i}`}
+              className="absolute w-1 h-1 bg-purple-400/30 rounded-full"
+              animate={{
+                x: [0, 50, 0],
+                y: [0, 50, 0],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              style={{
+                left: particle.left,
+                top: particle.top,
+              }}
+            />
+          ))}
       </div>
 
       <ChatBox />
@@ -653,7 +687,7 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              <span className="text-white">Hi! I'm </span>
+              <span className="text-white">Hi! I&apos;m </span>
               <span className="text-purple-400">Can</span>
             </motion.h1>
 
@@ -673,20 +707,10 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              ref={containerRef}
               style={{ position: "relative" }}
             >
-              <VariableProximity
-                label={
-                  "Passionate about building seamless digital experiences from robust backend systems to interactive frontend interfaces."
-                }
-                className={"variable-proximity-demo"}
-                fromFontVariationSettings="'wght' 400, 'opsz' 9"
-                toFontVariationSettings="'wght' 1000, 'opsz' 40"
-                containerRef={containerRef}
-                radius={100}
-                falloff="linear"
-              />
+              Passionate about building seamless digital experiences from robust
+              backend systems to interactive frontend interfaces.
             </motion.p>
 
             <motion.div
@@ -738,7 +762,7 @@ export default function Home() {
         id="about"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
         className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
       >
@@ -757,7 +781,7 @@ export default function Home() {
           >
             <div className="space-y-6">
               <p className="text-gray-300 text-xl leading-relaxed text-justify">
-                Hi! I'm Can Saragih, a passionate Frontend Developer with a
+                Hi! I&apos;m Can Saragih, a passionate Frontend Developer with a
                 strong focus on crafting modern and responsive user interfaces
                 using React, Next.js, TypeScript, and Tailwind CSS. I love
                 building seamless user experiences and clean design systems that
@@ -766,17 +790,17 @@ export default function Home() {
 
               <p className="text-gray-300 text-xl leading-relaxed text-justify">
                 Beyond technical skills, I enjoy turning ideas into visual
-                experiences, and I'm always exploring tools like Framer Motion
-                and Lottie to bring animations to life. My goal is to keep
-                growing as a developer, contribute to meaningful projects, and
-                eventually work on large-scale applications that make a
+                experiences, and I&apos;m always exploring tools like Framer
+                Motion and Lottie to bring animations to life. My goal is to
+                keep growing as a developer, contribute to meaningful projects,
+                and eventually work on large-scale applications that make a
                 difference.
               </p>
 
               <p className="text-gray-300 text-xl  text-justify">
-                When I'm not coding, you'll find me learning new frameworks,
-                tweaking UI/UX designs, or exploring open-source projects on
-                GitHub.
+                When I&apos;m not coding, you&apos;ll find me learning new
+                frameworks, tweaking UI/UX designs, or exploring open-source
+                projects on GitHub.
               </p>
             </div>
           </motion.div>
@@ -794,68 +818,77 @@ export default function Home() {
             <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
 
             <div className="overflow-hidden">
+              {/* Outer motion for fade in when in viewport */}
               <motion.div
-                animate={{ x: [-200, 200] }}
-                transition={{
-                  duration: 35,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="flex space-x-8 whitespace-nowrap"
-                style={{ width: "300%" }}
+                variants={fadeInUp}
+                initial="initial"
+                whileInView="animate"
+                viewport={{ once: true, amount: 0.3 }}
               >
-                {[
-                  ...schoolExperience,
-                  ...schoolExperience,
-                  ...schoolExperience,
-                ].map((school, index) => (
-                  <div
-                    key={index}
-                    className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
-                  >
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                        <svg
-                          className="w-5 h-5 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 14l9-5-9-5-9 5 9 5z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                          />
-                        </svg>
+                {/* Inner motion for infinite horizontal scroll */}
+                <motion.div
+                  animate={{ x: [-200, 200] }}
+                  transition={{
+                    duration: 35,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                  className="flex space-x-8 whitespace-nowrap"
+                  style={{ width: "300%" }}
+                >
+                  {[
+                    ...schoolExperience,
+                    ...schoolExperience,
+                    ...schoolExperience,
+                  ].map((school, index) => (
+                    <div
+                      key={index}
+                      className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
+                    >
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                          <svg
+                            className="w-5 h-5 text-white"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 14l9-5-9-5-9 5 9 5z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                            />
+                          </svg>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-gray-400 text-xs">
+                            {school.duration}
+                          </p>
+                          <p className="text-purple-400 text-xs font-medium">
+                            {school.totalDuration}
+                          </p>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-gray-400 text-xs">
-                          {school.duration}
-                        </p>
-                        <p className="text-purple-400 text-xs font-medium">
-                          {school.totalDuration}
-                        </p>
-                      </div>
-                    </div>
 
-                    <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
-                      {school.institution}
-                    </h4>
-                    <p className="text-purple-400 text-sm mb-3 whitespace-normal">
-                      {school.program}
-                    </p>
-                    <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
-                      {school.description}
-                    </p>
-                  </div>
-                ))}
+                      <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
+                        {school.institution}
+                      </h4>
+                      <p className="text-purple-400 text-sm mb-3 whitespace-normal">
+                        {school.program}
+                      </p>
+                      <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
+                        {school.description}
+                      </p>
+                    </div>
+                  ))}
+                </motion.div>
               </motion.div>
             </div>
           </div>
@@ -867,7 +900,7 @@ export default function Home() {
         id="skills"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
         className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden"
       >
@@ -899,12 +932,14 @@ export default function Home() {
           </motion.div>
 
           {/* Skills Network */}
-          <SkillsNetwork
-            skills={
-              skillCategories[activeCategory as keyof typeof skillCategories]
-            }
-            key={activeCategory}
-          />
+          <motion.div variants={fadeInUp} key={activeCategory}>
+            <SkillsNetwork
+              skills={
+                skillCategories[activeCategory as keyof typeof skillCategories]
+              }
+              key={activeCategory}
+            />
+          </motion.div>
         </div>
       </motion.section>
 
@@ -912,7 +947,7 @@ export default function Home() {
       <motion.section
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
         className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
       >
@@ -975,7 +1010,7 @@ export default function Home() {
         id="projects"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
         className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
       >
@@ -993,101 +1028,101 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <Carousel
-            itemsPerView={3}
-            autoPlay={false}
-            showDots={true}
-            showArrows={true}
-            className="px-16"
-          >
-            {projects.map((project, index) => (
-              <div
-                key={index}
-                className="group bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-500 mx-2 flex flex-col justify-between min-h-[420px]"
-                onMouseEnter={() => setActiveProject(index)}
-                onMouseLeave={() => setActiveProject(null)}
-              >
-                {/* Project Image */}
-                <div className="h-48 relative overflow-hidden">
-                  {/* Gambar */}
-                  <img
-                    src={project.image}
-                    alt={project.name}
-                    className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
-                  />
+          <motion.div variants={fadeInUp}>
+            <Carousel
+              itemsPerView={3}
+              autoPlay={false}
+              showDots={true}
+              showArrows={true}
+              className="px-16"
+            >
+              {projects.map((project, index) => (
+                <div
+                  key={index}
+                  className="group bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-500 mx-2 flex flex-col justify-between min-h-[420px]"
+                >
+                  {/* Project Image */}
+                  <div className="h-48 relative overflow-hidden">
+                    {/* Gambar */}
+                    <img
+                      src={project.image}
+                      alt={project.name}
+                      className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                    />
 
-                  {/* Overlay black transparan saat hover */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Overlay black transparan saat hover */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-                  {/* Label kategori */}
-                  <div className="absolute top-4 left-4 bg-purple-500/80 text-white px-3 py-1 rounded-full text-sm z-10">
-                    {project.category}
-                  </div>
-                </div>
-
-                {/* Konten Card */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors">
-                    {project.name}
-                  </h3>
-                  <p className="text-gray-300 mb-6 leading-relaxed line-clamp-3 min-h-[72px]">
-                    {project.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-2 mb-6">
-                    {project.tech.slice(0, 3).map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 px-3 py-1 rounded-full text-xs border border-purple-500/30"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.tech.length > 3 && (
-                      <span className="text-gray-400 text-xs px-3 py-1">
-                        +{project.tech.length - 3} more
-                      </span>
-                    )}
+                    {/* Label kategori */}
+                    <div className="absolute top-4 left-4 bg-purple-500/80 text-white px-3 py-1 rounded-full text-sm z-10">
+                      {project.category}
+                    </div>
                   </div>
 
-                  <div className="flex gap-3">
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 bg-gradient-to-r from-purple-700/30 to-indigo-700/30 text-white border border-purple-500/30 backdrop-blur-md py-2 px-4 rounded-xl text-center hover:from-purple-600/40 hover:to-indigo-600/40 hover:border-purple-400/50 transition-all duration-300 shadow-inner shadow-purple-800/20"
-                    >
-                      View Project →
-                    </a>
-                    {project.demo && (
+                  {/* Konten Card */}
+                  <div className="p-6">
+                    <h3 className="text-2xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors">
+                      {project.name}
+                    </h3>
+                    <p className="text-gray-300 mb-6 leading-relaxed line-clamp-3 min-h-[72px]">
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {project.tech.slice(0, 3).map((tech, techIndex) => (
+                        <span
+                          key={techIndex}
+                          className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 px-3 py-1 rounded-full text-xs border border-purple-500/30"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {project.tech.length > 3 && (
+                        <span className="text-gray-400 text-xs px-3 py-1">
+                          +{project.tech.length - 3} more
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex gap-3">
                       <a
-                        href={project.demo}
+                        href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-sm text-purple-300 hover:text-purple-500 transition-colors"
-                        title="Live Demo"
+                        className="flex-1 bg-gradient-to-r from-purple-700/30 to-indigo-700/30 text-white border border-purple-500/30 backdrop-blur-md py-2 px-4 rounded-xl text-center hover:from-purple-600/40 hover:to-indigo-600/40 hover:border-purple-400/50 transition-all duration-300 shadow-inner shadow-purple-800/20"
                       >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth={2}
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 0c0 4.418 1.79 8 4 8s4-3.582 4-8m-8 0c0 4.418-1.79 8-4 8s-4-3.582-4-8"
-                          />
-                        </svg>
-                        Live Demo
+                        View Project →
                       </a>
-                    )}
+                      {project.demo && (
+                        <a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1 text-sm text-purple-300 hover:text-purple-500 transition-colors"
+                          title="Live Demo"
+                        >
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 0c0 4.418 1.79 8 4 8s4-3.582 4-8m-8 0c0 4.418-1.79 8-4 8s-4-3.582-4-8"
+                            />
+                          </svg>
+                          Live Demo
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </Carousel>
+              ))}
+            </Carousel>
+          </motion.div>
         </div>
       </motion.section>
 
@@ -1095,7 +1130,7 @@ export default function Home() {
       <motion.section
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
         className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mb-10"
       >
@@ -1107,72 +1142,74 @@ export default function Home() {
             Certifications
           </motion.h2>
 
-          <Carousel
-            itemsPerView={2}
-            autoPlay={false}
-            showDots={true}
-            showArrows={true}
-            className="px-16"
-          >
-            {certificates.map((cert, index) => (
-              <div
-                key={index}
-                className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-green-600/20 hover:border-green-600/50 transition-all duration-300 mx-2 h-full"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-6 h-6 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+          <motion.div variants={fadeInUp}>
+            <Carousel
+              itemsPerView={2}
+              autoPlay={false}
+              showDots={true}
+              showArrows={true}
+              className="px-16"
+            >
+              {certificates.map((cert, index) => (
+                <div
+                  key={index}
+                  className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-green-600/20 hover:border-green-600/50 transition-all duration-300 mx-2 h-full"
+                >
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">
+                      <svg
+                        className="w-6 h-6 text-white"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
+                      Verified
+                    </span>
                   </div>
-                  <span className="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full border border-green-500/20">
-                    Verified
-                  </span>
-                </div>
 
-                <h3 className="text-xl font-semibold text-white mb-3">
-                  {cert.name}
-                </h3>
-                <p className="text-gray-300 mb-6 leading-relaxed">
-                  {cert.description}
-                </p>
+                  <h3 className="text-xl font-semibold text-white mb-3">
+                    {cert.name}
+                  </h3>
+                  <p className="text-gray-300 mb-6 leading-relaxed">
+                    {cert.description}
+                  </p>
 
-                <div className="mt-auto">
-                  <a
-                    href={cert.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center text-green-400 hover:text-green-300 transition-colors group"
-                  >
-                    <span>View Certificate</span>
-                    <svg
-                      className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                  <div className="mt-auto">
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center text-green-400 hover:text-green-300 transition-colors group"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
+                      <span>View Certificate</span>
+                      <svg
+                        className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </Carousel>
+              ))}
+            </Carousel>
+          </motion.div>
         </div>
       </motion.section>
 
@@ -1181,14 +1218,20 @@ export default function Home() {
         id="contact"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: true }}
+        viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
+        ref={contactRef}
         className="relative z-10 min-h-screen text-black bg-white bg-[url('/textures/beige-paper.png')] bg-repeat"
       >
         {/* Full-width container for the lanyard */}
+
         <div className="absolute left-0 w-full lg:w-1/2 h-full">
           <div className="w-full h-full relative -mt-12 min-h-screen">
-            <Lanyard position={[0, 0, 25]} gravity={[0, -40, 0]} />
+            <Lanyard
+              position={[0, 0, 25]}
+              gravity={[0, -40, 0]}
+              start={isInView}
+            />
           </div>
         </div>
 
@@ -1213,6 +1256,7 @@ export default function Home() {
       </motion.section>
 
       {/* Footer */}
+
       <Footer />
     </div>
   );

@@ -10,13 +10,6 @@ interface Message {
   timestamp: Date;
 }
 
-const SUGGESTION_CHIPS = [
-  "Who is Can?",
-  "What projects has he built?",
-  "What tech stack does he use?",
-  "Tell me about his background",
-];
-
 const formatMessageContent = (content: string) => {
   // Replace variations of Can's name with bold formatting
   const nameVariations = ["Can Whardana Saragih", "Feronicha Charly"];
@@ -55,7 +48,13 @@ export function ChatBox() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [messageCounter, setMessageCounter] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -72,8 +71,12 @@ export function ChatBox() {
   const handleSendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
+    // Generate ID menggunakan counter untuk menghindari Date.now()
+    const userMessageId = `user-${messageCounter}`;
+    setMessageCounter((prev) => prev + 1);
+
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: userMessageId,
       content: content.trim(),
       isUser: true,
       timestamp: new Date(),
@@ -92,8 +95,12 @@ export function ChatBox() {
 
       const data = await response.json();
 
+      // Generate ID untuk bot message
+      const botMessageId = `bot-${messageCounter + 1}`;
+      setMessageCounter((prev) => prev + 1);
+
       const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: botMessageId,
         content: formatMessageContent(data.response),
         isUser: false,
         timestamp: new Date(),
@@ -102,8 +109,12 @@ export function ChatBox() {
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
+
+      const errorMessageId = `error-${messageCounter + 1}`;
+      setMessageCounter((prev) => prev + 1);
+
       const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: errorMessageId,
         content:
           "Sorry, I'm having trouble responding right now. Please try again.",
         isUser: false,
@@ -126,10 +137,10 @@ export function ChatBox() {
 
   const openChat = () => {
     setIsOpen(true);
-    // Small delay to ensure DOM is ready
+    // Increased delay for smoother animation
     setTimeout(() => {
       setIsAnimating(true);
-    }, 10);
+    }, 150);
   };
 
   const closeChat = () => {
@@ -137,16 +148,41 @@ export function ChatBox() {
     // Longer delay for smoother exit animation
     setTimeout(() => {
       setIsOpen(false);
-    }, 400);
+    }, 800);
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>
+      <style jsx>{`
+        @keyframes subtleBounce {
+          0%,
+          20%,
+          50%,
+          80%,
+          100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(-4px);
+          }
+          60% {
+            transform: translateY(-2px);
+          }
+        }
+        .subtle-bounce {
+          animation: subtleBounce 1.5s infinite;
+        }
+      `}</style>
+
       {/* Chat Bubble Icon */}
       {!isOpen && (
         <button
           onClick={openChat}
-          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
         >
           <FaRobot className="text-white w-7 h-7" />
         </button>
@@ -155,7 +191,7 @@ export function ChatBox() {
       {/* Chat Box with enhanced slide animation */}
       {isOpen && (
         <div
-          className={`fixed bottom-6 right-6 z-50 w-[85vw] max-w-sm bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transition-all duration-400 ease-in-out ${
+          className={`fixed bottom-6 right-6 z-50 w-[85vw] max-w-sm bg-white rounded-2xl shadow-2xl  overflow-hidden transition-all duration-700 ease-out ${
             isAnimating
               ? "transform translate-x-0 opacity-100 scale-100"
               : "transform translate-x-[120%] opacity-0 scale-95"
@@ -170,7 +206,7 @@ export function ChatBox() {
         >
           {/* Enhanced Header with staggered animation */}
           <div
-            className={`bg-gradient-to-r from-slate-800 to-slate-900 px-4 py-4 transition-all duration-500 delay-100 ${
+            className={`bg-gradient-to-r from-slate-700 to-slate-800 px-4 py-4 transition-all duration-600 delay-150 ${
               isAnimating
                 ? "translate-y-0 opacity-100"
                 : "translate-y-[-20px] opacity-0"
@@ -182,7 +218,7 @@ export function ChatBox() {
                   <div className="w-9 h-9 bg-white rounded-full flex items-center justify-center shadow-md">
                     <FaRobot className="text-slate-700 w-4 h-4" />
                   </div>
-                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full border-2 border-white"></div>
+                  <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 rounded-full"></div>
                 </div>
                 <div>
                   <h2 className="font-semibold text-white text-base">
@@ -206,7 +242,7 @@ export function ChatBox() {
                 )}
                 <button
                   onClick={closeChat}
-                  className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+                  className="p-2 text-slate-300 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 cursor-pointer"
                   title="Close chat"
                 >
                   <IoClose size={20} />
@@ -217,8 +253,8 @@ export function ChatBox() {
 
           {/* Messages Area with staggered animation */}
           <div
-            className={`overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-slate-50/30 to-white transition-all duration-500 delay-200 ${
-              messages.length === 0 ? "h-80" : "h-[400px]"
+            className={`overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-slate-50/30 to-white transition-all duration-600 delay-250 ${
+              messages.length === 0 ? "h-60" : "h-[380px]"
             } ${
               isAnimating
                 ? "translate-y-0 opacity-100"
@@ -231,11 +267,11 @@ export function ChatBox() {
                   <FaRobot className="text-white text-xl" />
                 </div>
                 <p className="font-semibold text-slate-800 text-base mb-2">
-                  Hi! I'm Can's AI Assistant
+                  Hi! I&apos;m Can&apos;s AI Assistant
                 </p>
                 <p className="text-sm text-slate-600 leading-relaxed px-2">
-                  Ask me anything about Can's background, skills, projects, or
-                  personal life!
+                  Ask me anything about Can&apos;s background, skills, projects,
+                  or personal life!
                 </p>
               </div>
             ) : (
@@ -283,13 +319,13 @@ export function ChatBox() {
                 </div>
                 <div className="bg-white p-3 rounded-xl rounded-bl-sm shadow-sm border border-slate-100">
                   <div className="flex space-x-1.5">
-                    <div className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-slate-400 rounded-full subtle-bounce"></div>
                     <div
-                      className="w-2 h-2 bg-slate-500 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-slate-500 rounded-full subtle-bounce"
                       style={{ animationDelay: "0.1s" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-slate-400 rounded-full animate-bounce"
+                      className="w-2 h-2 bg-slate-400 rounded-full subtle-bounce"
                       style={{ animationDelay: "0.2s" }}
                     ></div>
                   </div>
@@ -299,35 +335,54 @@ export function ChatBox() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Enhanced Suggestion Chips with staggered animation */}
+          {/* Enhanced Suggestion Chips with better spacing */}
           {messages.length === 0 && (
             <div
-              className={`px-4 pb-3 bg-white h-[80px] flex flex-col justify-center transition-all duration-500 delay-300 ${
+              className={`px-4 pb-4 bg-white h-[140px] flex flex-col transition-all duration-600 delay-350 ${
                 isAnimating
                   ? "translate-y-0 opacity-100"
                   : "translate-y-[20px] opacity-0"
               }`}
             >
-              <p className="text-xs text-slate-500 mb-2 font-medium">
+              <p className="text-xs text-slate-500 mb-3 font-medium">
                 Quick questions:
               </p>
-              <div className="flex flex-wrap gap-1.5">
-                {SUGGESTION_CHIPS.map((suggestion, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleChipClick(suggestion)}
-                    className="px-3 py-1.5 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm"
-                  >
-                    {suggestion}
-                  </button>
-                ))}
+              <div className="flex flex-wrap gap-2 items-start">
+                <button
+                  onClick={() => handleChipClick("Who is Can?")}
+                  className="px-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm whitespace-nowrap cursor-pointer"
+                >
+                  Who is Can?
+                </button>
+                <button
+                  onClick={() => handleChipClick("What projects has he built?")}
+                  className="px-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm whitespace-nowrap cursor-pointer"
+                >
+                  What projects has he built?
+                </button>
+                <button
+                  onClick={() =>
+                    handleChipClick("What tech stack does he use?")
+                  }
+                  className="px-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm whitespace-nowrap cursor-pointer"
+                >
+                  What tech stack does he use?
+                </button>
+                <button
+                  onClick={() =>
+                    handleChipClick("Tell me about his background")
+                  }
+                  className="px-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm whitespace-nowrap cursor-pointer"
+                >
+                  Tell me about his background
+                </button>
               </div>
             </div>
           )}
 
           {/* Enhanced Input with staggered animation */}
           <div
-            className={`p-4 border-t border-slate-100 bg-white h-[76px] flex items-center transition-all duration-500 delay-400 ${
+            className={`p-4 border-t border-slate-100 bg-white h-[76px] flex items-center transition-all duration-600 delay-450 ${
               isAnimating
                 ? "translate-y-0 opacity-100"
                 : "translate-y-[20px] opacity-0"
@@ -348,7 +403,7 @@ export function ChatBox() {
               <button
                 type="submit"
                 disabled={isLoading || !inputValue.trim()}
-                className="p-2.5 text-white bg-gradient-to-r from-slate-700 to-slate-900 rounded-xl hover:from-slate-600 hover:to-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg"
+                className="p-2.5 text-white bg-gradient-to-r from-slate-700 to-slate-900 rounded-xl hover:from-slate-600 hover:to-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer"
               >
                 <svg
                   className="w-4 h-4 rotate-45"

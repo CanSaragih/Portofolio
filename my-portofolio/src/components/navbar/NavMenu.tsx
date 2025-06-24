@@ -3,8 +3,8 @@
 import useIsomorphicLayoutEffect from "@/hooks/UseIsomorphicLayoutEffect";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
-import { useRef, useState } from "react";
-import ThemeSwitcher from "../ThemeSwitcher";
+import { useRef, useState, useEffect } from "react";
+import { Download } from "lucide-react";
 
 import NavMenuBtn from "./NavMenuBtn";
 import NavMenuLine from "./NavMenuLine";
@@ -14,14 +14,22 @@ import MagneticEffect from "../providers/MagneticEffect";
 
 export default function NavMenu() {
   const [active, setActive] = useState<boolean>(false);
+  const [mounted, setMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const menuBgRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleHamburger = (status: boolean) => {
     setActive(status);
   };
 
+  // Perbaiki GSAP animation untuk memastikan background menghilang
   useIsomorphicLayoutEffect(() => {
+    if (!mounted) return;
+
     gsap.context(() => {
       if (active) {
         gsap.to(menuRef.current, { x: 0, duration: 0.8, ease: "power3.inOut" });
@@ -32,6 +40,7 @@ export default function NavMenu() {
         });
         gsap.to(menuBgRef.current, {
           opacity: 1,
+          visibility: "visible",
           duration: 0.8,
           ease: "power3.inOut",
         });
@@ -48,12 +57,13 @@ export default function NavMenu() {
         });
         gsap.to(menuBgRef.current, {
           opacity: 0,
+          visibility: "hidden",
           duration: 0.8,
           ease: "power3.inOut",
         });
       }
     }, menuRef);
-  }, [active]);
+  }, [active, mounted]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
@@ -89,12 +99,16 @@ export default function NavMenu() {
     setActive(false);
   };
 
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <>
       <div
         ref={menuBgRef}
         className={cn(
-          "nav-menu-bg absolute left-0 top-0 h-screen w-full bg-gradient-to-r from-black/[.13] via-black/[.16] to-black/[.35] opacity-0",
+          "nav-menu-bg absolute left-0 top-0 h-screen w-full bg-gradient-to-r from-black/[.13] via-black/[.16] to-black/[.35] opacity-0 invisible",
           active ? "pointer-events-auto" : "pointer-events-none"
         )}
         onClick={() => setActive(false)}
@@ -103,7 +117,7 @@ export default function NavMenu() {
       <div
         ref={menuRef}
         className={cn(
-          "nav-menu pointer-events-auto fixed right-0 top-0 flex h-screen w-[500px] translate-x-[100%] flex-col justify-between bg-zinc-800 pb-12 pt-[clamp(3.5rem,10vh,5rem)] text-6xl text-white will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200"
+          "nav-menu pointer-events-auto fixed right-0 top-0 flex h-screen w-[500px] translate-x-[100%] flex-col justify-between bg-zinc-800 pb-12 pt-[clamp(3.5rem,10vh,5rem)] text-6xl text-white will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200 dark:text-zinc-800"
         )}
       >
         <div className="nav-rounded absolute left-0 top-[-10%] z-[-1] h-[120%] w-[80%] -translate-x-1/2 rounded-[100%_100%] bg-zinc-800 will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200"></div>
@@ -192,8 +206,17 @@ export default function NavMenu() {
               />
             </MagneticEffect>
           </div>
-          <div className="flex px-[clamp(1.25rem,3vw,2.5rem)]">
-            <ThemeSwitcher />
+
+          {/* Download CV Section */}
+          <div className="px-[clamp(1.25rem,3vw,2.5rem)] mt-6">
+            <a
+              href="/cv/Can Whardana Saragih.pdf"
+              download
+              className="inline-flex items-center gap-3 text-base text-white dark:text-zinc-800 hover:text-purple-700 dark:hover:text-purple-800 transition-colors duration-300 group"
+            >
+              <Download className="w-5 h-5 group-hover:translate-y-[-2px] transition-transform duration-200 ease-out" />
+              <span className="font-semibold">Download CV</span>
+            </a>
           </div>
         </div>
       </div>

@@ -41,26 +41,26 @@ export default function NavMenuBtn({
           <div
             className={cn(
               "relative flex h-[50px] w-[50px] transform items-center justify-center rounded-full bg-zinc-800 shadow-md ring-0 ring-gray-300 ring-opacity-30 transition-all duration-200 hover:ring-8 dark:bg-zinc-200",
-              { "ring-4": active }
+              active && "ring-4"
             )}
           >
             <div
               className={cn(
                 "flex h-[20px] w-[20px] origin-center transform flex-col justify-between transition-all duration-300",
-                { "-rotate-[45deg]": active }
+                active && "-rotate-[45deg]"
               )}
             >
               <div
                 className={cn(
                   "h-[2px] w-1/2 origin-right transform rounded bg-zinc-200 transition-all delay-75 duration-300 dark:bg-zinc-800",
-                  { "h-[1px] -translate-y-[1px] -rotate-90": active }
+                  active && "h-[1px] -translate-y-[1px] -rotate-90"
                 )}
               ></div>
               <div className="h-[1px] rounded bg-zinc-200 dark:bg-zinc-800"></div>
               <div
                 className={cn(
                   "h-[2px] w-1/2 origin-left transform self-end rounded bg-zinc-200 transition-all delay-75 duration-300 dark:bg-zinc-800 ",
-                  { "h-[1px] translate-y-[1px] -rotate-90": active }
+                  active && "h-[1px] translate-y-[1px] -rotate-90"
                 )}
               ></div>
             </div>

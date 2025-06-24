@@ -1,10 +1,28 @@
+import { motion } from "framer-motion";
+
 export default function Footer() {
+  const fadeInUp = {
+    initial: { opacity: 0, y: 40 },
+    animate: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut",
+      },
+    },
+  };
   return (
     <footer className="bg-white bg-[url('/textures/beige-paper.png')] py-12 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           {/* Left side - Github */}
-          <div>
+          <motion.div
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.3 }}
+          >
             <h3 className="text-black font-semibold text-lg mb-4">Github</h3>
             <a
               href="https://github.com/CanSaragih"
@@ -21,10 +39,16 @@ export default function Footer() {
               </svg>
               GitHub Profile
             </a>
-          </div>
+          </motion.div>
 
           {/* Right side - Social Media */}
-          <div className="flex flex-col items-end lg:items-end">
+          <motion.div
+            variants={fadeInUp}
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: false, amount: 0.6 }}
+            className="flex flex-col items-end lg:items-end"
+          >
             <h3 className="text-black font-semibold text-lg mb-4">
               Social Media
             </h3>
@@ -84,7 +108,7 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </footer>

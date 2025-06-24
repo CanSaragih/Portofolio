@@ -28,6 +28,7 @@ interface LanyardProps {
   gravity?: [number, number, number];
   fov?: number;
   transparent?: boolean;
+  start?: boolean;
 }
 
 export default function Lanyard({
@@ -35,7 +36,9 @@ export default function Lanyard({
   gravity = [0, -40, 0],
   fov = 20,
   transparent = true,
+  start = false,
 }: LanyardProps) {
+  if (!start) return null;
   return (
     <div className="lanyard-wrapper">
       <Canvas
@@ -46,9 +49,13 @@ export default function Lanyard({
         }
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band />
-        </Physics>
+
+        {start && (
+          <Physics gravity={gravity} timeStep={1 / 60}>
+            <Band />
+          </Physics>
+        )}
+
         <Environment blur={0.75} preset="city">
           <Lightformer
             intensity={2}
@@ -91,7 +98,7 @@ function Band({
   maxSpeed?: number;
   minSpeed?: number;
 }) {
-  const band = useRef<any>(null);
+  const band = useRef<Meshline>(null);
   const fixed = useRef<any>(null);
   const j1 = useRef<any>(null);
   const j2 = useRef<any>(null);
