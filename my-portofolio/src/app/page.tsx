@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import ProfileCard from "@/components/ProfileCard";
 import Carousel from "@/components/Carousel";
 import SkillsNetwork from "@/components/SkillsNetwork";
@@ -10,6 +10,7 @@ import Lanyard from "@/components/Landyard";
 import Footer from "@/components/navbar/Footer";
 import Nav from "@/components/navbar/Nav";
 import { ChatBox } from "@/components/ChatBot";
+import Image from "next/image";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -26,7 +27,10 @@ export default function Home() {
     amount: 0.0,
   });
 
-  const typewriterTexts = ["Fullstack Developer", "Software Engineer"];
+  const typewriterTexts = useMemo(
+    () => ["Web Developer", "UI/UX Designer"],
+    []
+  );
 
   const skillCategories = {
     Frontend: [
@@ -406,29 +410,6 @@ export default function Home() {
     },
   ];
 
-  // Typewriter effect
-  useEffect(() => {
-    const currentFullText = typewriterTexts[textIndex];
-
-    const typeSpeed = isDeleting ? 50 : 100;
-
-    const timer = setTimeout(() => {
-      if (!isDeleting && currentText === currentFullText) {
-        // Pause at the end
-        setTimeout(() => setIsDeleting(true), 2000);
-      } else if (isDeleting && currentText === "") {
-        setIsDeleting(false);
-        setTextIndex((prev) => (prev + 1) % typewriterTexts.length);
-      } else if (isDeleting) {
-        setCurrentText(currentFullText.substring(0, currentText.length - 1));
-      } else {
-        setCurrentText(currentFullText.substring(0, currentText.length + 1));
-      }
-    }, typeSpeed);
-
-    return () => clearTimeout(timer);
-  }, [currentText, isDeleting, textIndex, typewriterTexts]);
-
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Animated Background */}
@@ -463,8 +444,12 @@ export default function Home() {
       <Nav />
 
       {/* Hero Section */}
-      <section
+      <motion.section
         id="home"
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: false, amount: 0.3 }}
+        variants={staggerContainer}
         className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 overflow-hidden"
       >
         {/* Abstract Wave Background */}
@@ -755,7 +740,7 @@ export default function Home() {
             />
           </motion.div>
         </div>
-      </section>
+      </motion.section>
 
       {/* About Me Section */}
       <motion.section
@@ -932,7 +917,7 @@ export default function Home() {
           </motion.div>
 
           {/* Skills Network */}
-          <motion.div variants={fadeInUp} key={activeCategory}>
+          <motion.div variants={fadeInUp}>
             <SkillsNetwork
               skills={
                 skillCategories[activeCategory as keyof typeof skillCategories]
@@ -1044,9 +1029,11 @@ export default function Home() {
                   {/* Project Image */}
                   <div className="h-48 relative overflow-hidden">
                     {/* Gambar */}
-                    <img
+                    <Image
                       src={project.image}
                       alt={project.name}
+                      width={500}
+                      height={300}
                       className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                     />
 

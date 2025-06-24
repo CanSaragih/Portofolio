@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 
 interface Skill {
@@ -258,9 +259,11 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     }
                   `}
                 >
-                  <img
+                  <Image
                     src={skill.icon}
                     alt={skill.name}
+                    width={40}
+                    height={40}
                     className="w-8 h-8 sm:w-10 sm:h-10 object-contain transition-all duration-300"
                   />
                 </div>
@@ -350,9 +353,11 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     }
                   `}
                 >
-                  <img
+                  <Image
                     src={skill.icon}
                     alt={skill.name}
+                    width={40}
+                    height={40}
                     className="w-8 h-8 sm:w-10 sm:h-10 object-contain transition-all duration-300"
                   />
                 </div>
