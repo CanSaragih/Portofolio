@@ -28,7 +28,7 @@ export default function Home() {
   });
 
   const typewriterTexts = useMemo(
-    () => ["Web Developer", "UI/UX Designer"],
+    () => ["Fullstack Developer", "Software Engineer"],
     []
   );
 
@@ -667,7 +667,7 @@ export default function Home() {
           >
             {/* Static Main Title */}
             <motion.h1
-              className=" lg:text-8xl font-black mb-8"
+              className="sm:text-2xl lg:text-8xl font-black mb-8"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
@@ -688,7 +688,7 @@ export default function Home() {
             </motion.div>
 
             <motion.p
-              className="text-xl sm:text-2xl mb-10 text-gray-300 max-w-2xl leading-relaxed font-medium"
+              className="text-xl sm:text-xl mb-10 text-gray-300 max-w-2xl leading-relaxed font-normal"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
@@ -765,7 +765,7 @@ export default function Home() {
             className="w-full max-w-7xl px-4 mx-auto text-center mb-20"
           >
             <div className="space-y-6">
-              <p className="text-gray-300 text-xl leading-relaxed text-justify">
+              <p className="text-gray-300 text-xl sm:text-lg leading-relaxed text-justify">
                 Hi! I&apos;m Can Saragih, a passionate Frontend Developer with a
                 strong focus on crafting modern and responsive user interfaces
                 using React, Next.js, TypeScript, and Tailwind CSS. I love
@@ -773,7 +773,7 @@ export default function Home() {
                 not only look good but also perform efficiently.
               </p>
 
-              <p className="text-gray-300 text-xl leading-relaxed text-justify">
+              <p className="text-gray-300 text-xl sm:text-lg leading-relaxed text-justify">
                 Beyond technical skills, I enjoy turning ideas into visual
                 experiences, and I&apos;m always exploring tools like Framer
                 Motion and Lottie to bring animations to life. My goal is to
@@ -782,7 +782,7 @@ export default function Home() {
                 difference.
               </p>
 
-              <p className="text-gray-300 text-xl  text-justify">
+              <p className="text-gray-300 text-xl sm:text-lg text-justify">
                 When I&apos;m not coding, you&apos;ll find me learning new
                 frameworks, tweaking UI/UX designs, or exploring open-source
                 projects on GitHub.
@@ -894,17 +894,22 @@ export default function Home() {
             <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
               MY SKILLS
             </p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">Skills</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8">
+              Skills
+            </h2>
           </motion.div>
 
-          {/* Filter Buttons */}
-          <motion.div variants={fadeInUp} className="flex justify-center mb-12">
-            <div className="flex flex-wrap gap-4 p-2 bg-white/5 backdrop-blur-lg rounded-2xl border border-purple-500/20">
+          {/* Filter Buttons - Enhanced Mobile Responsive */}
+          <motion.div
+            variants={fadeInUp}
+            className="flex justify-center mb-12 px-2"
+          >
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-3 bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-purple-500/20 max-w-full">
               {Object.keys(skillCategories).map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+                  className={`px-3 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-medium text-sm sm:text-base transition-all duration-300 whitespace-nowrap ${
                     activeCategory === category
                       ? "bg-purple-500 text-white shadow-lg shadow-purple-500/30"
                       : "text-gray-300 hover:text-white hover:bg-white/10"
@@ -916,8 +921,8 @@ export default function Home() {
             </div>
           </motion.div>
 
-          {/* Skills Network */}
-          <motion.div variants={fadeInUp}>
+          {/* Skills Network - Mobile Optimized */}
+          <motion.div variants={fadeInUp} className="px-2 sm:px-0">
             <SkillsNetwork
               skills={
                 skillCategories[activeCategory as keyof typeof skillCategories]
@@ -1212,7 +1217,7 @@ export default function Home() {
       >
         {/* Full-width container for the lanyard */}
 
-        <div className="absolute left-0 w-full lg:w-1/2 h-full">
+        <div className="hidden lg:block absolute left-0 w-full lg:w-1/2 h-full">
           <div className="w-full h-full relative -mt-12 min-h-screen">
             <Lanyard
               position={[0, 0, 25]}

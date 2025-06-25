@@ -16,73 +16,136 @@ interface SkillsNetworkProps {
 
 export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Auto-cycle through skills
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % skills.length);
-    }, 2000); // Increased duration to 2 seconds
+    }, 2000);
 
     return () => clearInterval(interval);
   }, [skills.length]);
 
-  // Split skills into left and right sides
+  // Mobile Grid Layout
+  if (isMobile) {
+    return (
+      <div className="w-full px-4">
+        <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
+          {skills.map((skill, index) => {
+            const isActive = index === activeIndex;
+
+            return (
+              <motion.div
+                key={`mobile-${skill.name}-${index}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: 1,
+                  scale: isActive ? 1.1 : 1,
+                }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1,
+                  scale: { duration: 0.3 },
+                }}
+                className="cursor-pointer group"
+                onTouchStart={() => setActiveIndex(index)}
+              >
+                <div
+                  className={`
+                    w-full aspect-square
+                    bg-gradient-to-br ${skill.color}
+                    backdrop-blur-lg rounded-2xl 
+                    border-2 transition-all duration-300
+                    flex flex-col items-center justify-center 
+                    shadow-lg p-3
+                    ${
+                      isActive
+                        ? "border-purple-500 shadow-purple-500/50 shadow-2xl ring-2 ring-purple-500/30"
+                        : "border-white/20"
+                    }
+                  `}
+                >
+                  <Image
+                    src={skill.icon}
+                    alt={skill.name}
+                    width={32}
+                    height={32}
+                    className="w-8 h-8 object-contain mb-2"
+                  />
+                  <span className="text-white text-xs font-medium text-center leading-tight">
+                    {skill.name}
+                  </span>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop Network Layout
   const leftSkills = skills.filter((_, index) => index % 2 === 0);
   const rightSkills = skills.filter((_, index) => index % 2 === 1);
 
-  // Dynamic spacing calculation based on number of items
   const getVerticalSpacing = (itemCount: number) => {
     if (itemCount <= 3) return "gap-8";
     if (itemCount <= 5) return "gap-6";
     return "gap-4";
   };
 
-  // Generate curved path for connection
   const generatePath = (side: "left" | "right", yPosition: number) => {
-    const centerX = 400; // Center of the 800px viewBox
-    const centerY = 300; // Center of the 600px viewBox
+    const centerX = 400;
+    const centerY = 300;
     const startX = side === "left" ? 100 : 700;
     const startY = yPosition;
 
-    // Create a more pronounced curved path
-    const controlX = side === "left" ? 180 : 620;
-    const controlY = (startY + centerY) / 2 + (side === "left" ? -50 : 50);
+    const controlX = side === "left" ? 200 : 600;
+    const controlY = (startY + centerY) / 2 + (side === "left" ? -30 : 30);
 
     return `M ${startX} ${startY} Q ${controlX} ${controlY} ${centerX} ${centerY}`;
   };
 
   return (
     <div className="relative w-full h-[600px] flex items-center justify-center overflow-hidden">
-      {/* Central Skills Text - Using flexbox for perfect centering */}
+      {/* Center Skills Title */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="bg-[#1b1b1b] px-13 py-6 rounded-[28px] border border-[#2d2d2d] shadow-[0_0_40px_rgba(128,128,255,0.2)]"
+          className="bg-[#1b1b1b] px-8 sm:px-13 py-4 sm:py-6 rounded-[20px] sm:rounded-[28px] border border-[#2d2d2d] shadow-[0_0_40px_rgba(128,128,255,0.2)]"
         >
-          <h3 className="text-[52px] sm:text-[64px] font-extrabold text-center bg-gradient-to-b from-gray-100 to-gray-500 bg-clip-text text-transparent tracking-wide drop-shadow-[0_2px_1px_rgba(255,255,255,0.1)]">
+          <h3 className="text-[32px] sm:text-[52px] lg:text-[64px] font-extrabold text-center bg-gradient-to-b from-gray-100 to-gray-500 bg-clip-text text-transparent tracking-wide drop-shadow-[0_2px_1px_rgba(255,255,255,0.1)]">
             Skills
           </h3>
         </motion.div>
       </div>
 
-      {/* SVG Container for Connections */}
+      {/* SVG Connections */}
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none z-10"
         viewBox="0 0 800 600"
         preserveAspectRatio="xMidYMid meet"
       >
         <defs>
-          {/* Gradient for active stroke animation */}
           <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="rgba(168, 85, 247, 0)" />
-            <stop offset="30%" stopColor="rgba(168, 85, 247, 0.8)" />
+            <stop offset="40%" stopColor="rgba(168, 85, 247, 0.9)" />
             <stop offset="60%" stopColor="rgba(59, 130, 246, 1)" />
             <stop offset="100%" stopColor="rgba(168, 85, 247, 0)" />
           </linearGradient>
-
-          {/* Gradient for inactive lines */}
           <linearGradient
             id="inactiveGradient"
             x1="0%"
@@ -91,19 +154,18 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
             y2="0%"
           >
             <stop offset="0%" stopColor="rgba(75, 85, 99, 0.1)" />
-            <stop offset="50%" stopColor="rgba(75, 85, 99, 0.3)" />
+            <stop offset="50%" stopColor="rgba(75, 85, 99, 0.4)" />
             <stop offset="100%" stopColor="rgba(75, 85, 99, 0.1)" />
           </linearGradient>
         </defs>
 
-        {/* Base inactive connection lines */}
         {skills.map((skill, index) => {
           const isLeft = index % 2 === 0;
           const sideIndex = isLeft
             ? Math.floor(index / 2)
             : Math.floor((index - 1) / 2);
           const skillsOnSide = isLeft ? leftSkills : rightSkills;
-          const spacing = Math.max(400 / (skillsOnSide.length + 1), 60); // Minimum 60px spacing
+          const spacing = Math.max(400 / (skillsOnSide.length + 1), 60);
           const yPosition = 100 + (sideIndex + 1) * spacing;
           const path = generatePath(isLeft ? "left" : "right", yPosition);
 
@@ -112,18 +174,17 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
               key={`base-${skill.name}-${index}`}
               d={path}
               stroke="url(#inactiveGradient)"
-              strokeWidth="1"
+              strokeWidth="1.5"
               fill="none"
               strokeLinecap="round"
-              strokeDasharray="3,3"
+              strokeDasharray="4,4"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.5 }}
+              animate={{ opacity: 0.6 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
             />
           );
         })}
 
-        {/* Animated flowing stroke for active line */}
         {skills.map((skill, index) => {
           const isActive = index === activeIndex;
           if (!isActive) return null;
@@ -142,31 +203,22 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
               key={`active-${skill.name}-${index}`}
               d={path}
               stroke="url(#flowGradient)"
-              strokeWidth="3"
+              strokeWidth="4"
               fill="none"
               strokeLinecap="round"
-              initial={{
-                pathLength: 0,
-                opacity: 0,
-              }}
-              animate={{
-                pathLength: 1,
-                opacity: 1,
-              }}
+              strokeDasharray="0"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
               transition={{
-                pathLength: {
-                  duration: 1.5,
-                  ease: "easeInOut",
-                },
-                opacity: {
-                  duration: 0.3,
-                },
+                duration: 1.2,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse",
               }}
             />
           );
         })}
 
-        {/* Glowing effect for active line */}
         {skills.map((skill, index) => {
           const isActive = index === activeIndex;
           if (!isActive) return null;
@@ -184,35 +236,26 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
             <motion.path
               key={`glow-${skill.name}-${index}`}
               d={path}
-              stroke="rgba(168, 85, 247, 0.4)"
-              strokeWidth="6"
+              stroke="rgba(168, 85, 247, 0.3)"
+              strokeWidth="8"
               fill="none"
               strokeLinecap="round"
-              filter="blur(2px)"
-              initial={{
-                pathLength: 0,
-                opacity: 0,
-              }}
-              animate={{
-                pathLength: 1,
-                opacity: 1,
-              }}
+              filter="blur(4px)"
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 0.8 }}
               transition={{
-                pathLength: {
-                  duration: 1.5,
-                  ease: "easeInOut",
-                },
-                opacity: {
-                  duration: 0.3,
-                },
+                duration: 1.2,
+                ease: "easeInOut",
+                repeat: Infinity,
+                repeatType: "reverse",
               }}
             />
           );
         })}
       </svg>
 
-      {/* Left Side Tech Icons */}
-      <div className="absolute left-16 top-1/2 transform -translate-y-1/2 z-30 overflow-y-visible">
+      {/* Left Skills */}
+      <div className="absolute left-8 sm:left-16 top-1/2 transform -translate-y-1/2 z-30 overflow-y-visible">
         <div
           className={`flex flex-col justify-center items-start ${getVerticalSpacing(
             leftSkills.length
@@ -231,9 +274,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   scale: isActive ? 1.15 : 1,
                   x: 0,
                 }}
-                whileHover={{
-                  scale: 1.1,
-                }}
+                whileHover={{ scale: 1.1 }}
                 transition={{
                   duration: 0.6,
                   delay: sideIndex * 0.1,
@@ -246,16 +287,16 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
               >
                 <div
                   className={`
-                    w-16 h-16 sm:w-20 sm:h-20 
+                    w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 
                     bg-gradient-to-br ${skill.color}
-                    backdrop-blur-lg rounded-2xl 
+                    backdrop-blur-lg rounded-xl sm:rounded-2xl 
                     border-2 transition-all duration-300
                     flex items-center justify-center 
                     shadow-lg hover:shadow-xl
                     ${
                       isActive
-                        ? "border-purple-400 shadow-purple-400/50 shadow-2xl ring-2 ring-purple-400/30"
-                        : "border-white/20 hover:border-purple-400/50"
+                        ? "border-purple-500 shadow-purple-500/50 shadow-2xl ring-2 ring-purple-500/30"
+                        : "border-white/20 hover:border-purple-500/50"
                     }
                   `}
                 >
@@ -264,13 +305,12 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     alt={skill.name}
                     width={40}
                     height={40}
-                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain transition-all duration-300"
+                    className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 object-contain transition-all duration-300"
                   />
                 </div>
 
-                {/* Tooltip */}
                 <motion.div
-                  className="ml-4"
+                  className="ml-2 sm:ml-4"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{
                     opacity: isActive ? 1 : 0,
@@ -279,7 +319,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-black/90 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap border border-purple-500/30 backdrop-blur-sm">
+                  <div className="bg-black/90 text-white text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 rounded-lg whitespace-nowrap border border-purple-500/30 backdrop-blur-sm">
                     {skill.name}
                   </div>
                 </motion.div>
@@ -289,8 +329,8 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
         </div>
       </div>
 
-      {/* Right Side Tech Icons */}
-      <div className="absolute right-16 top-1/2 transform -translate-y-1/2 z-30 overflow-y-visible">
+      {/* Right Skills */}
+      <div className="absolute right-8 sm:right-16 top-1/2 transform -translate-y-1/2 z-30 overflow-y-visible">
         <div
           className={`flex flex-col justify-center items-end ${getVerticalSpacing(
             rightSkills.length
@@ -309,9 +349,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   scale: isActive ? 1.15 : 1,
                   x: 0,
                 }}
-                whileHover={{
-                  scale: 1.1,
-                }}
+                whileHover={{ scale: 1.1 }}
                 transition={{
                   duration: 0.6,
                   delay: sideIndex * 0.1,
@@ -322,9 +360,8 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                 className="cursor-pointer group flex items-center justify-end transform-gpu"
                 onMouseEnter={() => setActiveIndex(originalIndex)}
               >
-                {/* Tooltip */}
                 <motion.div
-                  className="mr-4"
+                  className="mr-2 sm:mr-4"
                   initial={{ opacity: 0, x: 10 }}
                   animate={{
                     opacity: isActive ? 1 : 0,
@@ -333,16 +370,16 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-black/90 text-white text-sm px-3 py-2 rounded-lg whitespace-nowrap border border-purple-500/30 backdrop-blur-sm">
+                  <div className="bg-black/90 text-white text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 rounded-lg whitespace-nowrap border border-purple-500/30 backdrop-blur-sm">
                     {skill.name}
                   </div>
                 </motion.div>
 
                 <div
                   className={`
-                    w-16 h-16 sm:w-20 sm:h-20 
+                    w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 
                     bg-gradient-to-br ${skill.color}
-                    backdrop-blur-lg rounded-2xl 
+                    backdrop-blur-lg rounded-xl sm:rounded-2xl 
                     border-2 transition-all duration-300
                     flex items-center justify-center 
                     shadow-lg hover:shadow-xl
@@ -358,7 +395,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     alt={skill.name}
                     width={40}
                     height={40}
-                    className="w-8 h-8 sm:w-10 sm:h-10 object-contain transition-all duration-300"
+                    className="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 object-contain transition-all duration-300"
                   />
                 </div>
               </motion.div>
@@ -367,10 +404,10 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
         </div>
       </div>
 
-      {/* Central pulse effect when active */}
+      {/* Central pulse effect */}
       <div className="absolute inset-0 flex items-center justify-center z-15 pointer-events-none">
         <motion.div
-          className="w-32 h-32 rounded-full border-2 border-purple-400/30"
+          className="w-24 h-24 sm:w-32 sm:h-32 rounded-full border-2 border-purple-400/30"
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.3, 0.1, 0.3],

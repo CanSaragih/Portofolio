@@ -7,6 +7,7 @@ interface MagneticEffectProps {
   children: ReactNode;
   className?: string;
   strength?: number;
+  disabled?: boolean;
 }
 
 export default function MagneticEffect({

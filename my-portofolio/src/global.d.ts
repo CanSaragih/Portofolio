@@ -1,4 +1,4 @@
-import { ReactThreeFiber } from "@react-three/fiber";
+import * as THREE from "three";
 
 export {};
 
@@ -28,24 +28,12 @@ declare module "meshline" {
 declare global {
   type GLTFResult = {
     nodes: {
-      card: Mesh;
-      clip: Mesh;
-      clamp: Mesh;
+      card: THREE.Mesh;
+      clip: THREE.Mesh;
+      clamp: THREE.Mesh;
     };
     materials: {
-      metal: MeshStandardMaterial;
+      metal: THREE.MeshStandardMaterial;
     };
   };
-  namespace JSX {
-    interface IntrinsicElements {
-      meshLineGeometry: ReactThreeFiber.Object3DNode<
-        MeshLineGeometry,
-        typeof MeshLineGeometry
-      >;
-      meshLineMaterial: ReactThreeFiber.Object3DNode<
-        MeshLineMaterial,
-        typeof MeshLineMaterial
-      >;
-    }
-  }
 }

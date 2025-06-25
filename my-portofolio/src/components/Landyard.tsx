@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import React from "react";
 import { Canvas, extend, useFrame, ThreeEvent } from "@react-three/fiber";
 import {
   useGLTF,
@@ -16,7 +17,6 @@ import {
   useSphericalJoint,
 } from "@react-three/rapier";
 import type { RapierRigidBody, RigidBodyProps } from "@react-three/rapier";
-
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
 
@@ -344,16 +344,17 @@ function Band({
         </RigidBody>
       </group>
       <mesh ref={band}>
-        <meshLineGeometry />
-        <meshLineMaterial
-          color="white"
-          depthTest={false}
-          resolution={isSmall ? [1000, 2000] : [1000, 1000]}
-          useMap
-          map={textTexture}
-          repeat={[-2.5, 1]} // Ukuran tulisan lebih besar
-          lineWidth={2.2} // Lebar tali lebih tebal
-        />
+        {React.createElement("meshLineGeometry", { attach: "geometry" })}
+        {React.createElement("meshLineMaterial", {
+          attach: "material",
+          color: "white",
+          depthTest: false,
+          resolution: isSmall ? [1000, 2000] : [1000, 1000],
+          useMap: true,
+          map: textTexture,
+          repeat: [-2.5, 1],
+          lineWidth: 2.2,
+        })}
       </mesh>
     </>
   );

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["node", "@types/three", "@react-three/fiber"],
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
