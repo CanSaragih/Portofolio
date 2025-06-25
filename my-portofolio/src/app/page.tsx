@@ -219,7 +219,7 @@ export default function Home() {
 
   const projects = [
     {
-      image: "/img-project/ParkGo.png",
+      image: "/img-project/parkgo.png",
       name: "ParkGo",
       url: "https://github.com/orgs/Parkir-Cepat/repositories",
       description:
@@ -238,7 +238,7 @@ export default function Home() {
       category: "Mobile App",
     },
     {
-      image: "/img-project/ShopHub.png",
+      image: "/img-project/shophub.png",
       name: "Shophub",
       url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
       description:
@@ -248,7 +248,7 @@ export default function Home() {
       demo: "https://www.itscan.my.id/",
     },
     {
-      image: "/img-project/SocialMediaApp.png",
+      image: "/img-project/socialmediaapp.png",
       name: "Social Media App",
       url: "https://github.com/H8-FSJS-P3S5/gc01-CanSaragih",
       description:
@@ -258,7 +258,7 @@ export default function Home() {
       demo: "https://shorturl.at/IAYEp",
     },
     {
-      image: "/img-project/ChatVerse.png",
+      image: "/img-project/chatverse.png",
       name: "ChatVerse",
       url: "https://github.com/GROP-PROJECT-P2",
       description:
@@ -275,7 +275,7 @@ export default function Home() {
       category: "Web App",
     },
     {
-      image: "/img-project/Planorama.png",
+      image: "/img-project/planorama.png",
       name: "Planorama",
       url: "https://github.com/CanSaragih/IP-RMT60",
       description:
@@ -292,7 +292,7 @@ export default function Home() {
       category: "Web App",
     },
     {
-      image: "/img-project/InstaLook.png",
+      image: "/img-project/instalook.png",
       name: "InstaLook",
       url: "https://github.com/CanSaragih/SocialMedia-Instagram",
       description: "A fullstack web-based Instagram-like social media platform",
@@ -450,7 +450,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 overflow-hidden"
       >
         {/* Abstract Wave Background */}
         <div className="absolute inset-0 z-0">
@@ -658,16 +658,16 @@ export default function Home() {
           </svg>
         </div>
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-left"
+            className="text-center lg:text-left order-2 lg:order-1"
           >
             {/* Static Main Title */}
             <motion.h1
-              className="sm:text-2xl lg:text-8xl font-black mb-8"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 sm:mb-8 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
@@ -678,7 +678,7 @@ export default function Home() {
 
             {/* Typewriter Subtitle */}
             <motion.div
-              className="text-2xl sm:text-3xl lg:text-4xl mb-10 text-gray-200 font-semibold h-[1.2em] flex items-center"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-6 sm:mb-10 text-gray-200 font-semibold h-[1.2em] flex items-center justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
@@ -688,7 +688,7 @@ export default function Home() {
             </motion.div>
 
             <motion.p
-              className="text-xl sm:text-xl mb-10 text-gray-300 max-w-2xl leading-relaxed font-normal"
+              className="text-base sm:text-lg md:text-xl mb-8 sm:mb-10 text-gray-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-normal text-center lg:text-left"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
@@ -702,10 +702,10 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
-              className="flex items-center gap-6"
+              className="flex items-center justify-center lg:justify-start gap-6"
             >
               <motion.div
-                className="flex items-center text-gray-300 text-lg"
+                className="flex items-center text-gray-300 text-sm sm:text-base md:text-lg"
                 animate={{ y: [0, -5, 0] }}
                 transition={{
                   duration: 2,
@@ -713,7 +713,9 @@ export default function Home() {
                   ease: "easeInOut",
                 }}
               >
-                <span className="mr-3 text-2xl">⬇</span>
+                <span className="mr-2 sm:mr-3 text-lg sm:text-xl md:text-2xl">
+                  ⬇
+                </span>
                 <span className="font-medium">Scroll Down</span>
               </motion.div>
             </motion.div>
@@ -723,21 +725,23 @@ export default function Home() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="flex justify-center relative"
+            className="flex justify-center relative order-1 lg:order-2 mb-8 lg:mb-0"
           >
-            <ProfileCard
-              name="Can Saragih"
-              title="Fullstack Developer"
-              handle="can_saragih"
-              status="Online"
-              contactText="Contact Me"
-              avatarUrl="/image.png"
-              showUserInfo={true}
-              enableTilt={true}
-              onContactClick={() => {
-                window.location.href = "mailto:canwhardana@gmail.com";
-              }}
-            />
+            <div className="scale-75 sm:scale-90 md:scale-100">
+              <ProfileCard
+                name="Can Saragih"
+                title="Fullstack Developer"
+                handle="can_saragih"
+                status="Online"
+                contactText="Contact Me"
+                avatarUrl="/image.png"
+                showUserInfo={true}
+                enableTilt={true}
+                onContactClick={() => {
+                  window.location.href = "mailto:canwhardana@gmail.com";
+                }}
+              />
+            </div>
           </motion.div>
         </div>
       </motion.section>
@@ -749,23 +753,28 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
+        className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 relative z-10"
       >
         <div className="max-w-7xl mx-auto">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
+          <motion.div
+            variants={fadeInUp}
+            className="text-center mb-12 sm:mb-16"
+          >
+            <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4">
               ABOUT ME
             </p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">About me</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
+              About me
+            </h2>
           </motion.div>
 
           {/* About Text */}
           <motion.div
             variants={fadeInUp}
-            className="w-full max-w-7xl px-4 mx-auto text-center mb-20"
+            className="w-full max-w-6xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20"
           >
-            <div className="space-y-6">
-              <p className="text-gray-300 text-xl sm:text-lg leading-relaxed text-justify">
+            <div className="space-y-4 sm:space-y-6">
+              <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
                 Hi! I&apos;m Can Saragih, a passionate Frontend Developer with a
                 strong focus on crafting modern and responsive user interfaces
                 using React, Next.js, TypeScript, and Tailwind CSS. I love
@@ -773,7 +782,7 @@ export default function Home() {
                 not only look good but also perform efficiently.
               </p>
 
-              <p className="text-gray-300 text-xl sm:text-lg leading-relaxed text-justify">
+              <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
                 Beyond technical skills, I enjoy turning ideas into visual
                 experiences, and I&apos;m always exploring tools like Framer
                 Motion and Lottie to bring animations to life. My goal is to
@@ -782,7 +791,7 @@ export default function Home() {
                 difference.
               </p>
 
-              <p className="text-gray-300 text-xl sm:text-lg text-justify">
+              <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
                 When I&apos;m not coding, you&apos;ll find me learning new
                 frameworks, tweaking UI/UX designs, or exploring open-source
                 projects on GitHub.
@@ -792,89 +801,154 @@ export default function Home() {
 
           {/* School Experience with animated cards */}
           <div className="relative">
-            <motion.div variants={fadeInUp} className="text-center mb-12">
-              <h2 className="text-2xl font-bold text-white">Education</h2>
+            <motion.div
+              variants={fadeInUp}
+              className="text-center mb-8 sm:mb-12"
+            >
+              <h2 className="text-xl sm:text-2xl font-bold text-white">
+                Education
+              </h2>
             </motion.div>
 
-            {/* Left gradient mask */}
-            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
-
-            {/* Right gradient mask */}
-            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
-
-            <div className="overflow-hidden">
-              {/* Outer motion for fade in when in viewport */}
-              <motion.div
-                variants={fadeInUp}
-                initial="initial"
-                whileInView="animate"
-                viewport={{ once: true, amount: 0.3 }}
-              >
-                {/* Inner motion for infinite horizontal scroll */}
-                <motion.div
-                  animate={{ x: [-200, 200] }}
-                  transition={{
-                    duration: 35,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                  className="flex space-x-8 whitespace-nowrap"
-                  style={{ width: "300%" }}
-                >
-                  {[
-                    ...schoolExperience,
-                    ...schoolExperience,
-                    ...schoolExperience,
-                  ].map((school, index) => (
-                    <div
-                      key={index}
-                      className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
-                    >
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                          <svg
-                            className="w-5 h-5 text-white"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 14l9-5-9-5-9 5 9 5z"
-                            />
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                            />
-                          </svg>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-gray-400 text-xs">
-                            {school.duration}
-                          </p>
-                          <p className="text-purple-400 text-xs font-medium">
-                            {school.totalDuration}
-                          </p>
-                        </div>
+            {/* Mobile: Simple vertical layout */}
+            <div className="block md:hidden">
+              <motion.div variants={fadeInUp} className="space-y-6">
+                {schoolExperience.map((school, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.2, duration: 0.6 }}
+                    className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-purple-500/20 shadow-lg shadow-purple-500/10"
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <svg
+                          className="w-4 h-4 sm:w-5 sm:h-5 text-white"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 14l9-5-9-5-9 5 9 5z"
+                          />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                          />
+                        </svg>
                       </div>
-
-                      <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
-                        {school.institution}
-                      </h4>
-                      <p className="text-purple-400 text-sm mb-3 whitespace-normal">
-                        {school.program}
-                      </p>
-                      <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
-                        {school.description}
-                      </p>
+                      <div className="text-right ml-3">
+                        <p className="text-gray-400 text-xs leading-tight">
+                          {school.duration}
+                        </p>
+                        <p className="text-purple-400 text-xs font-medium">
+                          {school.totalDuration}
+                        </p>
+                      </div>
                     </div>
-                  ))}
-                </motion.div>
+
+                    <h4 className="text-base sm:text-lg font-semibold text-white mb-2 leading-tight">
+                      {school.institution}
+                    </h4>
+                    <p className="text-purple-400 text-sm mb-3">
+                      {school.program}
+                    </p>
+                    <p className="text-gray-300 text-sm leading-relaxed">
+                      {school.description}
+                    </p>
+                  </motion.div>
+                ))}
               </motion.div>
+            </div>
+
+            {/* Desktop: Horizontal scrolling layout */}
+            <div className="hidden md:block">
+              {/* Left gradient mask */}
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+
+              {/* Right gradient mask */}
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+
+              <div className="overflow-hidden">
+                {/* Outer motion for fade in when in viewport */}
+                <motion.div
+                  variants={fadeInUp}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true, amount: 0.3 }}
+                >
+                  {/* Inner motion for infinite horizontal scroll */}
+                  <motion.div
+                    animate={{ x: [-200, 200] }}
+                    transition={{
+                      duration: 35,
+                      repeat: Infinity,
+                      ease: "linear",
+                    }}
+                    className="flex space-x-8 whitespace-nowrap"
+                    style={{ width: "300%" }}
+                  >
+                    {[
+                      ...schoolExperience,
+                      ...schoolExperience,
+                      ...schoolExperience,
+                    ].map((school, index) => (
+                      <div
+                        key={index}
+                        className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
+                      >
+                        <div className="flex items-center justify-between mb-4">
+                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                            <svg
+                              className="w-5 h-5 text-white"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 14l9-5-9-5-9 5 9 5z"
+                              />
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                              />
+                            </svg>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-gray-400 text-xs">
+                              {school.duration}
+                            </p>
+                            <p className="text-purple-400 text-xs font-medium">
+                              {school.totalDuration}
+                            </p>
+                          </div>
+                        </div>
+
+                        <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
+                          {school.institution}
+                        </h4>
+                        <p className="text-purple-400 text-sm mb-3 whitespace-normal">
+                          {school.program}
+                        </p>
+                        <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
+                          {school.description}
+                        </p>
+                      </div>
+                    ))}
+                  </motion.div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>

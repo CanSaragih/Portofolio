@@ -22,7 +22,6 @@ export default function NavMenu() {
   useEffect(() => {
     setMounted(true);
 
-    // Check if device is mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -37,23 +36,13 @@ export default function NavMenu() {
     setActive(status);
   };
 
-  // Enhanced GSAP animation with mobile support
+  // Perbaiki GSAP animation untuk memastikan background menghilang
   useIsomorphicLayoutEffect(() => {
     if (!mounted) return;
 
     gsap.context(() => {
       if (active) {
-        gsap.to(menuRef.current, {
-          x: 0,
-          duration: 0.8,
-          ease: "power3.inOut",
-          onStart: () => {
-            // Ensure menu is visible during animation
-            if (menuRef.current) {
-              menuRef.current.style.visibility = "visible";
-            }
-          },
-        });
+        gsap.to(menuRef.current, { x: 0, duration: 0.8, ease: "power3.inOut" });
         gsap.to(".nav-rounded", {
           scaleX: 0,
           duration: 0.8,
@@ -65,20 +54,11 @@ export default function NavMenu() {
           duration: 0.8,
           ease: "power3.inOut",
         });
-
-        // Prevent body scroll when menu is open
-        document.body.style.overflow = "hidden";
       } else {
         gsap.to(menuRef.current, {
-          x: "100%",
+          x: "140%",
           duration: 0.8,
           ease: "power3.inOut",
-          onComplete: () => {
-            // Hide menu after animation completes
-            if (menuRef.current) {
-              menuRef.current.style.visibility = "hidden";
-            }
-          },
         });
         gsap.to(".nav-rounded", {
           scaleX: 1,
@@ -91,9 +71,6 @@ export default function NavMenu() {
           duration: 0.8,
           ease: "power3.inOut",
         });
-
-        // Restore body scroll
-        document.body.style.overflow = "unset";
       }
     }, menuRef);
   }, [active, mounted]);
@@ -141,7 +118,7 @@ export default function NavMenu() {
       <div
         ref={menuBgRef}
         className={cn(
-          "nav-menu-bg fixed left-0 top-0 h-screen w-full bg-gradient-to-r from-black/40 via-black/50 to-black/60 opacity-0 invisible z-40",
+          "nav-menu-bg fixed left-0 top-0 h-screen w-full bg-gradient-to-r from-black/[.13] via-black/[.16] to-black/[.35] opacity-0 invisible z-40",
           active ? "pointer-events-auto" : "pointer-events-none"
         )}
         onClick={() => setActive(false)}
@@ -150,23 +127,20 @@ export default function NavMenu() {
       <div
         ref={menuRef}
         className={cn(
-          "nav-menu pointer-events-auto fixed right-0 top-0 flex h-screen translate-x-[100%] flex-col justify-between bg-zinc-800 pb-8 md:pb-12 pt-[clamp(3.5rem,10vh,5rem)] text-white will-change-transform z-50 dark:bg-zinc-200 dark:text-zinc-800",
-          // Responsive width - full width on mobile, 500px on desktop
-          "w-full sm:w-[400px] md:w-[450px] lg:w-[500px]",
-          // Text size responsive
-          "text-4xl sm:text-5xl md:text-6xl"
+          "nav-menu pointer-events-auto fixed right-0 top-0 flex h-screen translate-x-[100%] flex-col justify-between bg-zinc-800 pb-8 md:pb-12 pt-16 md:pt-[clamp(3.5rem,10vh,5rem)] text-white will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200 dark:text-zinc-800 z-50",
+          // Responsive width - full width on mobile except small margin, fixed width on desktop
+          "w-[calc(100vw-2rem)] max-w-[500px] sm:w-[400px] md:w-[450px] lg:w-[500px]",
+          // Responsive text sizes
+          "text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
         )}
-        style={{
-          visibility: active ? "visible" : "hidden",
-        }}
       >
-        <div className="nav-rounded absolute left-0 top-[-10%] z-[-1] h-[120%] w-[80%] -translate-x-1/2 rounded-[100%_100%] bg-zinc-800 will-change-transform dark:bg-zinc-200"></div>
+        <div className="nav-rounded absolute left-0 top-[-10%] z-[-1] h-[120%] w-[80%] -translate-x-1/2 rounded-[100%_100%] bg-zinc-800 will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200"></div>
 
         <div>
           <NavMenuLine title={"Navigation"} />
         </div>
 
-        <div className="space-y-2 md:space-y-0">
+        <div className="space-y-1 md:space-y-0">
           <MagneticEffect disabled={isMobile}>
             <NavMenuLink
               title={"Home"}
@@ -211,7 +185,7 @@ export default function NavMenu() {
 
         <div>
           <NavMenuLine title={"Links"} />
-          <div className="flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 px-[clamp(1.25rem,3vw,2.5rem)] text-sm sm:text-base">
+          <div className="flex flex-col sm:flex-row gap-y-2 sm:gap-y-0 sm:gap-x-2 px-4 sm:px-[clamp(1.25rem,3vw,2.5rem)] text-sm sm:text-base">
             <MagneticEffect disabled={isMobile}>
               <NavMenuSocial
                 title="Github"
@@ -251,17 +225,15 @@ export default function NavMenu() {
           </div>
 
           {/* Download CV Section */}
-          <div className="px-[clamp(1.25rem,3vw,2.5rem)] mt-4 sm:mt-6">
-            <MagneticEffect disabled={isMobile}>
-              <a
-                href="/cv/Can Whardana Saragih.pdf"
-                download
-                className="inline-flex items-center gap-3 text-sm sm:text-base text-white dark:text-zinc-800 hover:text-purple-700 dark:hover:text-purple-800 transition-colors duration-300 group"
-              >
-                <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-[-2px] transition-transform duration-200 ease-out" />
-                <span className="font-semibold">Download CV</span>
-              </a>
-            </MagneticEffect>
+          <div className="px-4 sm:px-[clamp(1.25rem,3vw,2.5rem)] mt-4 sm:mt-6">
+            <a
+              href="/cv/Can Whardana Saragih.pdf"
+              download
+              className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-base text-white dark:text-zinc-800 hover:text-purple-700 dark:hover:text-purple-800 transition-colors duration-300 group"
+            >
+              <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-[-2px] transition-transform duration-200 ease-out" />
+              <span className="font-semibold">Download CV</span>
+            </a>
           </div>
         </div>
       </div>

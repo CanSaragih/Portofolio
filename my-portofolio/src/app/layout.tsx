@@ -53,6 +53,21 @@ export default function RootLayout({
         <head>
           <title>Can Saragih | Fullstack Developer</title>
           <meta name="description" content="My personal portfolio website" />
+          <link rel="icon" href="/icon-tab.png?v=1" type="image/png" />
+          <link rel="shortcut icon" href="/icon-tab.png?v=1" type="image/png" />
+          <link rel="apple-touch-icon" href="/icon-tab.png?v=1" />
+          <link
+            rel="icon"
+            sizes="32x32"
+            href="/icon-tab.png?v=1"
+            type="image/png"
+          />
+          <link
+            rel="icon"
+            sizes="16x16"
+            href="/icon-tab.png?v=1"
+            type="image/png"
+          />
         </head>
         <body
           className={`${poppins.variable} font-sans antialiased`}
@@ -71,6 +86,22 @@ export default function RootLayout({
       <head>
         <title>Can Saragih | Fullstack Developer</title>
         <meta name="description" content="My personal portfolio website" />
+        <link rel="icon" href="/icon-tab.png?v=1" type="image/png" />
+        <link rel="shortcut icon" href="/icon-tab.png?v=1" type="image/png" />
+        <link rel="apple-touch-icon" href="/icon-tab.png?v=1" />
+        <link
+          rel="icon"
+          sizes="32x32"
+          href="/icon-tab.png?v=1"
+          type="image/png"
+        />
+        <link
+          rel="icon"
+          sizes="16x16"
+          href="/icon-tab.png?v=1"
+          type="image/png"
+        />
+        <meta name="theme-color" content="#000000" />
       </head>
       <body
         className={`${poppins.variable} font-sans antialiased`}
@@ -80,7 +111,7 @@ export default function RootLayout({
         {isLoading && (
           <Preloader
             onComplete={handlePreloaderComplete}
-            duration={3500}
+            duration={3200}
             loaderText="Welcome to Can Saragih's Portfolio Website"
           />
         )}
