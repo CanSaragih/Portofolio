@@ -46,6 +46,67 @@ export default function RootLayout({
     };
   }, [isLoading]);
 
+  // Force favicon update function
+  const updateFavicon = () => {
+    // Remove existing favicon links
+    const existingLinks = document.querySelectorAll('link[rel*="icon"]');
+    existingLinks.forEach((link) => link.remove());
+
+    // Add new favicon links
+    const iconUrls = [
+      { rel: "icon", type: "image/png", href: "/icon-tab.png?v=3" },
+      { rel: "shortcut icon", type: "image/png", href: "/icon-tab.png?v=3" },
+      { rel: "apple-touch-icon", href: "/icon-tab.png?v=3" },
+      {
+        rel: "icon",
+        sizes: "32x32",
+        type: "image/png",
+        href: "/icon-tab.png?v=3",
+      },
+      {
+        rel: "icon",
+        sizes: "16x16",
+        type: "image/png",
+        href: "/icon-tab.png?v=3",
+      },
+    ];
+
+    iconUrls.forEach((icon) => {
+      const link = document.createElement("link");
+      Object.assign(link, icon);
+      document.head.appendChild(link);
+    });
+  };
+
+  useEffect(() => {
+    if (mounted && !isLoading) {
+      // Force update favicon after preloader
+      setTimeout(updateFavicon, 100);
+    }
+  }, [mounted, isLoading]);
+
+  // Icon configuration - consistent untuk semua state
+  const iconLinks = (
+    <>
+      <link rel="icon" href="/icon-tab.png?v=3" type="image/png" />
+      <link rel="shortcut icon" href="/icon-tab.png?v=3" type="image/png" />
+      <link rel="apple-touch-icon" href="/icon-tab.png?v=3" />
+      <link
+        rel="icon"
+        sizes="32x32"
+        href="/icon-tab.png?v=3"
+        type="image/png"
+      />
+      <link
+        rel="icon"
+        sizes="16x16"
+        href="/icon-tab.png?v=3"
+        type="image/png"
+      />
+      <meta name="theme-color" content="#000000" />
+    </>
+  );
+
   // Render loading state sampai mounted
   if (!mounted) {
     return (
@@ -53,21 +114,7 @@ export default function RootLayout({
         <head>
           <title>Can Saragih | Fullstack Developer</title>
           <meta name="description" content="My personal portfolio website" />
-          <link rel="icon" href="/icon-tab.png?v=1" type="image/png" />
-          <link rel="shortcut icon" href="/icon-tab.png?v=1" type="image/png" />
-          <link rel="apple-touch-icon" href="/icon-tab.png?v=1" />
-          <link
-            rel="icon"
-            sizes="32x32"
-            href="/icon-tab.png?v=1"
-            type="image/png"
-          />
-          <link
-            rel="icon"
-            sizes="16x16"
-            href="/icon-tab.png?v=1"
-            type="image/png"
-          />
+          {iconLinks}
         </head>
         <body
           className={`${poppins.variable} font-sans antialiased`}
@@ -86,22 +133,7 @@ export default function RootLayout({
       <head>
         <title>Can Saragih | Fullstack Developer</title>
         <meta name="description" content="My personal portfolio website" />
-        <link rel="icon" href="/icon-tab.png?v=1" type="image/png" />
-        <link rel="shortcut icon" href="/icon-tab.png?v=1" type="image/png" />
-        <link rel="apple-touch-icon" href="/icon-tab.png?v=1" />
-        <link
-          rel="icon"
-          sizes="32x32"
-          href="/icon-tab.png?v=1"
-          type="image/png"
-        />
-        <link
-          rel="icon"
-          sizes="16x16"
-          href="/icon-tab.png?v=1"
-          type="image/png"
-        />
-        <meta name="theme-color" content="#000000" />
+        {iconLinks}
       </head>
       <body
         className={`${poppins.variable} font-sans antialiased`}
