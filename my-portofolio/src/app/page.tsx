@@ -219,7 +219,7 @@ export default function Home() {
 
   const projects = [
     {
-      image: "/img-project/parkgo.png",
+      image: "/Img-project/ParkGo.png",
       name: "ParkGo",
       url: "https://github.com/orgs/Parkir-Cepat/repositories",
       description:
@@ -238,17 +238,17 @@ export default function Home() {
       category: "Mobile App",
     },
     {
-      image: "/img-project/shophub.png",
+      image: "/Img-project/ShopHub.png",
       name: "Shophub",
       url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
       description:
         "Web-based e-commerce platform that allows you to browse products and manage wish lists.",
       tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
       category: "Web App",
-      demo: "https://www.itscan.my.id/",
+      demo: "https://shophub-ivory.vercel.app",
     },
     {
-      image: "/img-project/socialmediaapp.png",
+      image: "/Img-project/SocialMediaApp.png",
       name: "Social Media App",
       url: "https://github.com/H8-FSJS-P3S5/gc01-CanSaragih",
       description:
@@ -258,7 +258,7 @@ export default function Home() {
       demo: "https://shorturl.at/IAYEp",
     },
     {
-      image: "/img-project/chatverse.png",
+      image: "/Img-project/ChatVerse.png",
       name: "ChatVerse",
       url: "https://github.com/GROP-PROJECT-P2",
       description:
@@ -275,7 +275,7 @@ export default function Home() {
       category: "Web App",
     },
     {
-      image: "/img-project/planorama.png",
+      image: "/Img-project/Planorama.png",
       name: "Planorama",
       url: "https://github.com/CanSaragih/IP-RMT60",
       description:
@@ -292,7 +292,7 @@ export default function Home() {
       category: "Web App",
     },
     {
-      image: "/img-project/instalook.png",
+      image: "/Img-project/InstaLook.png",
       name: "InstaLook",
       url: "https://github.com/CanSaragih/SocialMedia-Instagram",
       description: "A fullstack web-based Instagram-like social media platform",
@@ -308,7 +308,7 @@ export default function Home() {
       category: "Web App",
     },
     {
-      image: "/img-project/quickkick.png",
+      image: "/Img-project/quickkick.png",
       name: "QuickKick",
       url: "https://github.com/andikarahmadisaputra/quickkick",
       description:

@@ -5,6 +5,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import ScrollWrapper from "@/components/ScrollWrapper";
 import { Preloader } from "@/components/Preloader";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -147,7 +148,17 @@ export default function RootLayout({
             loaderText="Welcome to Can Saragih's Portfolio Website"
           />
         )}
-
+        <Toaster
+          position="top-center"
+          toastOptions={{
+            duration: 4200,
+            style: {
+              margin: 0,
+              padding: "12px 16px",
+              maxWidth: "90vw",
+            },
+          }}
+        />
         {showContent && <ScrollWrapper>{children}</ScrollWrapper>}
       </body>
     </html>
