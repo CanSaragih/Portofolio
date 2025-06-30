@@ -3,7 +3,7 @@
 import { motion, useInView } from "framer-motion";
 import { useState, useEffect, useRef, useMemo } from "react";
 import ProfileCard from "@/components/ProfileCard";
-import Carousel from "@/components/Carousel";
+// Remove Carousel import
 import SkillsNetwork from "@/components/SkillsNetwork";
 import ContactForm from "@/components/ContactForm";
 import Lanyard from "@/components/Landyard";
@@ -11,6 +11,9 @@ import Footer from "@/components/navbar/Footer";
 import Nav from "@/components/navbar/Nav";
 import { ChatBox } from "@/components/ChatBot";
 import Image from "next/image";
+import Link from "next/link";
+import Carousel from "@/components/Carousel";
+import MagneticEffect from "@/components/providers/MagneticEffect";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -223,7 +226,8 @@ export default function Home() {
       name: "ParkGo",
       url: "https://github.com/orgs/Parkir-Cepat/repositories",
       description:
-        "A real-time parking mobile app that helps users find and book parking spots easily.",
+        "A real-time mobile app that helps users find and book nearby parking spots with ease. It features live availability, secure payments, and Google Maps integration for accurate navigation.",
+
       tech: [
         "React Native",
         "Apollo Server",
@@ -237,12 +241,13 @@ export default function Home() {
       ],
       category: "Mobile App",
     },
+
     {
       image: "/Img-project/ShopHub.png",
       name: "Shophub",
       url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
       description:
-        "Web-based e-commerce platform that allows you to browse products and manage wish lists.",
+        "A responsive e-commerce web app where users can browse products, manage wishlists, and experience smooth shopping. Built with Next.js, TypeScript, and styled using Tailwind CSS.",
       tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
       category: "Web App",
       demo: "https://shophub-ivory.vercel.app",
@@ -252,7 +257,8 @@ export default function Home() {
       name: "Social Media App",
       url: "https://github.com/H8-FSJS-P3S5/gc01-CanSaragih",
       description:
-        "A fullstack mobile-based social media application built with React Native",
+        "A fullstack mobile social media app where users can post, follow, and interact in real-time. Powered by React Native, GraphQL, and Redis for fast and dynamic user experience.",
+
       tech: ["React Native", "Apollo Server", "GraphQL", "MongoDB", "Redis"],
       category: "Mobile App",
       demo: "https://shorturl.at/IAYEp",
@@ -450,7 +456,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 overflow-hidden bg-[#171717]"
       >
         {/* Abstract Wave Background */}
         <div className="absolute inset-0 z-0">
@@ -753,7 +759,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 relative z-10"
+        className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div
@@ -870,10 +876,10 @@ export default function Home() {
             {/* Desktop: Horizontal scrolling layout */}
             <div className="hidden md:block">
               {/* Left gradient mask */}
-              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#171717] via-#171717/80 to-transparent z-10 pointer-events-none"></div>
 
               {/* Right gradient mask */}
-              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-black via-black/80 to-transparent z-10 pointer-events-none"></div>
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#171717] via-#171717/80  to-transparent z-10 pointer-events-none"></div>
 
               <div className="overflow-hidden">
                 {/* Outer motion for fade in when in viewport */}
@@ -961,7 +967,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden"
+        className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden bg-[#171717]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-12">
@@ -978,7 +984,7 @@ export default function Home() {
             variants={fadeInUp}
             className="flex justify-center mb-12 px-2"
           >
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-3 bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl border border-purple-500/20 max-w-full">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-3 bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl max-w-full">
               {Object.keys(skillCategories).map((category) => (
                 <button
                   key={category}
@@ -1013,7 +1019,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
+        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
       >
         <div className="max-w-6xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-16">
@@ -1074,120 +1080,136 @@ export default function Home() {
         id="projects"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10"
+        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-16">
-            <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
+            <p className="text-[#A855F7] text-sm uppercase tracking-widest mb-4">
               MY WORK
             </p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-8">Projects</h2>
-            <p className="text-gray-400 max-w-3xl mx-auto">
-              Following projects showcases my skills and experience through
-              real-world examples of my work. It reflects my ability to solve
-              complex problems, work with different technologies, and manage
-              projects effectively.
-            </p>
+            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-8">
+              Recent Projects
+            </h2>
           </motion.div>
 
-          <motion.div variants={fadeInUp}>
-            <Carousel
-              itemsPerView={3}
-              autoPlay={false}
-              showDots={true}
-              showArrows={true}
-              className="px-16"
-            >
-              {projects.map((project, index) => (
-                <div
-                  key={index}
-                  className="group bg-white/5 backdrop-blur-lg rounded-3xl overflow-hidden border border-purple-500/20 hover:border-purple-500/50 transition-all duration-500 mx-2 flex flex-col justify-between min-h-[420px]"
-                >
-                  {/* Project Image */}
-                  <div className="h-48 relative overflow-hidden">
-                    {/* Gambar */}
+          {/* Projects List */}
+          <motion.div variants={fadeInUp} className="space-y-10">
+            {projects.slice(0, 3).map((project, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+                viewport={{ once: true }}
+                className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch bg-[#1f1f21] hover:bg-[#232326] rounded-xl pt-35 transition-colors duration-300 min-h-[480px]"
+              >
+                {/* Left Side - Icons and Content */}
+                <div className="pt-0 -mt-25 pb-8 pl-10 py-8 pr-8">
+                  {/* GitHub and Demo Icons */}
+                  <div className="flex items-center gap-4 ml-5">
+                    <a
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="rounded-full flex items-center justify-center transition-colors"
+                    >
+                      <svg
+                        className="w-13 h-13 text-white hover:text-[#aaaaaa] transition-colors"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+                      </svg>
+                    </a>
+                    {project.demo && (
+                      <a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full flex items-center justify-center"
+                      >
+                        <svg
+                          className="w-13 h-13 p-2 text-[#1c1c1c] bg-white rounded-full hover:bg-[#aaaaaa] transition-colors duration-300"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                          strokeWidth={2}
+                        >
+                          <path d="M14 3a1 1 0 0 0 0 2h3.586L10.293 12.293a1 1 0 1 0 1.414 1.414L19 6.414V10a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1h-6Zm5 11a1 1 0 0 1 1 1v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h4a1 1 0 1 1 0 2H7a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1Z" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Project Title */}
+                  <h3 className="text-5xl font-bold text-white leading-tight mt-10">
+                    {project.name}
+                  </h3>
+
+                  {/* Project Description */}
+                  <p className="text-[#A0A0A0] text-sm font-bold leading-relaxed mt-4">
+                    {project.description}
+                  </p>
+
+                  {/* Tech Stack */}
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-4">
+                    {project.tech.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="text-[#A0A0A0] text-sm font-medium"
+                      >
+                        {tech}
+                        {techIndex < project.tech.length - 1 && (
+                          <span className="ml-3 text-[#8742c7]">•</span>
+                        )}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right Side - Project Image */}
+                <div className="h-full flex items-stretch p-0 m-0">
+                  {/* pastikan tidak ada padding/margin */}
+                  <div className="w-full h-full relative rounded overflow-hidden shadow-2xl">
                     <Image
                       src={project.image}
                       alt={project.name}
-                      width={500}
-                      height={300}
-                      className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
+                      fill
+                      className="object-cover"
                     />
-
-                    {/* Overlay black transparan saat hover */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                    {/* Label kategori */}
-                    <div className="absolute top-4 left-4 bg-purple-500/80 text-white px-3 py-1 rounded-full text-sm z-10">
-                      {project.category}
-                    </div>
-                  </div>
-
-                  {/* Konten Card */}
-                  <div className="p-6">
-                    <h3 className="text-2xl font-semibold text-white mb-3 group-hover:text-purple-400 transition-colors">
-                      {project.name}
-                    </h3>
-                    <p className="text-gray-300 mb-6 leading-relaxed line-clamp-3 min-h-[72px]">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mb-6">
-                      {project.tech.slice(0, 3).map((tech, techIndex) => (
-                        <span
-                          key={techIndex}
-                          className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 px-3 py-1 rounded-full text-xs border border-purple-500/30"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.tech.length > 3 && (
-                        <span className="text-gray-400 text-xs px-3 py-1">
-                          +{project.tech.length - 3} more
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex gap-3">
-                      <a
-                        href={project.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex-1 bg-gradient-to-r from-purple-700/30 to-indigo-700/30 text-white border border-purple-500/30 backdrop-blur-md py-2 px-4 rounded-xl text-center hover:from-purple-600/40 hover:to-indigo-600/40 hover:border-purple-400/50 transition-all duration-300 shadow-inner shadow-purple-800/20"
-                      >
-                        View Project →
-                      </a>
-                      {project.demo && (
-                        <a
-                          href={project.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 text-sm text-purple-300 hover:text-purple-500 transition-colors"
-                          title="Live Demo"
-                        >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M12 3C7.03 3 3 7.03 3 12s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 0c0 4.418 1.79 8 4 8s4-3.582 4-8m-8 0c0 4.418-1.79 8-4 8s-4-3.582-4-8"
-                            />
-                          </svg>
-                          Live Demo
-                        </a>
-                      )}
-                    </div>
                   </div>
                 </div>
-              ))}
-            </Carousel>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Load More Button */}
+          <motion.div variants={fadeInUp} className="text-center mt-20">
+            <h3 className="text-gray-100 text-3xl font-extrabold mb-5 tracking-widest ">
+              See other project
+            </h3>
+            <MagneticEffect>
+              <Link
+                href="/projects"
+                className="inline-flex items-center gap-2 bg-[#242424] text-white px-8 py-4 rounded-lg  hover:bg-[#3D3D3D] transition-all duration-300 font-medium"
+              >
+                <span>Load More</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </Link>
+            </MagneticEffect>
           </motion.div>
         </div>
       </motion.section>
@@ -1198,7 +1220,7 @@ export default function Home() {
         whileInView="animate"
         viewport={{ once: false, amount: 0.3 }}
         variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mb-10"
+        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mb-10 bg-[#171717]"
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
