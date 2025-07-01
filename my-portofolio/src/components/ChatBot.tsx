@@ -182,9 +182,9 @@ export function ChatBox() {
       {!isOpen && (
         <button
           onClick={openChat}
-          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gray-200 hover:bg-gray-300 hover:border-5 hover:border-[#c3c7cf] transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
         >
-          <FaRobot className="text-white w-7 h-7" />
+          <FaRobot className="text-black w-6 h-6" />
         </button>
       )}
 

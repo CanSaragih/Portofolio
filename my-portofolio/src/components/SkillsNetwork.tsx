@@ -41,7 +41,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
   if (isMobile) {
     return (
       <div className="w-full px-4">
-        <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto">
+        <div className="grid grid-cols-3 gap-4 max-w-xs mx-auto">
           {skills.map((skill, index) => {
             const isActive = index === activeIndex;
 
@@ -55,7 +55,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                 }}
                 transition={{
                   duration: 0.5,
-                  delay: index * 0.1,
+                  delay: index * 0.05,
                   scale: { duration: 0.3 },
                 }}
                 className="cursor-pointer group"
@@ -65,13 +65,13 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   className={`
                     w-full aspect-square
                     bg-gradient-to-br ${skill.color}
-                    backdrop-blur-lg rounded-2xl 
+                    backdrop-blur-lg rounded-xl
                     border-2 transition-all duration-300
                     flex flex-col items-center justify-center 
-                    shadow-lg p-3
+                    shadow-lg p-2
                     ${
                       isActive
-                        ? "border-purple-500 shadow-purple-500/50 shadow-2xl ring-2 ring-purple-500/30"
+                        ? "border-white/40 shadow-white/10 shadow-xl ring-1 ring-white/20"
                         : "border-white/20"
                     }
                   `}
@@ -79,11 +79,11 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   <Image
                     src={skill.icon}
                     alt={skill.name}
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 object-contain mb-2"
+                    width={28}
+                    height={28}
+                    className="w-7 h-7 object-contain mb-1.5"
                   />
-                  <span className="text-white text-xs font-medium text-center leading-tight">
+                  <span className="text-white text-[11px] font-medium text-center leading-tight">
                     {skill.name}
                   </span>
                 </div>
@@ -108,10 +108,10 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
   const generatePath = (side: "left" | "right", yPosition: number) => {
     const centerX = 400;
     const centerY = 300;
-    const startX = side === "left" ? 100 : 700;
+    const startX = side === "left" ? 40 : 800;
     const startY = yPosition;
 
-    const controlX = side === "left" ? 200 : 600;
+    const controlX = side === "left" ? 220 : 700;
     const controlY = (startY + centerY) / 2 + (side === "left" ? -30 : 30);
 
     return `M ${startX} ${startY} Q ${controlX} ${controlY} ${centerX} ${centerY}`;
@@ -141,11 +141,13 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
       >
         <defs>
           <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="rgba(168, 85, 247, 0)" />
-            <stop offset="40%" stopColor="rgba(168, 85, 247, 0.9)" />
-            <stop offset="60%" stopColor="rgba(59, 130, 246, 1)" />
-            <stop offset="100%" stopColor="rgba(168, 85, 247, 0)" />
+            <stop offset="0%" stopColor="rgba(129, 140, 248, 0)" />{" "}
+            {/* indigo-400 transparan */}
+            <stop offset="50%" stopColor="rgba(129, 140, 248, 0.52)" />{" "}
+            {/* indigo-400 lembut */}
+            <stop offset="100%" stopColor="rgba(129, 140, 248, 0)" />
           </linearGradient>
+
           <linearGradient
             id="inactiveGradient"
             x1="0%"
@@ -174,12 +176,12 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
               key={`base-${skill.name}-${index}`}
               d={path}
               stroke="url(#inactiveGradient)"
-              strokeWidth="1.5"
+              strokeWidth="2.3"
               fill="none"
               strokeLinecap="round"
-              strokeDasharray="4,4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.6 }}
+              strokeDasharray="0"
+              initial={{ opacity: 2 }}
+              animate={{ opacity: 2 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
             />
           );
@@ -237,7 +239,6 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
               key={`glow-${skill.name}-${index}`}
               d={path}
               stroke="rgba(168, 85, 247, 0.3)"
-              strokeWidth="8"
               fill="none"
               strokeLinecap="round"
               filter="blur(4px)"
@@ -293,10 +294,11 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     border-2 transition-all duration-300
                     flex items-center justify-center 
                     shadow-lg hover:shadow-xl
+                    
                     ${
                       isActive
-                        ? "border-purple-500 shadow-purple-500/50 shadow-2xl ring-2 ring-purple-500/30"
-                        : "border-white/20 hover:border-purple-500/50"
+                        ? "border-white/50 shadow-white/30 shadow-2xl ring-1 ring-white/10"
+                        : "border-white/20 hover:border-white/50"
                     }
                   `}
                 >
@@ -319,7 +321,7 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                   }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="bg-black/90 text-white text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 rounded-lg whitespace-nowrap border border-purple-500/30 backdrop-blur-sm">
+                  <div className="bg-black/90 text-white text-xs sm:text-sm px-2 sm:px-3 py-1 sm:py-2 rounded-lg whitespace-nowrap border border-gray-800 backdrop-blur-sm">
                     {skill.name}
                   </div>
                 </motion.div>
@@ -385,8 +387,8 @@ export default function SkillsNetwork({ skills }: SkillsNetworkProps) {
                     shadow-lg hover:shadow-xl
                     ${
                       isActive
-                        ? "border-purple-400 shadow-purple-400/50 shadow-2xl ring-2 ring-purple-400/30"
-                        : "border-white/20 hover:border-purple-400/50"
+                        ? "border-white/50 shadow-white/30 shadow-2xl ring-1 ring-white/10"
+                        : "border-white/20 hover:border-white/50"
                     }
                   `}
                 >

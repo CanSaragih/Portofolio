@@ -1,9 +1,8 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import ProfileCard from "@/components/ProfileCard";
-// Remove Carousel import
 import SkillsNetwork from "@/components/SkillsNetwork";
 import ContactForm from "@/components/ContactForm";
 import Lanyard from "@/components/Landyard";
@@ -11,7 +10,6 @@ import Footer from "@/components/navbar/Footer";
 import Nav from "@/components/navbar/Nav";
 import { ChatBox } from "@/components/ChatBot";
 import Image from "next/image";
-import Link from "next/link";
 import Carousel from "@/components/Carousel";
 import MagneticEffect from "@/components/providers/MagneticEffect";
 
@@ -29,6 +27,10 @@ export default function Home() {
     once: false,
     amount: 0.0,
   });
+
+  // Add cleanup refs
+  const animationRefs = useRef<Array<() => void>>([]);
+  const isMountedRef = useRef(true);
 
   const typewriterTexts = useMemo(
     () => ["Fullstack Developer", "Software Engineer"],
@@ -186,39 +188,114 @@ export default function Home() {
     ],
   };
 
-  // Typewriter effect
+  // Typewriter effect with cleanup - Fixed version
   useEffect(() => {
-    const currentFullText = typewriterTexts[textIndex];
+    if (!isMountedRef.current) return;
 
-    const typeSpeed = isDeleting ? 50 : 100;
+    const currentFullText = typewriterTexts[textIndex];
+    const typeSpeed = isDeleting ? 75 : 150;
+    const pauseTime = 2000;
 
     const timer = setTimeout(() => {
+      if (!isMountedRef.current) return;
+
       if (!isDeleting && currentText === currentFullText) {
-        // Pause at the end
-        setTimeout(() => setIsDeleting(true), 2000);
+        // Pause at the end before starting to delete
+        const pauseTimer = setTimeout(() => {
+          if (isMountedRef.current) {
+            setIsDeleting(true);
+          }
+        }, pauseTime);
+
+        const cleanup = () => clearTimeout(pauseTimer);
+        animationRefs.current.push(cleanup);
+        return cleanup;
       } else if (isDeleting && currentText === "") {
+        // Start typing the next text
         setIsDeleting(false);
         setTextIndex((prev) => (prev + 1) % typewriterTexts.length);
       } else if (isDeleting) {
+        // Continue deleting
         setCurrentText(currentFullText.substring(0, currentText.length - 1));
       } else {
+        // Continue typing
         setCurrentText(currentFullText.substring(0, currentText.length + 1));
       }
     }, typeSpeed);
 
-    return () => clearTimeout(timer);
+    const cleanup = () => clearTimeout(timer);
+    animationRefs.current.push(cleanup);
+    return cleanup;
   }, [currentText, isDeleting, textIndex, typewriterTexts]);
 
-  // Initialize particles setelah mount
+  // Initialize component with cleanup - Enhanced version
   useEffect(() => {
+    // Set initial state
     setMounted(true);
+    setCurrentText(""); // Start with empty text
+    setIsDeleting(false);
+    setTextIndex(0);
+
+    // Generate background particles
     setBackgroundParticles(
       Array.from({ length: 50 }, () => ({
         left: Math.random() * 100 + "%",
         top: Math.random() * 100 + "%",
       }))
     );
+
+    // Cleanup function
+    return () => {
+      isMountedRef.current = false;
+      // Cleanup all running animations
+      animationRefs.current.forEach((cleanup) => {
+        try {
+          cleanup();
+        } catch (error) {
+          // Ignore cleanup errors
+          console.warn("Animation cleanup error:", error);
+        }
+      });
+      animationRefs.current = [];
+    };
   }, []);
+
+  // Add navigation state
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  // Handle navigation with proper cleanup - simplified approach
+  const handleLoadMore = useCallback(
+    async (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (isNavigating) return; // Prevent double clicks
+
+      try {
+        setIsNavigating(true);
+
+        // Immediate cleanup without waiting
+        isMountedRef.current = false;
+        animationRefs.current.forEach((cleanup) => {
+          try {
+            cleanup();
+          } catch (error) {
+            console.log(error);
+
+            // Ignore cleanup errors
+          }
+        });
+        animationRefs.current = [];
+
+        // Use window.location for more reliable navigation
+        window.location.href = "/projects";
+      } catch (error) {
+        console.error("Navigation error:", error);
+        setIsNavigating(false);
+      }
+    },
+    [isNavigating]
+  );
 
   const projects = [
     {
@@ -328,7 +405,7 @@ export default function Home() {
     {
       position: "Video Editor & Graphic Designer",
       company: "Custom Kekinian",
-      duration: "Jan 2023 - Present",
+      duration: "Aug 2019 - Jan 2025 ",
       responsibilities: [
         "Created and edited high-engagement videos for Instagram, TikTok, and YouTube, helping increase brand visibility and audience reach.",
         "Designed marketing content and custom T-shirt visuals for two separate business divisions (digital content & fashion).",
@@ -339,6 +416,12 @@ export default function Home() {
   ];
 
   const certificates = [
+    {
+      name: "Participant SMK Competency Contest (LKS) – Web Design",
+      description:
+        "participant in the provincial-level Web Design competition (LKS SMK) representing SMK RK Bintang Timur, Pematang Siantar.",
+      url: "/LksCertification.pdf",
+    },
     {
       name: "HackerRank React (Basic) Certificate",
       description:
@@ -466,18 +549,20 @@ export default function Home() {
             preserveAspectRatio="xMidYMid slice"
             xmlns="http://www.w3.org/2000/svg"
           >
+            {/* Gradient Definitions */}
             <defs>
               <linearGradient
-                id="wave-gradient"
+                id="wave-gradient-1"
                 x1="0%"
                 y1="0%"
                 x2="100%"
                 y2="100%"
               >
-                <stop offset="0%" stopColor="rgba(168, 85, 247, 0.15)" />
-                <stop offset="50%" stopColor="rgba(147, 51, 234, 0.08)" />
-                <stop offset="100%" stopColor="rgba(124, 58, 237, 0.18)" />
+                <stop offset="0%" stopColor="rgba(75, 85, 99, 0.08)" />
+                <stop offset="50%" stopColor="rgba(107, 114, 128, 0.12)" />
+                <stop offset="100%" stopColor="rgba(55, 65, 81, 0.06)" />
               </linearGradient>
+
               <linearGradient
                 id="wave-gradient-2"
                 x1="0%"
@@ -485,10 +570,11 @@ export default function Home() {
                 x2="100%"
                 y2="100%"
               >
-                <stop offset="0%" stopColor="rgba(139, 92, 246, 0.12)" />
-                <stop offset="50%" stopColor="rgba(168, 85, 247, 0.06)" />
-                <stop offset="100%" stopColor="rgba(147, 51, 234, 0.14)" />
+                <stop offset="0%" stopColor="rgba(55, 65, 81, 0.10)" />
+                <stop offset="50%" stopColor="rgba(75, 85, 99, 0.15)" />
+                <stop offset="100%" stopColor="rgba(31, 41, 55, 0.08)" />
               </linearGradient>
+
               <linearGradient
                 id="wave-gradient-3"
                 x1="0%"
@@ -496,21 +582,50 @@ export default function Home() {
                 x2="100%"
                 y2="100%"
               >
-                <stop offset="0%" stopColor="rgba(124, 58, 237, 0.10)" />
-                <stop offset="50%" stopColor="rgba(139, 92, 246, 0.05)" />
-                <stop offset="100%" stopColor="rgba(168, 85, 247, 0.12)" />
+                <stop offset="0%" stopColor="rgba(31, 41, 55, 0.12)" />
+                <stop offset="50%" stopColor="rgba(55, 65, 81, 0.18)" />
+                <stop offset="100%" stopColor="rgba(17, 24, 39, 0.10)" />
+              </linearGradient>
+
+              <linearGradient
+                id="stroke-gradient-1"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
+              >
+                <stop offset="0%" stopColor="rgba(156, 163, 175, 0.0)" />
+                <stop offset="30%" stopColor="rgba(156, 163, 175, 0.15)" />
+                <stop offset="70%" stopColor="rgba(156, 163, 175, 0.15)" />
+                <stop offset="100%" stopColor="rgba(156, 163, 175, 0.0)" />
+              </linearGradient>
+
+              <linearGradient
+                id="stroke-gradient-2"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="0%"
+              >
+                <stop offset="0%" stopColor="rgba(107, 114, 128, 0.0)" />
+                <stop offset="25%" stopColor="rgba(107, 114, 128, 0.18)" />
+                <stop offset="75%" stopColor="rgba(107, 114, 128, 0.18)" />
+                <stop offset="100%" stopColor="rgba(107, 114, 128, 0.0)" />
               </linearGradient>
             </defs>
 
-            {/* Wave paths */}
+            {/* Elegant topographic contour lines */}
             <motion.path
-              d="M0,400 Q300,200 600,350 T1200,300 L1200,800 L0,800 Z"
-              fill="url(#wave-gradient)"
+              d="M-100,150 Q200,120 500,160 T1100,140 Q1200,135 1300,140"
+              stroke="url(#stroke-gradient-1)"
+              strokeWidth="1.5"
+              fill="none"
+              strokeLinecap="round"
               animate={{
                 d: [
-                  "M0,400 Q300,200 600,350 T1200,300 L1200,800 L0,800 Z",
-                  "M0,450 Q300,250 600,400 T1200,350 L1200,800 L0,800 Z",
-                  "M0,400 Q300,200 600,350 T1200,300 L1200,800 L0,800 Z",
+                  "M-100,150 Q200,120 500,160 T1100,140 Q1200,135 1300,140",
+                  "M-100,160 Q200,130 500,170 T1100,150 Q1200,145 1300,150",
+                  "M-100,150 Q200,120 500,160 T1100,140 Q1200,135 1300,140",
                 ],
               }}
               transition={{
@@ -521,13 +636,16 @@ export default function Home() {
             />
 
             <motion.path
-              d="M0,500 Q400,300 800,450 T1200,400 L1200,800 L0,800 Z"
-              fill="url(#wave-gradient-2)"
+              d="M-150,200 Q250,170 550,210 T1150,190 Q1250,185 1350,190"
+              stroke="url(#stroke-gradient-2)"
+              strokeWidth="1.2"
+              fill="none"
+              strokeLinecap="round"
               animate={{
                 d: [
-                  "M0,500 Q400,300 800,450 T1200,400 L1200,800 L0,800 Z",
-                  "M0,550 Q400,350 800,500 T1200,450 L1200,800 L0,800 Z",
-                  "M0,500 Q400,300 800,450 T1200,400 L1200,800 L0,800 Z",
+                  "M-150,200 Q250,170 550,210 T1150,190 Q1250,185 1350,190",
+                  "M-150,210 Q250,180 550,220 T1150,200 Q1250,195 1350,200",
+                  "M-150,200 Q250,170 550,210 T1150,190 Q1250,185 1350,190",
                 ],
               }}
               transition={{
@@ -539,13 +657,16 @@ export default function Home() {
             />
 
             <motion.path
-              d="M0,600 Q500,400 1000,550 T1200,500 L1200,800 L0,800 Z"
-              fill="url(#wave-gradient-3)"
+              d="M-200,250 Q300,220 600,260 T1200,240 Q1300,235 1400,240"
+              stroke="rgba(156, 163, 175, 0.12)"
+              strokeWidth="1"
+              fill="none"
+              strokeLinecap="round"
               animate={{
                 d: [
-                  "M0,600 Q500,400 1000,550 T1200,500 L1200,800 L0,800 Z",
-                  "M0,650 Q500,450 1000,600 T1200,550 L1200,800 L0,800 Z",
-                  "M0,600 Q500,400 1000,550 T1200,500 L1200,800 L0,800 Z",
+                  "M-200,250 Q300,220 600,260 T1200,240 Q1300,235 1400,240",
+                  "M-200,260 Q300,230 600,270 T1200,250 Q1300,245 1400,250",
+                  "M-200,250 Q300,220 600,260 T1200,240 Q1300,235 1400,240",
                 ],
               }}
               transition={{
@@ -556,85 +677,64 @@ export default function Home() {
               }}
             />
 
-            {/* Additional floating curved lines with balanced visibility */}
             <motion.path
-              d="M-100,100 Q300,50 700,150 T1300,100"
-              stroke="rgba(168, 85, 247, 0.20)"
-              strokeWidth="2.5"
+              d="M-100,300 Q350,270 700,310 T1300,290"
+              stroke="rgba(107, 114, 128, 0.10)"
+              strokeWidth="0.8"
               fill="none"
               strokeLinecap="round"
               animate={{
                 d: [
-                  "M-100,100 Q300,50 700,150 T1300,100",
-                  "M-100,120 Q300,70 700,170 T1300,120",
-                  "M-100,100 Q300,50 700,150 T1300,100",
+                  "M-100,300 Q350,270 700,310 T1300,290",
+                  "M-100,310 Q350,280 700,320 T1300,300",
+                  "M-100,300 Q350,270 700,310 T1300,290",
                 ],
               }}
               transition={{
-                duration: 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-
-            <motion.path
-              d="M-100,200 Q400,150 800,250 T1300,200"
-              stroke="rgba(147, 51, 234, 0.18)"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-              animate={{
-                d: [
-                  "M-100,200 Q400,150 800,250 T1300,200",
-                  "M-100,220 Q400,170 800,270 T1300,220",
-                  "M-100,200 Q400,150 800,250 T1300,200",
-                ],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1.5,
-              }}
-            />
-
-            <motion.path
-              d="M-100,300 Q500,250 900,350 T1300,300"
-              stroke="rgba(124, 58, 237, 0.15)"
-              strokeWidth="1.8"
-              fill="none"
-              strokeLinecap="round"
-              animate={{
-                d: [
-                  "M-100,300 Q500,250 900,350 T1300,300",
-                  "M-100,320 Q500,270 900,370 T1300,320",
-                  "M-100,300 Q500,250 900,350 T1300,300",
-                ],
-              }}
-              transition={{
-                duration: 10,
+                duration: 14,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: 3,
               }}
             />
 
-            {/* Additional upper waves for more depth */}
             <motion.path
-              d="M-200,50 Q200,20 600,80 T1400,60"
-              stroke="rgba(139, 92, 246, 0.13)"
-              strokeWidth="1.5"
+              d="M-250,350 Q400,320 800,360 T1450,340"
+              stroke="rgba(75, 85, 99, 0.08)"
+              strokeWidth="0.6"
               fill="none"
               strokeLinecap="round"
               animate={{
                 d: [
-                  "M-200,50 Q200,20 600,80 T1400,60",
-                  "M-200,70 Q200,40 600,100 T1400,80",
-                  "M-200,50 Q200,20 600,80 T1400,60",
+                  "M-250,350 Q400,320 800,360 T1450,340",
+                  "M-250,360 Q400,330 800,370 T1450,350",
+                  "M-250,350 Q400,320 800,360 T1450,340",
                 ],
               }}
               transition={{
-                duration: 7,
+                duration: 16,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 4,
+              }}
+            />
+
+            {/* Additional subtle upper contours */}
+            <motion.path
+              d="M-50,80 Q150,60 350,90 T750,70 Q950,65 1150,70"
+              stroke="rgba(156, 163, 175, 0.06)"
+              strokeWidth="0.8"
+              fill="none"
+              strokeLinecap="round"
+              animate={{
+                d: [
+                  "M-50,80 Q150,60 350,90 T750,70 Q950,65 1150,70",
+                  "M-50,85 Q150,65 350,95 T750,75 Q950,70 1150,75",
+                  "M-50,80 Q150,60 350,90 T750,70 Q950,65 1150,70",
+                ],
+              }}
+              transition={{
+                duration: 9,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: 0.5,
@@ -642,23 +742,23 @@ export default function Home() {
             />
 
             <motion.path
-              d="M-150,120 Q350,90 750,140 T1350,120"
-              stroke="rgba(168, 85, 247, 0.11)"
-              strokeWidth="1.7"
+              d="M-120,120 Q180,100 380,130 T780,110 Q980,105 1180,110"
+              stroke="rgba(107, 114, 128, 0.05)"
+              strokeWidth="0.6"
               fill="none"
               strokeLinecap="round"
               animate={{
                 d: [
-                  "M-150,120 Q350,90 750,140 T1350,120",
-                  "M-150,140 Q350,110 750,160 T1350,140",
-                  "M-150,120 Q350,90 750,140 T1350,120",
+                  "M-120,120 Q180,100 380,130 T780,110 Q980,105 1180,110",
+                  "M-120,125 Q180,105 380,135 T780,115 Q980,110 1180,115",
+                  "M-120,120 Q180,100 380,130 T780,110 Q980,105 1180,110",
                 ],
               }}
               transition={{
-                duration: 9,
+                duration: 11,
                 repeat: Infinity,
                 ease: "easeInOut",
-                delay: 2.5,
+                delay: 1.5,
               }}
             />
           </svg>
@@ -673,24 +773,32 @@ export default function Home() {
           >
             {/* Static Main Title */}
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-6 sm:mb-8 leading-tight"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold mb-6 sm:mb-8 leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
               <span className="text-white">Hi! I&apos;m </span>
-              <span className="text-purple-400">Can</span>
+              <span className="text-[#747cec]">Can</span>
             </motion.h1>
 
-            {/* Typewriter Subtitle */}
+            {/* Typewriter Subtitle - Fixed Animation */}
             <motion.div
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-6 sm:mb-10 text-gray-200 font-semibold h-[1.2em] flex items-center justify-center lg:justify-start"
+              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-6 sm:mb-10 text-gray-200 font-semibold h-[1.5em] flex items-center justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <span className="text-gray-400">{currentText}</span>
-              <span className="animate-pulse text-gray-400 ml-1">|</span>
+              <span className="text-gray-400 min-h-[1.2em] flex items-center">
+                {currentText}
+                <span
+                  className={`ml-1 transition-opacity duration-100 ${
+                    currentText ? "animate-pulse" : "animate-pulse opacity-100"
+                  }`}
+                >
+                  |
+                </span>
+              </span>
             </motion.div>
 
             <motion.p
@@ -766,10 +874,7 @@ export default function Home() {
             variants={fadeInUp}
             className="text-center mb-12 sm:mb-16"
           >
-            <p className="text-purple-400 text-xs sm:text-sm uppercase tracking-widest mb-3 sm:mb-4">
-              ABOUT ME
-            </p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8">
+            <h2 className="text-3xl sm:text-4xl lg:text-7xl font-extrabold mb-6 sm:mb-8">
               About me
             </h2>
           </motion.div>
@@ -777,7 +882,7 @@ export default function Home() {
           {/* About Text */}
           <motion.div
             variants={fadeInUp}
-            className="w-full max-w-6xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20"
+            className="w-full max-w-6xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20 font-raleway"
           >
             <div className="space-y-4 sm:space-y-6">
               <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
@@ -811,7 +916,7 @@ export default function Home() {
               variants={fadeInUp}
               className="text-center mb-8 sm:mb-12"
             >
-              <h2 className="text-xl sm:text-2xl font-bold text-white">
+              <h2 className="text-2xl sm:text-2xl lg:text-4xl font-bold text-white">
                 Education
               </h2>
             </motion.div>
@@ -824,8 +929,8 @@ export default function Home() {
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2, duration: 0.6 }}
-                    className="bg-white/5 backdrop-blur-lg rounded-2xl p-4 sm:p-6 border border-purple-500/20 shadow-lg shadow-purple-500/10"
+                    transition={{ delay: index * 0.1, duration: 0.6 }}
+                    className="bg-[#1f1f21] backdrop-blur-lg rounded-2xl p-4 sm:p-6 border-2 border-[#27272d] shadow-lg shadow-purple-500/10"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -853,7 +958,7 @@ export default function Home() {
                         <p className="text-gray-400 text-xs leading-tight">
                           {school.duration}
                         </p>
-                        <p className="text-purple-400 text-xs font-medium">
+                        <p className="text-[#959bf5] text-xs font-medium">
                           {school.totalDuration}
                         </p>
                       </div>
@@ -862,7 +967,7 @@ export default function Home() {
                     <h4 className="text-base sm:text-lg font-semibold text-white mb-2 leading-tight">
                       {school.institution}
                     </h4>
-                    <p className="text-purple-400 text-sm mb-3">
+                    <p className="text-[#959bf5] text-sm mb-3">
                       {school.program}
                     </p>
                     <p className="text-gray-300 text-sm leading-relaxed">
@@ -907,10 +1012,10 @@ export default function Home() {
                     ].map((school, index) => (
                       <div
                         key={index}
-                        className="bg-white/5 backdrop-blur-lg rounded-3xl p-6 border border-purple-500/20 flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
+                        className="bg-[#1f1f21] backdrop-blur-lg rounded-3xl p-6 border-2 border-[#27272d] flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
                       >
                         <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                          <div className="w-10 h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center">
                             <svg
                               className="w-5 h-5 text-white"
                               fill="none"
@@ -935,7 +1040,7 @@ export default function Home() {
                             <p className="text-gray-400 text-xs">
                               {school.duration}
                             </p>
-                            <p className="text-purple-400 text-xs font-medium">
+                            <p className="text-[#959bf5] text-xs font-medium">
                               {school.totalDuration}
                             </p>
                           </div>
@@ -944,7 +1049,7 @@ export default function Home() {
                         <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
                           {school.institution}
                         </h4>
-                        <p className="text-purple-400 text-sm mb-3 whitespace-normal">
+                        <p className="text-[#959bf5] text-sm mb-3 whitespace-normal">
                           {school.program}
                         </p>
                         <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
@@ -965,17 +1070,14 @@ export default function Home() {
         id="skills"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         variants={staggerContainer}
         className="py-16 px-4 sm:px-6 lg:px-8 relative z-10 overflow-hidden bg-[#171717]"
       >
         <div className="max-w-7xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-12">
-            <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
-              MY SKILLS
-            </p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8">
-              Skills
+            <h2 className="text-3xl sm:text-4xl lg:text-7xl font-extrabold mb-8">
+              My Skills
             </h2>
           </motion.div>
 
@@ -984,15 +1086,15 @@ export default function Home() {
             variants={fadeInUp}
             className="flex justify-center mb-12 px-2"
           >
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-3 bg-white/5 backdrop-blur-lg rounded-xl sm:rounded-2xl max-w-full">
+            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-3 bg-[#1f1f21] backdrop-blur-lg rounded-xl sm:rounded-2xl max-w-full">
               {Object.keys(skillCategories).map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
                   className={`px-3 py-2 sm:px-6 sm:py-3 rounded-lg sm:rounded-xl font-medium text-sm sm:text-base transition-all duration-300 whitespace-nowrap ${
                     activeCategory === category
-                      ? "bg-purple-500 text-white shadow-lg shadow-purple-500/30"
-                      : "text-gray-300 hover:text-white hover:bg-white/10"
+                      ? "bg-[#525bce]/50 text-white font-bold"
+                      : "text-gray-300 hover:text-white hover:bg-[#2b2b2f]"
                   }`}
                 >
                   {category}
@@ -1013,68 +1115,6 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Work Experience Section */}
-      <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: false, amount: 0.3 }}
-        variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
-      >
-        <div className="max-w-6xl mx-auto">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <p className="text-purple-400 text-sm uppercase tracking-widest mb-4">
-              WHAT I HAVE DONE SO FAR
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-bold">Work Experience.</h2>
-          </motion.div>
-
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-purple-500 to-blue-500"></div>
-
-            <div className="space-y-12">
-              {workExperience.map((exp, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  className="relative pl-20"
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-6 w-4 h-4 bg-purple-500 rounded-full border-4 border-black"></div>
-
-                  {/* Date */}
-                  <div className="absolute left-24 top-0 text-sm text-purple-400 font-medium">
-                    {exp.duration}
-                  </div>
-
-                  {/* Content */}
-                  <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-8 border border-purple-500/20 mt-8">
-                    <h3 className="text-2xl font-bold text-white mb-2">
-                      {exp.position}
-                    </h3>
-                    <p className="text-purple-400 text-lg mb-6">
-                      {exp.company}
-                    </p>
-                    <ul className="space-y-3">
-                      {exp.responsibilities.map((responsibility, idx) => (
-                        <li
-                          key={idx}
-                          className="text-gray-300 flex items-start"
-                        >
-                          <span className="text-purple-400 mr-3 mt-1">•</span>
-                          <span>{responsibility}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.section>
-
       {/* Projects Section */}
       <motion.section
         id="projects"
@@ -1086,10 +1126,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-16">
-            <p className="text-[#A855F7] text-sm uppercase tracking-widest mb-4">
-              MY WORK
-            </p>
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-8">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-8">
               Recent Projects
             </h2>
           </motion.div>
@@ -1108,7 +1145,13 @@ export default function Home() {
                 {/* Left Side - Icons and Content */}
                 <div className="pt-0 -mt-25 pb-8 pl-10 py-8 pr-8">
                   {/* GitHub and Demo Icons */}
-                  <div className="flex items-center gap-4 ml-5">
+                  <motion.div
+                    className="flex items-center gap-4 ml-5"
+                    initial={{ opacity: 0, y: -30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 * index + 0.2, duration: 0.5 }}
+                    viewport={{ once: true }}
+                  >
                     <a
                       href={project.url}
                       target="_blank"
@@ -1140,37 +1183,51 @@ export default function Home() {
                         </svg>
                       </a>
                     )}
-                  </div>
+                  </motion.div>
 
                   {/* Project Title */}
-                  <h3 className="text-5xl font-bold text-white leading-tight mt-10">
+                  <motion.h3
+                    className="text-3xl sm:text-2xl lg:text-5xl font-bold text-white leading-tight mt-10"
+                    initial={{ opacity: 0, x: -50 }} // dari kiri
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 * index + 0.4, duration: 0.5 }}
+                    viewport={{ once: true }}
+                  >
                     {project.name}
-                  </h3>
+                  </motion.h3>
 
                   {/* Project Description */}
-                  <p className="text-[#A0A0A0] text-sm font-bold leading-relaxed mt-4">
+                  <motion.p
+                    className="text-[#A0A0A0] text-sm font-bold leading-relaxed mt-4"
+                    initial={{ opacity: 0, x: 50 }} // dari kanan
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 * index + 0.6, duration: 0.5 }}
+                    viewport={{ once: true }}
+                  >
                     {project.description}
-                  </p>
+                  </motion.p>
 
                   {/* Tech Stack */}
-                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-4">
+                  <motion.div
+                    className="flex flex-wrap gap-x-3 gap-y-2 mt-4"
+                    initial={{ opacity: 0, y: -30 }} // dari atas
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 * index + 0.8, duration: 0.5 }}
+                    viewport={{ once: true }}
+                  >
                     {project.tech.map((tech, techIndex) => (
                       <span
                         key={techIndex}
-                        className="text-[#A0A0A0] text-sm font-medium"
+                        className="bg-[#36363b] rounded-lg px-2 py-1 text-[#A0A0A0] text-xs font-medium cursor-pointer hover:bg-[#484850] transition-colors duration-300"
                       >
                         {tech}
-                        {techIndex < project.tech.length - 1 && (
-                          <span className="ml-3 text-[#8742c7]">•</span>
-                        )}
                       </span>
                     ))}
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Right Side - Project Image */}
-                <div className="h-full flex items-stretch p-0 m-0">
-                  {/* pastikan tidak ada padding/margin */}
+                <div className="hidden lg:flex h-full items-stretch p-0 m-0">
                   <div className="w-full h-full relative rounded overflow-hidden shadow-2xl">
                     <Image
                       src={project.image}
@@ -1185,16 +1242,19 @@ export default function Home() {
           </motion.div>
 
           {/* Load More Button */}
-          <motion.div variants={fadeInUp} className="text-center mt-20">
-            <h3 className="text-gray-100 text-3xl font-extrabold mb-5 tracking-widest ">
+          <motion.div variants={fadeInUp} className="text-center mt-20 ">
+            <h3 className="text-gray-100 sm:text-2xl lg:text-3xl font-extrabold mb-5 tracking-widest ">
               See other project
             </h3>
             <MagneticEffect>
-              <Link
-                href="/projects"
-                className="inline-flex items-center gap-2 bg-[#242424] text-white px-8 py-4 rounded-lg  hover:bg-[#3D3D3D] transition-all duration-300 font-medium"
+              <button
+                onClick={handleLoadMore}
+                disabled={isNavigating}
+                className={`inline-flex items-center gap-2 bg-[#242424] text-white px-8 py-4 rounded-lg hover:bg-[#3D3D3D] transition-all duration-300 font-medium cursor-pointer ${
+                  isNavigating ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
-                <span>Load More</span>
+                <span>{isNavigating ? "Loading..." : "Load More"}</span>
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -1208,9 +1268,85 @@ export default function Home() {
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
-              </Link>
+              </button>
             </MagneticEffect>
           </motion.div>
+        </div>
+      </motion.section>
+
+      {/* Work Experience Section */}
+      <motion.section
+        initial="initial"
+        whileInView="animate"
+        viewport={{ once: true, amount: 0.3 }}
+        variants={staggerContainer}
+        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
+      >
+        <div className="max-w-6xl mx-auto">
+          <motion.div variants={fadeInUp} className="text-center mb-16">
+            <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold text-white">
+              Work Experience
+            </h2>
+          </motion.div>
+
+          <div className="relative">
+            {/* Timeline line */}
+            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#555ee7]/80 via-[#555ee7]/80 to-transparent"></div>
+
+            <div className="space-y-12">
+              {workExperience.map((exp, index) => (
+                <motion.div
+                  key={index}
+                  variants={fadeInUp}
+                  className="relative pl-20"
+                >
+                  {/* Timeline dot */}
+                  <div className="absolute left-6 w-5 h-5 bg-[#555ee7]/80 rounded-full border-4 border-[#171717] shadow-lg shadow-purple-500/50"></div>
+
+                  {/* Content card */}
+                  <div className="bg-[#1f1f21] rounded-2xl p-8 border-2 border-[#27272d] hover:border-[#313138] transition-all duration-300 mt-8 relative overflow-hidden">
+                    {/* Subtle gradient overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-2xl pointer-events-none"></div>
+
+                    {/* Duration - Top Right */}
+                    <div className="absolute top-6 right-6 text-[#959bf5] text-xs font-semibold px-3 py-1 rounded-md backdrop-blur-sm z-20">
+                      {exp.duration}
+                    </div>
+
+                    {/* Header section */}
+                    <div className="relative z-10 mb-6">
+                      <div className="flex items-start justify-between mb-2">
+                        <h3 className="text-2xl font-bold text-gray mb-1">
+                          {exp.position}
+                        </h3>
+                      </div>
+                      <p className="text-[#959bf5] text-lg font-medium mb-4">
+                        {exp.company}
+                      </p>
+                    </div>
+
+                    {/* Responsibilities */}
+                    <div className="relative z-10">
+                      <h4 className="text-gray-300 font-semibold mb-4 text-sm uppercase tracking-wide">
+                        Key Responsibilities
+                      </h4>
+                      <ul className="space-y-3">
+                        {exp.responsibilities.map((responsibility, idx) => (
+                          <li
+                            key={idx}
+                            className="text-gray-300 flex items-start leading-relaxed"
+                          >
+                            <div className="w-2 h-2 bg-white/50 rounded-full mt-2 mr-4 flex-shrink-0"></div>
+                            <span className="text-sm">{responsibility}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </div>
       </motion.section>
 
@@ -1218,14 +1354,14 @@ export default function Home() {
       <motion.section
         initial="initial"
         whileInView="animate"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         variants={staggerContainer}
         className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 mb-10 bg-[#171717]"
       >
         <div className="max-w-6xl mx-auto">
           <motion.h2
             variants={fadeInUp}
-            className="text-4xl font-bold text-center mb-16"
+            className="text-4xl sm:text-4xl lg:text-5xl font-extrabold text-center mb-16"
           >
             Certifications
           </motion.h2>
@@ -1241,7 +1377,7 @@ export default function Home() {
               {certificates.map((cert, index) => (
                 <div
                   key={index}
-                  className="bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-green-600/20 hover:border-green-600/50 transition-all duration-300 mx-2 h-full"
+                  className="bg-[#1f1f21] backdrop-blur-lg rounded-2xl p-6 border-2 border-[#27272d] hover:border-[#313138] transition-all duration-300 mx-2 h-full"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center">

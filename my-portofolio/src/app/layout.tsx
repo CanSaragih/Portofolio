@@ -1,16 +1,17 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Poppins } from "next/font/google";
-import "./globals.css";
+import { usePathname } from "next/navigation";
+import { Kanit } from "next/font/google";
 import ScrollWrapper from "@/components/ScrollWrapper";
-import { Preloader } from "@/components/Preloader";
 import { Toaster } from "react-hot-toast";
+import LoadingScreen from "@/components/LoadingScreen";
+import "./globals.css";
 
-const poppins = Poppins({
+const kanit = Kanit({
   subsets: ["latin"],
-  variable: "--font-poppins",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-prompt",
   display: "swap",
 });
 
@@ -19,74 +20,57 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [showContent, setShowContent] = useState(false);
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
 
-  // Ensure hydration consistency
   useEffect(() => {
     setMounted(true);
-  }, []);
 
-  const handlePreloaderComplete = () => {
-    setIsLoading(false);
-    setTimeout(() => {
-      setShowContent(true);
-    }, 100);
-  };
+    const handleError = (event: ErrorEvent) => {
+      console.error("Global error caught:", event.error);
+      event.preventDefault();
+    };
 
-  useEffect(() => {
-    if (isLoading) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      console.error("Unhandled promise rejection:", event.reason);
+      event.preventDefault();
+    };
+
+    window.addEventListener("error", handleError);
+    window.addEventListener("unhandledrejection", handleUnhandledRejection);
 
     return () => {
-      document.body.style.overflow = "unset";
+      window.removeEventListener("error", handleError);
+      window.removeEventListener(
+        "unhandledrejection",
+        handleUnhandledRejection
+      );
     };
-  }, [isLoading]);
-
-  // Force favicon update function
-  const updateFavicon = () => {
-    // Remove existing favicon links
-    const existingLinks = document.querySelectorAll('link[rel*="icon"]');
-    existingLinks.forEach((link) => link.remove());
-
-    // Add new favicon links
-    const iconUrls = [
-      { rel: "icon", type: "image/png", href: "/icon-tab.png?v=3" },
-      { rel: "shortcut icon", type: "image/png", href: "/icon-tab.png?v=3" },
-      { rel: "apple-touch-icon", href: "/icon-tab.png?v=3" },
-      {
-        rel: "icon",
-        sizes: "32x32",
-        type: "image/png",
-        href: "/icon-tab.png?v=3",
-      },
-      {
-        rel: "icon",
-        sizes: "16x16",
-        type: "image/png",
-        href: "/icon-tab.png?v=3",
-      },
-    ];
-
-    iconUrls.forEach((icon) => {
-      const link = document.createElement("link");
-      Object.assign(link, icon);
-      document.head.appendChild(link);
-    });
-  };
+  }, [pathname]);
 
   useEffect(() => {
-    if (mounted && !isLoading) {
-      // Force update favicon after preloader
-      setTimeout(updateFavicon, 100);
-    }
-  }, [mounted, isLoading]);
+    if (!mounted) return;
+    const updateFavicon = () => {
+      const iconUrls = [
+        { rel: "icon", href: "/icon-tab.png?v=3" },
+        { rel: "shortcut icon", href: "/icon-tab.png?v=3" },
+        { rel: "apple-touch-icon", href: "/icon-tab.png?v=3" },
+        { rel: "icon", sizes: "32x32", href: "/icon-tab.png?v=3" },
+        { rel: "icon", sizes: "16x16", href: "/icon-tab.png?v=3" },
+      ];
+      document
+        .querySelectorAll('link[rel*="icon"]')
+        .forEach((link) => link.remove());
+      iconUrls.forEach((icon) => {
+        const link = document.createElement("link");
+        Object.assign(link, { ...icon, type: "image/png" });
+        document.head.appendChild(link);
+      });
+    };
 
-  // Icon configuration - consistent untuk semua state
+    updateFavicon();
+  }, [mounted]);
+
   const iconLinks = (
     <>
       <link rel="icon" href="/icon-tab.png?v=3" type="image/png" />
@@ -108,7 +92,6 @@ export default function RootLayout({
     </>
   );
 
-  // Render loading state sampai mounted
   if (!mounted) {
     return (
       <html lang="en" suppressHydrationWarning>
@@ -118,12 +101,10 @@ export default function RootLayout({
           {iconLinks}
         </head>
         <body
-          className={`${poppins.variable} font-sans antialiased`}
+          className={`${kanit.variable} font-sans antialiased`}
           suppressHydrationWarning
         >
-          <div className="min-h-screen bg-black flex items-center justify-center">
-            <div className="text-white">Loading...</div>
-          </div>
+          <LoadingScreen />
         </body>
       </html>
     );
@@ -137,17 +118,9 @@ export default function RootLayout({
         {iconLinks}
       </head>
       <body
-        className={`${poppins.variable} font-sans antialiased`}
-        style={{ fontFamily: "var(--font-poppins), system-ui, sans-serif" }}
+        className={`${kanit.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        {isLoading && (
-          <Preloader
-            onComplete={handlePreloaderComplete}
-            duration={3200}
-            loaderText="Welcome to Can Saragih's Portfolio Website"
-          />
-        )}
         <Toaster
           position="top-center"
           toastOptions={{
@@ -156,10 +129,11 @@ export default function RootLayout({
               margin: 0,
               padding: "12px 16px",
               maxWidth: "90vw",
+              fontFamily: "var(--font-sevillana)",
             },
           }}
         />
-        {showContent && <ScrollWrapper>{children}</ScrollWrapper>}
+        <ScrollWrapper>{children}</ScrollWrapper>
       </body>
     </html>
   );

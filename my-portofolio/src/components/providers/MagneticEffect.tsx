@@ -14,8 +14,10 @@ export default function MagneticEffect({
   children,
   className = "",
   strength = 0.3,
+  disabled = false,
 }: MagneticEffectProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const isMountedRef = useRef(true);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -25,8 +27,14 @@ export default function MagneticEffect({
   const ySpring = useSpring(y, springConfig);
 
   useEffect(() => {
+    isMountedRef.current = true;
+
+    if (disabled) return;
+
     const calculateDistance = (e: MouseEvent) => {
-      if (ref.current) {
+      if (!isMountedRef.current || !ref.current) return;
+
+      try {
         const rect = ref.current.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
@@ -34,27 +42,62 @@ export default function MagneticEffect({
         const distanceY = e.clientY - centerY;
 
         // Apply magnetic effect with strength multiplier
-        x.set(distanceX * strength);
-        y.set(distanceY * strength);
+        if (isMountedRef.current) {
+          x.set(distanceX * strength);
+          y.set(distanceY * strength);
+        }
+      } catch (error) {
+        // Ignore errors during cleanup
+        console.log(error);
       }
     };
 
     const resetPosition = () => {
-      x.set(0);
-      y.set(0);
+      if (!isMountedRef.current) return;
+
+      try {
+        if (isMountedRef.current) {
+          x.set(0);
+          y.set(0);
+        }
+      } catch (error) {
+        console.log(error);
+
+        // Ignore errors during cleanup
+      }
     };
 
     const element = ref.current;
-    if (element) {
-      element.addEventListener("mousemove", calculateDistance);
-      element.addEventListener("mouseleave", resetPosition);
+    if (element && isMountedRef.current) {
+      element.addEventListener("mousemove", calculateDistance, {
+        passive: true,
+      });
+      element.addEventListener("mouseleave", resetPosition, { passive: true });
 
       return () => {
-        element.removeEventListener("mousemove", calculateDistance);
-        element.removeEventListener("mouseleave", resetPosition);
+        isMountedRef.current = false;
+        try {
+          if (element) {
+            element.removeEventListener("mousemove", calculateDistance);
+            element.removeEventListener("mouseleave", resetPosition);
+          }
+        } catch (error) {
+          console.log(error);
+
+          // Ignore cleanup errors
+        }
       };
     }
-  }, [x, y, strength]);
+
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, [x, y, strength, disabled]);
+
+  // Early return for disabled state
+  if (disabled) {
+    return <div className={className}>{children}</div>;
+  }
 
   return (
     <motion.div
