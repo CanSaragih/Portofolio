@@ -636,7 +636,9 @@ export default function Home() {
 
       <ChatBox />
       <Nav />
-      <DockBtn className="fixed bottom-7 left-1/2 -translate-x-1/2 z-50" />
+      <div className="hidden sm:flex transition-opacity duration-300">
+        <DockBtn className="fixed bottom-7 left-1/2 -translate-x-1/2 z-50" />
+      </div>
 
       {/* Hero Section */}
       <motion.section

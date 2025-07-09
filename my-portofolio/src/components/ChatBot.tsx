@@ -2,12 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaRobot, FaUser } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useTypewriterEffect } from "../hooks/useTypewriterEffect";
 
 interface Message {
   id: string;
   content: string;
   isUser: boolean;
   timestamp: Date;
+  isTyping?: boolean;
 }
 
 const formatMessageContent = (content: string) => {
@@ -42,6 +44,26 @@ const renderFormattedText = (text: string) => {
   });
 };
 
+const TypewriterMessage = ({ content }: { content: string }) => {
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  const { displayedText } = useTypewriterEffect({
+    text: content,
+    delay: 15,
+  });
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [displayedText]);
+
+  return (
+    <span className="text-sm leading-relaxed whitespace-pre-wrap">
+      {renderFormattedText(displayedText)}
+      <div ref={messageEndRef} />
+    </span>
+  );
+};
+
 export function ChatBox() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -50,6 +72,7 @@ export function ChatBox() {
   const [isLoading, setIsLoading] = useState(false);
   const [messageCounter, setMessageCounter] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [typingMessageId, setTypingMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,7 +94,6 @@ export function ChatBox() {
   const handleSendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
-    // Generate ID menggunakan counter untuk menghindari Date.now()
     const userMessageId = `user-${messageCounter}`;
     setMessageCounter((prev) => prev + 1);
 
@@ -95,7 +117,6 @@ export function ChatBox() {
 
       const data = await response.json();
 
-      // Generate ID untuk bot message
       const botMessageId = `bot-${messageCounter + 1}`;
       setMessageCounter((prev) => prev + 1);
 
@@ -104,9 +125,16 @@ export function ChatBox() {
         content: formatMessageContent(data.response),
         isUser: false,
         timestamp: new Date(),
+        isTyping: true,
       };
 
       setMessages((prev) => [...prev, botMessage]);
+      setTypingMessageId(botMessageId);
+
+      // Remove typing indicator after typewriter completes
+      setTimeout(() => {
+        setTypingMessageId(null);
+      }, data.response.length * 25 + 500);
     } catch (error) {
       console.error("Error sending message:", error);
 
@@ -302,11 +330,17 @@ export function ChatBox() {
                         : "bg-white text-slate-800 border border-slate-100 rounded-bl-sm"
                     }`}
                   >
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                      {message.isUser
-                        ? message.content
-                        : renderFormattedText(message.content)}
-                    </p>
+                    {message.isUser ? (
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {message.content}
+                      </p>
+                    ) : message.isTyping && typingMessageId === message.id ? (
+                      <TypewriterMessage content={message.content} />
+                    ) : (
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {renderFormattedText(message.content)}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))
