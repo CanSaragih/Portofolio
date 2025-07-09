@@ -362,11 +362,13 @@ export function ChatBox() {
                 </button>
                 <button
                   onClick={() =>
-                    handleChipClick("What tech stack does he use?")
+                    handleChipClick(
+                      "Can you explain how to create the My Skills section?"
+                    )
                   }
                   className="px-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm whitespace-nowrap cursor-pointer"
                 >
-                  What tech stack does he use?
+                  Can you explain how to create the My Skills section?
                 </button>
                 <button
                   onClick={() =>

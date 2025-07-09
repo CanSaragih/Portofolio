@@ -11,7 +11,7 @@ export const Separator: React.FC<SeparatorProps> = ({
   orientation = "horizontal",
   className = "",
 }) => {
-  const baseClasses = "bg-purple-500/20";
+  const baseClasses = "bg-zinc-700/80";
   const orientationClasses =
     orientation === "horizontal" ? "h-[1px] w-full" : "w-[1px] h-full";
 

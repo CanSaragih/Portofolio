@@ -127,14 +127,14 @@ export default function NavMenu() {
       <div
         ref={menuRef}
         className={cn(
-          "nav-menu pointer-events-auto fixed right-0 top-0 flex h-screen translate-x-[100%] flex-col justify-between bg-zinc-800 pb-8 md:pb-12 pt-16 md:pt-[clamp(3.5rem,10vh,5rem)] text-white will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200 dark:text-zinc-800 z-50",
+          "nav-menu pointer-events-auto fixed right-0 top-0 flex h-screen translate-x-[100%] flex-col justify-between bg-zinc-200 pb-8 md:pb-12 pt-16 md:pt-[clamp(3.5rem,10vh,5rem)] text-zinc-800 will-change-transform [-webkit-perspective:1000] z-50",
           // Responsive width - full width on mobile except small margin, fixed width on desktop
           "w-[calc(100vw-2rem)] max-w-[500px] sm:w-[400px] md:w-[450px] lg:w-[500px]",
           // Responsive text sizes
           "text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
         )}
       >
-        <div className="nav-rounded absolute left-0 top-[-10%] z-[-1] h-[120%] w-[80%] -translate-x-1/2 rounded-[100%_100%] bg-zinc-800 will-change-transform [-webkit-perspective:1000] dark:bg-zinc-200"></div>
+        <div className="nav-rounded absolute left-0 top-[-10%] z-[-1] h-[120%] w-[80%] -translate-x-1/2 rounded-[100%_100%] bg-zinc-200 will-change-transform [-webkit-perspective:1000]"></div>
 
         <div>
           <NavMenuLine title={"Navigation"} />
@@ -229,7 +229,7 @@ export default function NavMenu() {
             <a
               href="/cv/Can Whardana Saragih.pdf"
               download
-              className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-base text-white dark:text-zinc-800 hover:text-purple-700 dark:hover:text-purple-800 transition-colors duration-300 group"
+              className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-base text-zinc-800 hover:text-zinc-500 transition-colors duration-300 group"
             >
               <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-y-[-2px] transition-transform duration-200 ease-out" />
               <span className="font-semibold">Download CV</span>

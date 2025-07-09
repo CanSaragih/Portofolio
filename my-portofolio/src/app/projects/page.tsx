@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import MagneticEffect from "@/components/providers/MagneticEffect";
+import { easeInOut } from "framer-motion";
+import { DockBtn } from "@/components/magicui/dockBtn";
 
 export default function ProjectsPage() {
   const [isNavigating, setIsNavigating] = useState(false);
@@ -152,7 +154,7 @@ export default function ProjectsPage() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: easeInOut,
       },
     },
   };
@@ -173,12 +175,14 @@ export default function ProjectsPage() {
         <div className="absolute inset-0 bg-[#171717]" />
       </div>
 
+      <DockBtn className="fixed bottom-7 left-1/2 -translate-x-1/2 z-50" />
+
       {/* Header */}
       <motion.section
         initial="initial"
         animate="animate"
         variants={staggerContainer}
-        className="pt-16 sm:pt-20 lg:pt-23 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 relative z-10"
+        className="pt-16 sm:pt-20 lg:pt-20 pb-12 sm:pb-16 lg:pb-20 px-4 sm:px-6 lg:px-8 relative z-10"
       >
         <div className="max-w-[1440px] mx-auto text-center">
           <motion.h1

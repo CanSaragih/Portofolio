@@ -12,6 +12,9 @@ import { ChatBox } from "@/components/ChatBot";
 import Image from "next/image";
 import Carousel from "@/components/Carousel";
 import MagneticEffect from "@/components/providers/MagneticEffect";
+import { ChevronsDown } from "lucide-react";
+import { easeInOut } from "framer-motion";
+import { DockBtn } from "@/components/magicui/dockBtn";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -19,6 +22,10 @@ export default function Home() {
   const [textIndex, setTextIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("Frontend");
   const [mounted, setMounted] = useState(false);
+  // Add new state for typewriter control
+  const [showCursor, setShowCursor] = useState(true);
+  const [typewriterStarted, setTypewriterStarted] = useState(false);
+
   const [backgroundParticles, setBackgroundParticles] = useState<
     Array<{ left: string; top: string }>
   >([]);
@@ -188,13 +195,15 @@ export default function Home() {
     ],
   };
 
-  // Typewriter effect with cleanup - Fixed version
+  // Improved Typewriter effect with better restart logic
   useEffect(() => {
-    if (!isMountedRef.current) return;
+    if (!mounted || !isMountedRef.current || !typewriterStarted) return;
 
     const currentFullText = typewriterTexts[textIndex];
-    const typeSpeed = isDeleting ? 75 : 150;
-    const pauseTime = 2000;
+
+    // Adjust typing speeds
+    const typeSpeed = isDeleting ? 50 : 100;
+    const pauseTime = isDeleting ? 500 : 2000;
 
     const timer = setTimeout(() => {
       if (!isMountedRef.current) return;
@@ -226,7 +235,103 @@ export default function Home() {
     const cleanup = () => clearTimeout(timer);
     animationRefs.current.push(cleanup);
     return cleanup;
-  }, [currentText, isDeleting, textIndex, typewriterTexts]);
+  }, [
+    currentText,
+    isDeleting,
+    textIndex,
+    typewriterTexts,
+    mounted,
+    typewriterStarted,
+  ]);
+
+  // Cursor blinking effect
+  useEffect(() => {
+    if (!mounted) return;
+
+    const cursorTimer = setInterval(() => {
+      setShowCursor((prev) => !prev);
+    }, 500);
+
+    return () => clearInterval(cursorTimer);
+  }, [mounted]);
+
+  // Enhanced initialization with proper restart logic
+  useEffect(() => {
+    // Reset isMountedRef on every mount
+    isMountedRef.current = true;
+
+    // Set initial state
+    setMounted(true);
+    setCurrentText("");
+    setIsDeleting(false);
+    setTextIndex(0);
+    setShowCursor(true);
+    setTypewriterStarted(false);
+
+    // Generate background particles
+    setBackgroundParticles(
+      Array.from({ length: 50 }, () => ({
+        left: Math.random() * 100 + "%",
+        top: Math.random() * 100 + "%",
+      }))
+    );
+
+    // Start typewriter with a delay to ensure proper initialization
+    const startTimer = setTimeout(() => {
+      if (isMountedRef.current) {
+        setTypewriterStarted(true);
+        // Start with first character
+        setCurrentText(typewriterTexts[0].substring(0, 1));
+      }
+    }, 500);
+
+    // Cleanup function
+    return () => {
+      clearTimeout(startTimer);
+      isMountedRef.current = false;
+      // Cleanup all running animations
+      animationRefs.current.forEach((cleanup) => {
+        try {
+          cleanup();
+        } catch (error) {
+          console.warn("Animation cleanup error:", error);
+        }
+      });
+      animationRefs.current = [];
+    };
+  }, [typewriterTexts]); // Empty dependency array to run only on mount/unmount
+
+  // Add a separate effect to handle page visibility changes
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (
+        document.visibilityState === "visible" &&
+        mounted &&
+        !typewriterStarted
+      ) {
+        // Restart typewriter when page becomes visible again
+        setTimeout(() => {
+          if (isMountedRef.current) {
+            setCurrentText("");
+            setIsDeleting(false);
+            setTextIndex(0);
+            setTypewriterStarted(true);
+            setTimeout(() => {
+              if (isMountedRef.current) {
+                setCurrentText(typewriterTexts[0].substring(0, 1));
+              }
+            }, 100);
+          }
+        }, 300);
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [mounted, typewriterStarted, typewriterTexts]);
 
   // Initialize component with cleanup - Enhanced version
   useEffect(() => {
@@ -459,7 +564,7 @@ export default function Home() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: easeInOut,
       },
     },
   };
@@ -531,6 +636,7 @@ export default function Home() {
 
       <ChatBox />
       <Nav />
+      <DockBtn className="fixed bottom-7 left-1/2 -translate-x-1/2 z-50" />
 
       {/* Hero Section */}
       <motion.section
@@ -789,11 +895,11 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <span className="text-gray-400 min-h-[1.2em] flex items-center">
-                {currentText}
+              <span className="text-[#b9bbd1] min-h-[1.2em] flex items-center">
+                {mounted && currentText}
                 <span
-                  className={`ml-1 transition-opacity duration-100 ${
-                    currentText ? "animate-pulse" : "animate-pulse opacity-100"
+                  className={`ml-1 text-[#b9bbd1] font-bold text-4xl transition-opacity duration-100 ${
+                    showCursor ? "opacity-100" : "opacity-0"
                   }`}
                 >
                   |
@@ -827,9 +933,17 @@ export default function Home() {
                   ease: "easeInOut",
                 }}
               >
-                <span className="mr-2 sm:mr-3 text-lg sm:text-xl md:text-2xl">
-                  ⬇
-                </span>
+                <motion.span
+                  animate={{ opacity: [1, 0.4, 1] }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                  className="mr-2 sm:mr-3"
+                >
+                  <ChevronsDown className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white" />
+                </motion.span>
                 <span className="font-medium">Scroll Down</span>
               </motion.div>
             </motion.div>
@@ -886,8 +1000,8 @@ export default function Home() {
           >
             <div className="space-y-4 sm:space-y-6">
               <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
-                Hi! I&apos;m Can Saragih, a passionate Frontend Developer with a
-                strong focus on crafting modern and responsive user interfaces
+                Hi!👋 I&apos;m Can Saragih, a passionate Frontend Developer with
+                a strong focus on crafting modern and responsive user interfaces
                 using React, Next.js, TypeScript, and Tailwind CSS. I love
                 building seamless user experiences and clean design systems that
                 not only look good but also perform efficiently.

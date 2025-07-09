@@ -49,8 +49,8 @@ export default function NavMenuSocial({
       target={title === "Email" ? "_self" : "_blank"}
       className={cn("group", classes)}
     >
-      <p className="text-zinc-200 dark:text-zinc-800">{title}</p>
-      <div className="h-[2px] w-full origin-center -translate-y-2 scale-x-0 rounded-full bg-zinc-200 transition group-hover:translate-y-0 group-hover:scale-x-100 dark:bg-zinc-800" />
+      <p className="text-zinc-800 dark:text-zinc-800">{title}</p>
+      <div className="h-[2px] w-full origin-center -translate-y-2 scale-x-0 rounded-full bg-zinc-800 transition group-hover:translate-y-0 group-hover:scale-x-100 dark:bg-zinc-800" />
     </Link>
   );
 }
