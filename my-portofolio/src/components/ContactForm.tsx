@@ -291,7 +291,7 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="bg-black text-white px-8 py-3 rounded-lg font-medium hover:bg-gray-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
+              className="bg-zinc-900 text-white px-8 py-3 rounded-lg font-medium hover:bg-zinc-800 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 cursor-pointer"
             >
               {isLoading ? (
                 <>
@@ -320,7 +320,7 @@ export default function ContactForm() {
               ) : (
                 <>
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-zinc-100"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"

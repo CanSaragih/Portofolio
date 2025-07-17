@@ -45,8 +45,8 @@ export default function NavMenuLink({
         className="group flex !w-full cursor-pointer items-center justify-between px-[clamp(1.25rem,3vw,2.5rem)] py-3"
         onClick={() => handleScroll()}
       >
-        <p className="text-zinc-700 dark:text-zinc-800">{title}</p>
-        <div className="h-3 w-3 origin-center scale-0 rounded-full bg-zinc-700 transition group-hover:scale-100 dark:bg-zinc-800" />
+        <p className="text-zinc-950/80 dark:text-zinc-800">{title}</p>
+        <div className="h-3 w-3 origin-center scale-0 rounded-full bg-zinc-950/80 transition group-hover:scale-100 dark:bg-zinc-800" />
       </div>
     </div>
   );

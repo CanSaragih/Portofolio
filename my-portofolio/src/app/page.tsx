@@ -14,7 +14,6 @@ import Carousel from "@/components/Carousel";
 import MagneticEffect from "@/components/providers/MagneticEffect";
 import { ChevronsDown } from "lucide-react";
 import { easeInOut } from "framer-motion";
-import { DockBtn } from "@/components/magicui/dockBtn";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -636,9 +635,6 @@ export default function Home() {
 
       <ChatBox />
       <Nav />
-      <div className="hidden sm:flex transition-opacity duration-300">
-        <DockBtn className="fixed bottom-7 left-1/2 -translate-x-1/2 z-50" />
-      </div>
 
       {/* Hero Section */}
       <motion.section
@@ -897,10 +893,10 @@ export default function Home() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
             >
-              <span className="text-[#b9bbd1] min-h-[1.2em] flex items-center">
+              <span className="text-zinc-400/80 min-h-[1.2em] flex items-center transition-all duration-300">
                 {mounted && currentText}
                 <span
-                  className={`ml-1 text-[#b9bbd1] font-bold text-4xl transition-opacity duration-100 ${
+                  className={`ml-1 text-zinc-400/80 font-bold text-4xl transition-opacity duration-100 ${
                     showCursor ? "opacity-100" : "opacity-0"
                   }`}
                 >
@@ -914,7 +910,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
-              style={{ position: "relative" }}
+              style={{ position: "relative", wordSpacing: "0.2rem" }}
             >
               Passionate about building seamless digital experiences from robust
               backend systems to interactive frontend interfaces.
@@ -988,9 +984,9 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <motion.div
             variants={fadeInUp}
-            className="text-center mb-12 sm:mb-16"
+            className="text-center mb-12 sm:mb-16 lg:12"
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-7xl font-extrabold mb-6 sm:mb-8">
+            <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-6 sm:mb-8">
               About me
             </h2>
           </motion.div>
@@ -998,30 +994,34 @@ export default function Home() {
           {/* About Text */}
           <motion.div
             variants={fadeInUp}
-            className="w-full max-w-6xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20 font-raleway"
+            className="w-full max-w-7xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20 font-raleway"
           >
             <div className="space-y-4 sm:space-y-6">
-              <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
-                Hi!👋 I&apos;m Can Saragih, a passionate Frontend Developer with
-                a strong focus on crafting modern and responsive user interfaces
-                using React, Next.js, TypeScript, and Tailwind CSS. I love
-                building seamless user experiences and clean design systems that
-                not only look good but also perform efficiently.
-              </p>
-
-              <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
-                Beyond technical skills, I enjoy turning ideas into visual
-                experiences, and I&apos;m always exploring tools like Framer
-                Motion and Lottie to bring animations to life. My goal is to
-                keep growing as a developer, contribute to meaningful projects,
-                and eventually work on large-scale applications that make a
-                difference.
-              </p>
-
-              <p className="text-gray-300 text-base sm:text-lg md:text-xl leading-relaxed text-justify">
-                When I&apos;m not coding, you&apos;ll find me learning new
-                frameworks, tweaking UI/UX designs, or exploring open-source
-                projects on GitHub.
+              <p
+                className="text-zinc-200/90 text-base sm:text-lg md:text-xl leading-loose text-justify"
+                style={{ wordSpacing: "0.25rem" }}
+              >
+                Hi there! 👋 I&apos;m Can Saragih, a dedicated Fullstack
+                Developer with a strong foundation in both frontend and backend
+                technologies. I specialize in building modern, performant, and
+                user-centric web applications using React, Next.js, TypeScript,
+                and Tailwind CSS on the frontend, and Node.js, Express, and
+                PostgreSQL on the backend. I thrive on turning complex problems
+                into elegant solutions through clean code, intuitive interfaces,
+                and seamless user experiences. I&apos;m passionate about
+                crafting systems that not only look good but are robust,
+                scalable, and maintainable. With a background from Hacktiv8
+                Bootcamp and hands-on experience in collaborative, agile
+                environments, I&apos;ve built multiple full-featured
+                applications from authentication systems to dynamic dashboards.
+                I&apos;m always experimenting with tools like Framer Motion and
+                Lottie to bring subtle, meaningful interactions to life. Outside
+                of coding, I enjoy exploring new technologies, contributing to
+                open-source projects, and continuously improving my skills
+                through side projects and learning platforms. My long-term goal
+                is to be part of impactful, large-scale products that create
+                real value and push the boundaries of what&apos;s possible on
+                the web.
               </p>
             </div>
           </motion.div>
@@ -1032,7 +1032,7 @@ export default function Home() {
               variants={fadeInUp}
               className="text-center mb-8 sm:mb-12"
             >
-              <h2 className="text-2xl sm:text-2xl lg:text-4xl font-bold text-white">
+              <h2 className="text-2xl sm:text-2xl lg:text-4xl font-bold text-zinc-100">
                 Education
               </h2>
             </motion.div>
@@ -1049,7 +1049,7 @@ export default function Home() {
                     className="bg-[#1f1f21] backdrop-blur-lg rounded-2xl p-4 sm:p-6 border-2 border-[#27272d] shadow-lg shadow-purple-500/10"
                   >
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center flex-shrink-0">
                         <svg
                           className="w-4 h-4 sm:w-5 sm:h-5 text-white"
                           fill="none"
@@ -1095,84 +1095,79 @@ export default function Home() {
             </div>
 
             {/* Desktop: Horizontal scrolling layout */}
-            <div className="hidden md:block">
-              {/* Left gradient mask */}
-              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#171717] via-#171717/80 to-transparent z-10 pointer-events-none"></div>
+            <div className="hidden md:block relative">
+              {/* Left gradient */}
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#171717] via-[#171717]/80 to-transparent z-10 pointer-events-none"></div>
 
-              {/* Right gradient mask */}
-              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#171717] via-#171717/80  to-transparent z-10 pointer-events-none"></div>
+              {/* Right gradient */}
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#171717] via-[#171717]/80 to-transparent z-10 pointer-events-none"></div>
 
               <div className="overflow-hidden">
-                {/* Outer motion for fade in when in viewport */}
                 <motion.div
                   variants={fadeInUp}
                   initial="initial"
                   whileInView="animate"
                   viewport={{ once: true, amount: 0.3 }}
                 >
-                  {/* Inner motion for infinite horizontal scroll */}
                   <motion.div
-                    animate={{ x: [-200, 200] }}
+                    animate={{ x: ["-50%", "0%"] }}
                     transition={{
-                      duration: 35,
+                      duration: 60,
                       repeat: Infinity,
                       ease: "linear",
                     }}
-                    className="flex space-x-8 whitespace-nowrap"
-                    style={{ width: "300%" }}
+                    className="flex space-x-8 whitespace-nowrap w-auto"
                   >
-                    {[
-                      ...schoolExperience,
-                      ...schoolExperience,
-                      ...schoolExperience,
-                    ].map((school, index) => (
-                      <div
-                        key={index}
-                        className="bg-[#1f1f21] backdrop-blur-lg rounded-3xl p-6 border-2 border-[#27272d] flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
-                      >
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="w-10 h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center">
-                            <svg
-                              className="w-5 h-5 text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 14l9-5-9-5-9 5 9 5z"
-                              />
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                              />
-                            </svg>
+                    {[...schoolExperience, ...schoolExperience].map(
+                      (school, index) => (
+                        <div
+                          key={index}
+                          className="bg-[#1f1f21] backdrop-blur-lg rounded-3xl p-6 border-2 border-[#27272d] flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
+                        >
+                          <div className="flex items-center justify-between mb-4">
+                            <div className="w-10 h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center">
+                              <svg
+                                className="w-5 h-5 text-white"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 14l9-5-9-5-9 5 9 5z"
+                                />
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+                                />
+                              </svg>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-gray-400 text-xs">
+                                {school.duration}
+                              </p>
+                              <p className="text-[#8b90e0] text-xs font-medium">
+                                {school.totalDuration}
+                              </p>
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-gray-400 text-xs">
-                              {school.duration}
-                            </p>
-                            <p className="text-[#959bf5] text-xs font-medium">
-                              {school.totalDuration}
-                            </p>
-                          </div>
-                        </div>
 
-                        <h4 className="text-lg font-semibold text-white mb-2 whitespace-normal leading-tight">
-                          {school.institution}
-                        </h4>
-                        <p className="text-[#959bf5] text-sm mb-3 whitespace-normal">
-                          {school.program}
-                        </p>
-                        <p className="text-gray-300 text-sm leading-relaxed whitespace-normal line-clamp-2">
-                          {school.description}
-                        </p>
-                      </div>
-                    ))}
+                          <h4 className="text-lg font-semibold text-zinc-200 mb-2 whitespace-normal leading-tight">
+                            {school.institution}
+                          </h4>
+                          <p className="text-[#8286ca] text-sm mb-3 whitespace-normal">
+                            {school.program}
+                          </p>
+                          <p className="text-zinc-400 text-sm leading-relaxed whitespace-normal line-clamp-2">
+                            {school.description}
+                          </p>
+                        </div>
+                      )
+                    )}
                   </motion.div>
                 </motion.div>
               </div>
@@ -1192,7 +1187,7 @@ export default function Home() {
       >
         <div className="max-w-7xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl lg:text-7xl font-extrabold mb-8">
+            <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-8">
               My Skills
             </h2>
           </motion.div>
@@ -1242,7 +1237,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-white mb-8">
+            <h2 className="text-4xl sm:text-5xl lg:text-7xl font-bold text-zinc-100 mb-8">
               Recent Projects
             </h2>
           </motion.div>
@@ -1359,7 +1354,7 @@ export default function Home() {
 
           {/* Load More Button */}
           <motion.div variants={fadeInUp} className="text-center mt-20 ">
-            <h3 className="text-gray-100 sm:text-2xl lg:text-3xl font-extrabold mb-5 tracking-widest ">
+            <h3 className="text-zinc-100 sm:text-2xl lg:text-3xl font-extrabold mb-5 tracking-widest ">
               See other project
             </h3>
             <MagneticEffect>
@@ -1400,7 +1395,7 @@ export default function Home() {
       >
         <div className="max-w-6xl mx-auto">
           <motion.div variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold text-white">
+            <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold text-zinc-100">
               Work Experience
             </h2>
           </motion.div>
@@ -1432,7 +1427,7 @@ export default function Home() {
                     {/* Header section */}
                     <div className="relative z-10 mb-6">
                       <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-2xl font-bold text-gray mb-1">
+                        <h3 className="text-2xl text-zinc-100 font-bold text-gray mb-1">
                           {exp.position}
                         </h3>
                       </div>
@@ -1477,7 +1472,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <motion.h2
             variants={fadeInUp}
-            className="text-4xl sm:text-4xl lg:text-5xl font-extrabold text-center mb-16"
+            className="text-4xl text-zinc-100 sm:text-4xl lg:text-5xl font-extrabold text-center mb-16"
           >
             Certifications
           </motion.h2>
@@ -1586,7 +1581,7 @@ export default function Home() {
               variants={fadeInUp}
               className="flex flex-col justify-start w-full p-4  mt-30 lg:pt-16 lg:pl-8"
             >
-              <h2 className="text-4xl sm:text-5xl font-bold mb-8 text-black">
+              <h2 className="text-4xl sm:text-5xl font-bold mb-8 text-zinc-800">
                 Contact Me
               </h2>
               <ContactForm />

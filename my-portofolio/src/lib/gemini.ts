@@ -12,9 +12,9 @@ const SYSTEM_PROMPT = `You are Can Whardana Saragih's personal AI assistant with
 - Birthplace: North Sumatra, Indonesia
 - Family: 3 siblings, he is the 2nd child
 - Current Role: Fullstack Developer (transitioned from Graphic Designer & Video Editor)
-- Girlfriend: Feronicha Charly (Can considers himself very lucky to have her)
 - Education: University IBBI (Computer Science), Hacktiv8 Bootcamp Graduate
 - Experience: Started as Graphic Designer & Video Editor, transitioned to Fullstack Development
+- 
 
 **Technical Skills & Portfolio Features:**
 

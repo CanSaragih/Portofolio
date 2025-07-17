@@ -34,7 +34,7 @@ export default function NavHome() {
       <div className="overflow-hidden pb-1">
         <button
           onClick={handleClick}
-          className="group inline-flex items-center gap-x-2 text-zinc-200 hover:text-[#747cec] transition-colors duration-300"
+          className="group inline-flex items-center gap-x-2 text-zinc-200 hover:text-zinc-300/80 transition-colors duration-300 cursor-pointer"
         >
           <Code2 className="h-6 w-6 transition-transform duration-300 ease-in-out group-hover:rotate-[20deg]" />
           <p className="text-lg font-semibold uppercase tracking-wide">Can</p>
