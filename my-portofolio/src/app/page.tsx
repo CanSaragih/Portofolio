@@ -14,6 +14,7 @@ import Carousel from "@/components/Carousel";
 import MagneticEffect from "@/components/providers/MagneticEffect";
 import { ChevronsDown } from "lucide-react";
 import { easeInOut } from "framer-motion";
+import { TextReveal } from "@/components/magicui/text-reveal";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -986,21 +987,15 @@ export default function Home() {
             variants={fadeInUp}
             className="text-center mb-12 sm:mb-16 lg:12"
           >
-            <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-6 sm:mb-8">
+            <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-6">
               About me
             </h2>
           </motion.div>
 
           {/* About Text */}
-          <motion.div
-            variants={fadeInUp}
-            className="w-full max-w-7xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20 font-raleway"
-          >
+          <motion.div className="w-full max-w-7xl px-2 sm:px-4 mx-auto text-center mb-16 sm:mb-20 font-raleway">
             <div className="space-y-4 sm:space-y-6">
-              <p
-                className="text-zinc-200/90 text-base sm:text-lg md:text-xl leading-loose text-justify"
-                style={{ wordSpacing: "0.25rem" }}
-              >
+              <TextReveal>
                 Hi there! 👋 I&apos;m Can Saragih, a dedicated Fullstack
                 Developer with a strong foundation in both frontend and backend
                 technologies. I specialize in building modern, performant, and
@@ -1012,17 +1007,17 @@ export default function Home() {
                 crafting systems that not only look good but are robust,
                 scalable, and maintainable. With a background from Hacktiv8
                 Bootcamp and hands-on experience in collaborative, agile
-                environments, I&apos;ve built multiple full-featured
-                applications from authentication systems to dynamic dashboards.
-                I&apos;m always experimenting with tools like Framer Motion and
-                Lottie to bring subtle, meaningful interactions to life. Outside
-                of coding, I enjoy exploring new technologies, contributing to
+                environments, I&apos;ve built multiplefull-featured applications
+                from authentication systems to dynamic dashboards. I&apos;m
+                always experimenting with tools like Framer Motion and Lottie to
+                bring subtle, meaningful interactions to life. Outside of
+                coding, I enjoy exploring new technologies, contributing to
                 open-source projects, and continuously improving my skills
                 through side projects and learning platforms. My long-term goal
                 is to be part of impactful, large-scale products that create
                 real value and push the boundaries of what&apos;s possible on
                 the web.
-              </p>
+              </TextReveal>
             </div>
           </motion.div>
 

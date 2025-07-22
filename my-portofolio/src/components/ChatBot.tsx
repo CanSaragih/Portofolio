@@ -3,7 +3,6 @@ import { IoClose } from "react-icons/io5";
 import { FaRobot, FaUser } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useTypewriterEffect } from "../hooks/useTypewriterEffect";
-import MagneticEffect from "./providers/MagneticEffect";
 
 interface Message {
   id: string;
@@ -208,16 +207,14 @@ export function ChatBox() {
       `}</style>
 
       {/* Chat Bubble Icon */}
-      <MagneticEffect>
-        {!isOpen && (
-          <button
-            onClick={openChat}
-            className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gray-200 hover:bg-gray-300 hover:border-5 hover:border-[#c3c7cf] transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
-          >
-            <FaRobot className="text-black w-6 h-6" />
-          </button>
-        )}
-      </MagneticEffect>
+      {!isOpen && (
+        <button
+          onClick={openChat}
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gray-200 hover:bg-gray-300 hover:border-5 hover:border-[#c3c7cf] transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
+        >
+          <FaRobot className="text-black w-6 h-6" />
+        </button>
+      )}
 
       {/* Chat Box with enhanced slide animation */}
       {isOpen && (
