@@ -11,6 +11,11 @@ export const skillCategories = {
       color: "from-gray-600/20 to-gray-400/20",
     },
     {
+      name: "Vite",
+      icon: "/vite.png",
+      color: "from-gray-600/20 to-gray-400/20",
+    },
+    {
       name: "Redux",
       icon: "/redux.png",
       color: "from-gray-600/20 to-gray-400/20",
@@ -43,11 +48,6 @@ export const skillCategories = {
     {
       name: "Bootstrap",
       icon: "/bootstrap.png",
-      color: "from-gray-600/20 to-gray-400/20",
-    },
-    {
-      name: "Apollo Client",
-      icon: "/apollo client.png",
       color: "from-gray-600/20 to-gray-400/20",
     },
   ],

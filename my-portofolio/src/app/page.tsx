@@ -1000,7 +1000,7 @@ export default function Home() {
                         rel="noopener noreferrer"
                         className=" flex items-center justify-center"
                       >
-                        <Link className="w-13 h-13 sm:h-5 text-[#1f1f21] bg-white rounded-full px-0.1 py-1.5 hover:bg-[#aaaaaa] transition-colors duration-300" />
+                        <Link className="w-13 h-13 text-[#1f1f21] bg-white rounded-full px-0.1 py-1.5 hover:bg-[#aaaaaa] transition-colors duration-300" />
                       </a>
                     )}
                   </motion.div>
@@ -1124,7 +1124,7 @@ export default function Home() {
                   <div className="absolute left-6 w-5 h-5 bg-[#555ee7]/80 rounded-full border-4 border-[#171717] shadow-lg shadow-purple-500/50"></div>
 
                   {/* Content card */}
-                  <div className="bg-[#1f1f21] rounded-2xl p-8 border-2 border-[#27272d] hover:border-[#313138] transition-all duration-300 mt-8 relative overflow-hidden">
+                  <div className="bg-[#1b1b1b] rounded-2xl p-8 border-2 border-[#27272d] hover:border-[#313138] transition-all duration-300 mt-8 relative overflow-hidden">
                     {/* Subtle gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-2xl pointer-events-none"></div>
 

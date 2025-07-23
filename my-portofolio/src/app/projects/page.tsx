@@ -7,6 +7,7 @@ import MagneticEffect from "@/components/providers/MagneticEffect";
 import { easeInOut } from "framer-motion";
 import { DockBtn } from "@/components/magicui/dockBtn";
 import { projects } from "@/data/Projects";
+import { Link } from "lucide-react";
 
 export default function ProjectsPage() {
   const [isNavigating, setIsNavigating] = useState(false);
@@ -168,14 +169,7 @@ export default function ProjectsPage() {
                         rel="noopener noreferrer"
                         className="rounded-full flex items-center justify-center"
                       >
-                        <svg
-                          className="w-8 h-8 sm:w-10 sm:h-10 p-1.5 sm:p-2 text-[#1c1c1c] bg-white rounded-full hover:bg-[#aaaaaa] transition-colors duration-300"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                          strokeWidth={2}
-                        >
-                          <path d="M14 3a1 1 0 0 0 0 2h3.586L10.293 12.293a1 1 0 1 0 1.414 1.414L19 6.414V10a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1h-6Zm5 11a1 1 0 0 1 1 1v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h4a1 1 0 1 1 0 2H7a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1Z" />
-                        </svg>
+                        <Link className="w-8 h-8 sm:w-10 sm:h-10 text-[#1f1f21] bg-white rounded-full px-0.1 py-1.5 hover:bg-[#aaaaaa] transition-colors duration-300" />
                       </a>
                     )}
                   </div>
