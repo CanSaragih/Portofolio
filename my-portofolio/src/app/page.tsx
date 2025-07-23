@@ -1,6 +1,11 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import {
+  motion,
+  useAnimationControls,
+  useInView,
+  useMotionValue,
+} from "framer-motion";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import ProfileCard from "@/components/ProfileCard";
 import SkillsNetwork from "@/components/SkillsNetwork";
@@ -12,9 +17,14 @@ import { ChatBox } from "@/components/ChatBot";
 import Image from "next/image";
 import Carousel from "@/components/Carousel";
 import MagneticEffect from "@/components/providers/MagneticEffect";
-import { ChevronsDown } from "lucide-react";
+import { ChevronsDown, FileText, GraduationCap, Link } from "lucide-react";
 import { easeInOut } from "framer-motion";
 import { TextReveal } from "@/components/magicui/text-reveal";
+import { skillCategories } from "@/data/Skills";
+import { projects } from "@/data/Projects";
+import { workExperience } from "@/data/WorkExperience";
+import { certificates } from "@/data/Certificates";
+import { schoolExperience } from "@/data/Schools";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -22,6 +32,24 @@ export default function Home() {
   const [textIndex, setTextIndex] = useState(0);
   const [activeCategory, setActiveCategory] = useState("Frontend");
   const [mounted, setMounted] = useState(false);
+
+  //stop animtion when hover card element education dekstop
+  const controls = useAnimationControls();
+  const x = useMotionValue(0);
+
+  useEffect(() => {
+    const loop = async () => {
+      await controls.start({
+        x: "-100%",
+        transition: {
+          duration: 60,
+          ease: "linear",
+        },
+      });
+    };
+    loop();
+  }, [controls]);
+
   // Add new state for typewriter control
   const [showCursor, setShowCursor] = useState(true);
   const [typewriterStarted, setTypewriterStarted] = useState(false);
@@ -43,157 +71,6 @@ export default function Home() {
     () => ["Fullstack Developer", "Software Engineer"],
     []
   );
-
-  const skillCategories = {
-    Frontend: [
-      {
-        name: "React.js",
-        icon: "/react.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Next.js",
-        icon: "/nextjs.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Redux",
-        icon: "/redux.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "React Native",
-        icon: "/react.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "EJS",
-        icon: "/ejs.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "HTML",
-        icon: "/html.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "CSS",
-        icon: "/css.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Tailwind CSS",
-        icon: "/tailwind.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Bootstrap",
-        icon: "/bootstrap.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Apollo Client",
-        icon: "/apollo client.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-    ],
-    Backend: [
-      {
-        name: "Node.js",
-        icon: "/nodejs.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "TypeScript",
-        icon: "/typescript.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Express.js",
-        icon: "/express.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "GraphQL",
-        icon: "/graphql.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Apollo Server",
-        icon: "/apollo client.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Sequelize",
-        icon: "/sequelize.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "PostgreSQL",
-        icon: "/postgresql.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "MongoDB",
-        icon: "/mongodb.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Redis",
-        icon: "/redis.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "REST API",
-        icon: "/rest.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-    ],
-    Tools: [
-      {
-        name: "Git",
-        icon: "/github.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Vite",
-        icon: "/vite.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Expo Go",
-        icon: "/expo.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Socket.IO",
-        icon: "/socketio.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-    ],
-    Design: [
-      {
-        name: "After Effects",
-        icon: "/after effect.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Premiere Pro",
-        icon: "/premiere.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "Photoshop",
-        icon: "/photoshop.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-      {
-        name: "CorelDRAW",
-        icon: "/coreldraw.png",
-        color: "from-gray-600/20 to-gray-400/20",
-      },
-    ],
-  };
 
   // Improved Typewriter effect with better restart logic
   useEffect(() => {
@@ -402,161 +279,6 @@ export default function Home() {
     [isNavigating]
   );
 
-  const projects = [
-    {
-      image: "/Img-project/ParkGo.png",
-      name: "ParkGo",
-      url: "https://github.com/orgs/Parkir-Cepat/repositories",
-      description:
-        "A real-time mobile app that helps users find and book nearby parking spots with ease. It features live availability, secure payments, and Google Maps integration for accurate navigation.",
-
-      tech: [
-        "React Native",
-        "Apollo Server",
-        "Express JS",
-        "GraphQL",
-        "MongoDB",
-        "Redis",
-        "Socket.IO",
-        "Midtrans API",
-        "Google Places API",
-      ],
-      category: "Mobile App",
-    },
-
-    {
-      image: "/Img-project/ShopHub.png",
-      name: "Shophub",
-      url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
-      description:
-        "A responsive e-commerce web app where users can browse products, manage wishlists, and experience smooth shopping. Built with Next.js, TypeScript, and styled using Tailwind CSS.",
-      tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
-      category: "Web App",
-      demo: "https://shophub-ivory.vercel.app",
-    },
-    {
-      image: "/Img-project/SocialMediaApp.png",
-      name: "Social Media App",
-      url: "https://github.com/H8-FSJS-P3S5/gc01-CanSaragih",
-      description:
-        "A fullstack mobile social media app where users can post, follow, and interact in real-time. Powered by React Native, GraphQL, and Redis for fast and dynamic user experience.",
-
-      tech: ["React Native", "Apollo Server", "GraphQL", "MongoDB", "Redis"],
-      category: "Mobile App",
-      demo: "https://shorturl.at/IAYEp",
-    },
-    {
-      image: "/Img-project/ChatVerse.png",
-      name: "ChatVerse",
-      url: "https://github.com/GROP-PROJECT-P2",
-      description:
-        "A fullstack real-time group chat application with AI assistant",
-      tech: [
-        "React",
-        "React Context",
-        "Express.js",
-        "Sequelize",
-        "Tailwind CSS",
-        "Socket.io",
-        "OpenAI API",
-      ],
-      category: "Web App",
-    },
-    {
-      image: "/Img-project/Planorama.png",
-      name: "Planorama",
-      url: "https://github.com/CanSaragih/IP-RMT60",
-      description:
-        "A fullstack AI-powered travel planner that estimates budget and generates itineraries.",
-      tech: [
-        "Express.js",
-        "Sequelize",
-        "PostgreSQL",
-        "React",
-        "Tailwind CSS",
-        "Gemini API",
-        "Google Places API",
-      ],
-      category: "Web App",
-    },
-    {
-      image: "/Img-project/InstaLook.png",
-      name: "InstaLook",
-      url: "https://github.com/CanSaragih/SocialMedia-Instagram",
-      description: "A fullstack web-based Instagram-like social media platform",
-      tech: [
-        "Express.js",
-        "Sequelize",
-        "PostgreSQL",
-        "EJS",
-        "HTML",
-        "CSS Bootstrap",
-        "JavaScript",
-      ],
-      category: "Web App",
-    },
-    {
-      image: "/Img-project/quickkick.png",
-      name: "QuickKick",
-      url: "https://github.com/andikarahmadisaputra/quickkick",
-      description:
-        "A fullstack web-based football match schedule application with real-time updates.",
-      tech: ["HTML", "CSS Bootstrap", "Javascript DOM"],
-      category: "Web App",
-    },
-  ];
-
-  const workExperience = [
-    {
-      position: "Video Editor & Graphic Designer",
-      company: "Custom Kekinian",
-      duration: "Aug 2019 - Jan 2025 ",
-      responsibilities: [
-        "Created and edited high-engagement videos for Instagram, TikTok, and YouTube, helping increase brand visibility and audience reach.",
-        "Designed marketing content and custom T-shirt visuals for two separate business divisions (digital content & fashion).",
-        "Utilized tools like Adobe After Effects, Adobe Premiere Pro, Photoshop, and CorelDRAW to produce visual assets.",
-        "Developed brand identity and visual consistency across multiple social media platforms.",
-      ],
-    },
-  ];
-
-  const certificates = [
-    {
-      name: "Participant SMK Competency Contest (LKS) – Web Design",
-      description:
-        "participant in the provincial-level Web Design competition (LKS SMK) representing SMK RK Bintang Timur, Pematang Siantar.",
-      url: "/LksCertification.pdf",
-    },
-    {
-      name: "HackerRank React (Basic) Certificate",
-      description:
-        "Functions, Currying, Hoisting, Scope, Inheritance, Events and Error Handling.",
-      url: "https://www.hackerrank.com/certificates/ab7fe4f7eb3d",
-    },
-    {
-      name: "HackerRank Problem Solving (Basic) Certificate",
-      description:
-        "Data Structures (Arrays, Strings), Algorithms (Sorting, Searching).",
-      url: "https://www.hackerrank.com/certificates/795707773c14",
-    },
-    {
-      name: "HackerRank JavaScript (Basic) Certificate",
-      description:
-        "Functions, Currying, Hoisting, Scope, Inheritance, Events and Error Handling.",
-      url: "https://www.hackerrank.com/certificates/2bcf544a456c",
-    },
-    {
-      name: "HackerRank SQL (Basic) Certificate",
-      description: "Queries, relationships, and aggregators.",
-      url: "https://www.hackerrank.com/certificates/bab52c1efdc8",
-    },
-    {
-      name: "HackerRank CSS (Basic) Certificate",
-      description: "CSS basics: Cascading, Inheritance, text, layouts, boxing.",
-      url: "https://www.hackerrank.com/certificates/b229e49eb949",
-    },
-  ];
-
   const fadeInUp = {
     initial: { opacity: 0, y: 40 },
     animate: {
@@ -577,32 +299,6 @@ export default function Home() {
       },
     },
   };
-
-  const schoolExperience = [
-    {
-      institution: "SMK Bintang Timur Pematang Siantar",
-      program: "RPL (Rekayasa Perangkat Lunak)",
-      duration: "Jun 2016 - Apr 2019",
-      totalDuration: "3 years ",
-      description:
-        "Focused on software engineering fundamentals and programming basics.",
-    },
-    {
-      institution: "University IBBI",
-      program: "Teknik Informatika ",
-      duration: "Sep 2019 - Dec 2023",
-      totalDuration: "4 years ",
-      description:
-        "Bachelor's degree in Informatics Engineering with computer science principles.",
-    },
-    {
-      institution: "Bootcamp Hacktiv8",
-      program: "Fullstack Javascript Immersive",
-      duration: "Feb 2025 - Jun 2025",
-      totalDuration: "4 months",
-      description: "Intensive bootcamp focused on modern JavaScript ecosystem.",
-    },
-  ];
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -978,7 +674,7 @@ export default function Home() {
         id="about"
         initial="initial"
         whileInView="animate"
-        viewport={{ once: false, amount: 0.3 }}
+        viewport={{ once: true, amount: 0.3 }}
         variants={staggerContainer}
         className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
       >
@@ -1043,35 +739,53 @@ export default function Home() {
                     transition={{ delay: index * 0.1, duration: 0.6 }}
                     className="bg-[#1f1f21] backdrop-blur-lg rounded-2xl p-4 sm:p-6 border-2 border-[#27272d] shadow-lg shadow-purple-500/10"
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center flex-shrink-0">
-                        <svg
-                          className="w-4 h-4 sm:w-5 sm:h-5 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 14l9-5-9-5-9 5 9 5z"
-                          />
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                          />
-                        </svg>
-                      </div>
-                      <div className="text-right ml-3">
-                        <p className="text-gray-400 text-xs leading-tight">
-                          {school.duration}
-                        </p>
-                        <p className="text-[#959bf5] text-xs font-medium">
-                          {school.totalDuration}
-                        </p>
+                    <div className="mb-4">
+                      {/* Mobile: Stacked layout, Desktop: Horizontal layout */}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 gap-2 sm:gap-0">
+                        {/* Top row on mobile, Left side on desktop */}
+                        <div className="flex items-center justify-between sm:justify-start gap-2 sm:gap-3">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center flex-shrink-0">
+                              <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100" />
+                            </div>
+
+                            {/* Transcript Link */}
+                            {school.url && (
+                              <a
+                                href={school.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1 sm:gap-1.5 px-2 py-1 bg-[#27272d] rounded-md hover:bg-[#8b90e0]/20 transition-all duration-300 group border border-[#27272d] hover:border-[#8b90e0]/50"
+                                title="View Transcript"
+                              >
+                                <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#8b90e0] group-hover:scale-110 transition-transform duration-200" />
+                                <span className="text-xs text-[#8b90e0] font-medium">
+                                  Transcript
+                                </span>
+                              </a>
+                            )}
+                          </div>
+
+                          {/* Duration on mobile (same row as icon), hidden on desktop */}
+                          <div className="text-right sm:hidden">
+                            <p className="text-gray-400 text-xs leading-tight whitespace-nowrap">
+                              {school.duration}
+                            </p>
+                            <p className="text-[#959bf5] text-xs font-medium whitespace-nowrap">
+                              {school.totalDuration}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Duration on desktop only */}
+                        <div className="text-right hidden sm:block">
+                          <p className="text-gray-400 text-xs leading-tight whitespace-nowrap">
+                            {school.duration}
+                          </p>
+                          <p className="text-[#959bf5] text-xs font-medium whitespace-nowrap">
+                            {school.totalDuration}
+                          </p>
+                        </div>
                       </div>
                     </div>
 
@@ -1105,12 +819,18 @@ export default function Home() {
                   viewport={{ once: true, amount: 0.3 }}
                 >
                   <motion.div
-                    animate={{ x: ["-50%", "0%"] }}
-                    transition={{
-                      duration: 60,
-                      repeat: Infinity,
-                      ease: "linear",
-                    }}
+                    animate={controls}
+                    style={{ x }}
+                    onMouseEnter={() => controls.stop()}
+                    onMouseLeave={() =>
+                      controls.start({
+                        x: "-100%",
+                        transition: {
+                          duration: 60,
+                          ease: "linear",
+                        },
+                      })
+                    }
                     className="flex space-x-8 whitespace-nowrap w-auto"
                   >
                     {[...schoolExperience, ...schoolExperience].map(
@@ -1120,27 +840,28 @@ export default function Home() {
                           className="bg-[#1f1f21] backdrop-blur-lg rounded-3xl p-6 border-2 border-[#27272d] flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
                         >
                           <div className="flex items-center justify-between mb-4">
-                            <div className="w-10 h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center">
-                              <svg
-                                className="w-5 h-5 text-white"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 14l9-5-9-5-9 5 9 5z"
-                                />
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
-                                />
-                              </svg>
+                            <div className="flex items-center gap-3">
+                              <div className="w-10 h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center">
+                                <GraduationCap className="w-6 h-6 text-zinc-100" />
+                              </div>
+
+                              {/* Transcript Link - positioned beside the icon */}
+                              {school.url && (
+                                <a
+                                  href={school.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex items-center gap-1.5 px-2 py-1 bg-[#27272d] rounded-md hover:bg-[#8b90e0]/20 transition-all duration-300 group border border-[#27272d] hover:border-[#8b90e0]/50"
+                                  title="View Transcript"
+                                >
+                                  <FileText className="w-3.5 h-3.5 text-[#8b90e0] group-hover:scale-110 transition-transform duration-200" />
+                                  <span className="text-xs text-[#8b90e0] font-medium hidden sm:inline">
+                                    Transcript
+                                  </span>
+                                </a>
+                              )}
                             </div>
+
                             <div className="text-right">
                               <p className="text-gray-400 text-xs">
                                 {school.duration}
@@ -1154,7 +875,7 @@ export default function Home() {
                           <h4 className="text-lg font-semibold text-zinc-200 mb-2 whitespace-normal leading-tight">
                             {school.institution}
                           </h4>
-                          <p className="text-[#8286ca] text-sm mb-3 whitespace-normal">
+                          <p className="text-[#8b90e0] text-sm mb-3 whitespace-normal">
                             {school.program}
                           </p>
                           <p className="text-zinc-400 text-sm leading-relaxed whitespace-normal line-clamp-2">
@@ -1277,16 +998,9 @@ export default function Home() {
                         href={project.demo}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="rounded-full flex items-center justify-center"
+                        className=" flex items-center justify-center"
                       >
-                        <svg
-                          className="w-13 h-13 p-2 text-[#1c1c1c] bg-white rounded-full hover:bg-[#aaaaaa] transition-colors duration-300"
-                          fill="currentColor"
-                          viewBox="0 0 24 24"
-                          strokeWidth={2}
-                        >
-                          <path d="M14 3a1 1 0 0 0 0 2h3.586L10.293 12.293a1 1 0 1 0 1.414 1.414L19 6.414V10a1 1 0 1 0 2 0V4a1 1 0 0 0-1-1h-6Zm5 11a1 1 0 0 1 1 1v4a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h4a1 1 0 1 1 0 2H7a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1Z" />
-                        </svg>
+                        <Link className="w-13 h-13 sm:h-5 text-[#1f1f21] bg-white rounded-full px-0.1 py-1.5 hover:bg-[#aaaaaa] transition-colors duration-300" />
                       </a>
                     )}
                   </motion.div>
@@ -1334,7 +1048,7 @@ export default function Home() {
 
                 {/* Right Side - Project Image */}
                 <div className="hidden lg:flex h-full items-stretch p-0 m-0">
-                  <div className="w-full h-full relative rounded overflow-hidden shadow-2xl">
+                  <div className="w-full h-full relative rounded-lg overflow-hidden shadow-2xl">
                     <Image
                       src={project.image}
                       alt={project.name}
