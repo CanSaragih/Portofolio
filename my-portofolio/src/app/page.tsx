@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useAnimationControls,
-  useInView,
-  useMotionValue,
-} from "framer-motion";
+import { motion, useAnimationControls, useInView } from "framer-motion";
 import { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import ProfileCard from "@/components/ProfileCard";
 import SkillsNetwork from "@/components/SkillsNetwork";
@@ -22,9 +17,12 @@ import { easeInOut } from "framer-motion";
 import { TextReveal } from "@/components/magicui/text-reveal";
 import { skillCategories } from "@/data/Skills";
 import { projects } from "@/data/Projects";
-import { workExperience } from "@/data/WorkExperience";
 import { certificates } from "@/data/Certificates";
 import { schoolExperience } from "@/data/Schools";
+import { BorderBeam } from "@/components/magicui/border-beam";
+import { Experience } from "@/components/section/Experience";
+import { InfiniteMovingCardsDemo } from "@/components/section/Education";
+// import { MySkills } from "@/components/section/MySkill";
 
 export default function Home() {
   const [currentText, setCurrentText] = useState("");
@@ -35,7 +33,6 @@ export default function Home() {
 
   //stop animtion when hover card element education dekstop
   const controls = useAnimationControls();
-  const x = useMotionValue(0);
 
   useEffect(() => {
     const loop = async () => {
@@ -68,7 +65,7 @@ export default function Home() {
   const isMountedRef = useRef(true);
 
   const typewriterTexts = useMemo(
-    () => ["Fullstack Developer", "Software Engineer"],
+    () => ["Fullstack Developer", "Frontend Developer"],
     []
   );
 
@@ -721,7 +718,7 @@ export default function Home() {
           <div className="relative">
             <motion.div
               variants={fadeInUp}
-              className="text-center mb-8 sm:mb-12"
+              className="text-center mb-8 sm:mb-6"
             >
               <h2 className="text-2xl sm:text-2xl lg:text-4xl font-bold text-zinc-100">
                 Education
@@ -804,89 +801,8 @@ export default function Home() {
             </div>
 
             {/* Desktop: Horizontal scrolling layout */}
-            <div className="hidden md:block relative">
-              {/* Left gradient */}
-              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#171717] via-[#171717]/80 to-transparent z-10 pointer-events-none"></div>
-
-              {/* Right gradient */}
-              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#171717] via-[#171717]/80 to-transparent z-10 pointer-events-none"></div>
-
-              <div className="overflow-hidden">
-                <motion.div
-                  variants={fadeInUp}
-                  initial="initial"
-                  whileInView="animate"
-                  viewport={{ once: true, amount: 0.3 }}
-                >
-                  <motion.div
-                    animate={controls}
-                    style={{ x }}
-                    onMouseEnter={() => controls.stop()}
-                    onMouseLeave={() =>
-                      controls.start({
-                        x: "-100%",
-                        transition: {
-                          duration: 60,
-                          ease: "linear",
-                        },
-                      })
-                    }
-                    className="flex space-x-8 whitespace-nowrap w-auto"
-                  >
-                    {[...schoolExperience, ...schoolExperience].map(
-                      (school, index) => (
-                        <div
-                          key={index}
-                          className="bg-[#1f1f21] backdrop-blur-lg rounded-3xl p-6 border-2 border-[#27272d] flex-shrink-0 w-[420px] shadow-lg shadow-purple-500/10"
-                        >
-                          <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center">
-                                <GraduationCap className="w-6 h-6 text-zinc-100" />
-                              </div>
-
-                              {/* Transcript Link - positioned beside the icon */}
-                              {school.url && (
-                                <a
-                                  href={school.url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-1.5 px-2 py-1 bg-[#27272d] rounded-md hover:bg-[#8b90e0]/20 transition-all duration-300 group border border-[#27272d] hover:border-[#8b90e0]/50"
-                                  title="View Transcript"
-                                >
-                                  <FileText className="w-3.5 h-3.5 text-[#8b90e0] group-hover:scale-110 transition-transform duration-200" />
-                                  <span className="text-xs text-[#8b90e0] font-medium hidden sm:inline">
-                                    Transcript
-                                  </span>
-                                </a>
-                              )}
-                            </div>
-
-                            <div className="text-right">
-                              <p className="text-gray-400 text-xs">
-                                {school.duration}
-                              </p>
-                              <p className="text-[#8b90e0] text-xs font-medium">
-                                {school.totalDuration}
-                              </p>
-                            </div>
-                          </div>
-
-                          <h4 className="text-lg font-semibold text-zinc-200 mb-2 whitespace-normal leading-tight">
-                            {school.institution}
-                          </h4>
-                          <p className="text-[#8b90e0] text-sm mb-3 whitespace-normal">
-                            {school.program}
-                          </p>
-                          <p className="text-zinc-400 text-sm leading-relaxed whitespace-normal line-clamp-2">
-                            {school.description}
-                          </p>
-                        </div>
-                      )
-                    )}
-                  </motion.div>
-                </motion.div>
-              </div>
+            <div className="hidden sm:block">
+              <InfiniteMovingCardsDemo />
             </div>
           </div>
         </div>
@@ -942,6 +858,9 @@ export default function Home() {
         </div>
       </motion.section>
 
+      {/* Section Skill */}
+      {/* <MySkills /> */}
+
       {/* Projects Section */}
       <motion.section
         id="projects"
@@ -967,7 +886,10 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.2, duration: 0.6 }}
                 viewport={{ once: true }}
-                className="grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch bg-[#1f1f21] hover:bg-[#232326] rounded-xl pt-35 transition-colors duration-300 min-h-[480px]"
+                className="relative grid grid-cols-1 lg:grid-cols-2 gap-0 items-stretch 
+                 bg-[#1f1f21] hover:bg-[#232326] 
+                 rounded-xl overflow-hidden pt-35 
+                 transition-colors duration-300 min-h-[480px]"
               >
                 {/* Left Side - Icons and Content */}
                 <div className="pt-0 -mt-25 pb-8 pl-10 py-8 pr-8">
@@ -1057,6 +979,7 @@ export default function Home() {
                     />
                   </div>
                 </div>
+                <BorderBeam duration={15} size={100} />
               </motion.div>
             ))}
           </motion.div>
@@ -1094,81 +1017,8 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Work Experience Section */}
-      <motion.section
-        initial="initial"
-        whileInView="animate"
-        viewport={{ once: true, amount: 0.3 }}
-        variants={staggerContainer}
-        className="py-20 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
-      >
-        <div className="max-w-6xl mx-auto">
-          <motion.div variants={fadeInUp} className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl lg:text-5xl font-extrabold text-zinc-100">
-              Work Experience
-            </h2>
-          </motion.div>
-
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#555ee7]/80 via-[#555ee7]/80 to-transparent"></div>
-
-            <div className="space-y-12">
-              {workExperience.map((exp, index) => (
-                <motion.div
-                  key={index}
-                  variants={fadeInUp}
-                  className="relative pl-20"
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-6 w-5 h-5 bg-[#555ee7]/80 rounded-full border-4 border-[#171717] shadow-lg shadow-purple-500/50"></div>
-
-                  {/* Content card */}
-                  <div className="bg-[#1b1b1b] rounded-2xl p-8 border-2 border-[#27272d] hover:border-[#313138] transition-all duration-300 mt-8 relative overflow-hidden">
-                    {/* Subtle gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent rounded-2xl pointer-events-none"></div>
-
-                    {/* Duration - Top Right */}
-                    <div className="absolute top-6 right-6 text-[#959bf5] text-xs font-semibold px-3 py-1 rounded-md backdrop-blur-sm z-20">
-                      {exp.duration}
-                    </div>
-
-                    {/* Header section */}
-                    <div className="relative z-10 mb-6">
-                      <div className="flex items-start justify-between mb-2">
-                        <h3 className="text-2xl text-zinc-100 font-bold text-gray mb-1">
-                          {exp.position}
-                        </h3>
-                      </div>
-                      <p className="text-[#959bf5] text-lg font-medium mb-4">
-                        {exp.company}
-                      </p>
-                    </div>
-
-                    {/* Responsibilities */}
-                    <div className="relative z-10">
-                      <h4 className="text-gray-300 font-semibold mb-4 text-sm uppercase tracking-wide">
-                        Key Responsibilities
-                      </h4>
-                      <ul className="space-y-3">
-                        {exp.responsibilities.map((responsibility, idx) => (
-                          <li
-                            key={idx}
-                            className="text-gray-300 flex items-start leading-relaxed"
-                          >
-                            <div className="w-2 h-2 bg-white/50 rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                            <span className="text-sm">{responsibility}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      {/* Experience Timeline */}
+      <Experience />
 
       {/* Certificates Section */}
       <motion.section
@@ -1300,7 +1150,6 @@ export default function Home() {
       </motion.section>
 
       {/* Footer */}
-
       <Footer />
     </div>
   );

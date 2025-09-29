@@ -227,7 +227,7 @@ export default function NavMenu() {
           {/* Download CV Section */}
           <div className="px-4 sm:px-[clamp(1.25rem,3vw,2.5rem)] mt-4 sm:mt-6">
             <a
-              href="/cv/Can Whardana Saragih.pdf"
+              href="/cv/CV-CAN WHARDANA SARAGIH.pdf"
               download
               className="inline-flex items-center gap-2 sm:gap-3 text-sm sm:text-base text-zinc-800 hover:text-zinc-500 transition-colors duration-300 group"
             >

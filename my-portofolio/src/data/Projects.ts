@@ -1,5 +1,51 @@
 export const projects = [
   {
+    image: "/Img-project/Planorama.png",
+    name: "Planorama",
+    url: "https://github.com/CanSaragih/IP-RMT60",
+    description:
+      "An AI-powered travel planning platform that helps users generate personalized itineraries andestimate trip budgets. Features include Google-integrated location search, dynamic trip saving, and a clean.",
+    tech: [
+      "Express.js",
+      "Sequelize",
+      "PostgreSQL",
+      "Supabase",
+      "React",
+      "Tailwind CSS",
+      "Gemini API",
+      "Google Places API",
+    ],
+    demo: "https://planorama-brown.vercel.app",
+  },
+  {
+    image: "/Img-project/todolist.png",
+    name: "Todo List",
+    url: "https://github.com/CanSaragih/nodewave-fe-assessment",
+    description:
+      "A simple and intuitive todo list application that helps users manage their tasks efficiently. Features include task categorization, due dates, and a clean user interface.",
+    tech: [
+      "Typescript",
+      "Next.js",
+      "Tailwind Css",
+      "Shadcn UI",
+      "React Query",
+      "Zod",
+      "Zustand",
+      "Axios ",
+      "Sonner",
+    ],
+    demo: "https://nodewave-fe-assessment-beta.vercel.app",
+  },
+  {
+    image: "/Img-project/ShopHub.png",
+    name: "Shophub",
+    url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
+    description:
+      "A responsive e-commerce web app where users can browse products, manage wishlists, and experience smooth shopping. Built with Next.js, TypeScript, and styled using Tailwind CSS.",
+    tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
+    demo: "https://shophub-ivory.vercel.app",
+  },
+  {
     image: "/Img-project/camguard.png",
     name: "CamGuard",
     url: "https://github.com/CanSaragih/Camera-Dashboard",
@@ -15,15 +61,6 @@ export const projects = [
       "framer-motion",
     ],
     demo: "https://camera-dashboard-two.vercel.app/",
-  },
-  {
-    image: "/Img-project/ShopHub.png",
-    name: "Shophub",
-    url: "https://github.com/H8-FSJS-P3S5/gc02-CanSaragih",
-    description:
-      "A responsive e-commerce web app where users can browse products, manage wishlists, and experience smooth shopping. Built with Next.js, TypeScript, and styled using Tailwind CSS.",
-    tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
-    demo: "https://shophub-ivory.vercel.app",
   },
   {
     image: "/Img-project/SocialMediaApp.png",
@@ -70,22 +107,7 @@ export const projects = [
       "Google Places API",
     ],
   },
-  {
-    image: "/Img-project/Planorama.png",
-    name: "Planorama",
-    url: "https://github.com/CanSaragih/IP-RMT60",
-    description:
-      "A fullstack AI-powered travel planner that estimates budget and generates itineraries.",
-    tech: [
-      "Express.js",
-      "Sequelize",
-      "PostgreSQL",
-      "React",
-      "Tailwind CSS",
-      "Gemini API",
-      "Google Places API",
-    ],
-  },
+
   {
     image: "/Img-project/InstaLook.png",
     name: "InstaLook",
