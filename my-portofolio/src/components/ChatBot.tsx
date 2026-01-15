@@ -14,7 +14,7 @@ interface Message {
 
 const formatMessageContent = (content: string) => {
   // Replace variations of Can's name with bold formatting
-  const nameVariations = ["Can Whardana Saragih", "Feronicha Charly"];
+  const nameVariations = ["Can Whardana Saragih"];
 
   let formattedContent = content;
 
@@ -114,6 +114,13 @@ export function ChatBox() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: content }),
       });
+
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => "");
+        throw new Error(
+          `API error: ${response.status} - ${response.statusText} - ${errorText}`
+        )
+      }
 
       const data = await response.json();
 

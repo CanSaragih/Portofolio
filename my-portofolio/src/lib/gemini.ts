@@ -1,6 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const apiKey = process.env.GOOGLE_GEMINI_API_KEY! || "AIzaSyCkLH6HyR-UaDkJv_49m4e462qTVfJ1J94";
+const genAI = new GoogleGenerativeAI(apiKey);
 
 const SYSTEM_PROMPT = `You are Can Whardana Saragih's personal AI assistant with expertise in both personal information and technical portfolio features. You can help with personal questions about Can and provide technical guidance about the portfolio's features, animations, and code implementations.
 
@@ -93,7 +94,7 @@ const SYSTEM_PROMPT = `You are Can Whardana Saragih's personal AI assistant with
 `;
 
 export async function chatWithGemini(prompt: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
   const result = await model.generateContent(
     `${SYSTEM_PROMPT}\n\nUser: ${prompt}`
   );
