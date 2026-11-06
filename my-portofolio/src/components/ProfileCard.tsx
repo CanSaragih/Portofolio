@@ -18,6 +18,7 @@ interface ProfileCardProps {
   status?: string;
   contactText?: string;
   showUserInfo?: boolean;
+  priority?: boolean;
   onContactClick?: () => void;
 }
 
@@ -68,6 +69,7 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
   status = "Online",
   contactText = "Contact",
   showUserInfo = true,
+  priority = true,
   onContactClick,
 }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -278,7 +280,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
               className="avatar"
               src={avatarUrl}
               alt={`${name || "User"} avatar`}
-              loading="lazy"
+              priority={priority}
+              loading={priority ? undefined : "lazy"}
               width={150}
               height={150}
               onError={(e) => {
@@ -293,7 +296,8 @@ const ProfileCardComponent: React.FC<ProfileCardProps> = ({
                     <Image
                       src={miniAvatarUrl || avatarUrl}
                       alt={`${name || "User"} mini avatar`}
-                      loading="lazy"
+                      priority={priority}
+                      loading={priority ? undefined : "lazy"}
                       width={150}
                       height={150}
                       onError={(e) => {

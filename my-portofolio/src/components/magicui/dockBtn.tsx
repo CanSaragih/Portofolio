@@ -2,7 +2,7 @@
 
 import { FolderCode, HomeIcon, MailIcon } from "lucide-react";
 import Link from "next/link";
-import React, { useCallback, useRef, useState } from "react";
+import React from "react";
 
 import { Separator } from "@/components/ui/separator";
 import {
@@ -57,9 +57,6 @@ const Icons = {
 };
 
 export function DockBtn({ className }: { className?: string }) {
-  const [isNavigating, setIsNavigating] = useState(false);
-  const isMountedRef = useRef(true);
-
   const pathname = usePathname();
 
   const DATA = {
@@ -93,55 +90,6 @@ export function DockBtn({ className }: { className?: string }) {
     },
   };
 
-  const handleBackToHome = useCallback(
-    async (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (isNavigating) return; // Prevent double clicks
-
-      try {
-        setIsNavigating(true);
-
-        // Set mounted to false immediately
-        isMountedRef.current = false;
-
-        // Use window.location for more reliable navigation
-        window.location.href = "/";
-      } catch (error) {
-        console.error("Navigation error:", error);
-        // Fallback: try again with a different method
-        setTimeout(() => {
-          window.location.assign("/");
-        }, 100);
-      }
-    },
-    [isNavigating]
-  );
-
-  const handleLoadMore = useCallback(
-    async (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-
-      if (isNavigating) return; // Prevent double clicks
-
-      try {
-        setIsNavigating(true);
-
-        // Immediate cleanup without waiting
-        isMountedRef.current = false;
-
-        // Use window.location for more reliable navigation
-        window.location.href = "/projects";
-      } catch (error) {
-        console.error("Navigation error:", error);
-        setIsNavigating(false);
-      }
-    },
-    [isNavigating]
-  );
-
   return (
     <div className={cn("flex flex-col items-center justify-center", className)}>
       <TooltipProvider>
@@ -150,29 +98,16 @@ export function DockBtn({ className }: { className?: string }) {
             <DockIcon key={item.label}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  {pathname === "/projects" ? (
-                    <button
-                      onClick={handleBackToHome}
-                      aria-label={item.label}
-                      className={cn(
-                        buttonVariants({ variant: "ghost", size: "icon" }),
-                        "size-12 rounded-full"
-                      )}
-                    >
-                      <item.icon className="size-4" />
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleLoadMore}
-                      aria-label={item.label}
-                      className={cn(
-                        buttonVariants({ variant: "ghost", size: "icon" }),
-                        "size-12 rounded-full"
-                      )}
-                    >
-                      <item.icon className="size-4" />
-                    </button>
-                  )}
+                  <Link
+                    href={item.href}
+                    aria-label={item.label}
+                    className={cn(
+                      buttonVariants({ variant: "ghost", size: "icon" }),
+                      "size-12 rounded-full"
+                    )}
+                  >
+                    <item.icon className="size-4" />
+                  </Link>
                 </TooltipTrigger>
 
                 <TooltipContent>

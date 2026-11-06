@@ -106,7 +106,29 @@ export default function Carousel({
   };
 
   if (!mounted) {
-    return <div className={`relative w-full ${className}`}>Loading...</div>;
+    return (
+      <div className={`relative w-full ${className}`}>
+        <div className="relative overflow-hidden">
+          <div className="flex">
+            <div
+              className={`w-full flex-shrink-0 grid gap-3 sm:gap-4 lg:gap-6 ${
+                currentItemsPerView === 1
+                  ? "grid-cols-1"
+                  : currentItemsPerView === 2
+                  ? "grid-cols-1 md:grid-cols-2"
+                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
+              {children.slice(0, currentItemsPerView).map((child, idx) => (
+                <div key={idx} className="w-full">
+                  {child}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (

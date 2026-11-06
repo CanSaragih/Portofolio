@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 
 export const InfiniteMovingCards = ({
   items,
@@ -29,11 +29,23 @@ export const InfiniteMovingCards = ({
 
   const [start, setStart] = useState(false);
 
-  useEffect(() => {
-    addAnimation();
-  }, []);
+  const setDirection = useCallback(() => {
+    if (!containerRef.current) return;
+    containerRef.current.style.setProperty(
+      "--animation-direction",
+      direction === "left" ? "forwards" : "reverse"
+    );
+  }, [direction]);
 
-  function addAnimation() {
+  const setSpeed = useCallback(() => {
+    if (!containerRef.current) return;
+    containerRef.current.style.setProperty(
+      "--animation-duration",
+      speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s"
+    );
+  }, [speed]);
+
+  const addAnimation = useCallback(() => {
     if (!containerRef.current || !scrollerRef.current) return;
     if (!hasCloned.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
@@ -46,23 +58,11 @@ export const InfiniteMovingCards = ({
     setDirection();
     setSpeed();
     setStart(true);
-  }
+  }, [setDirection, setSpeed]);
 
-  function setDirection() {
-    if (!containerRef.current) return;
-    containerRef.current.style.setProperty(
-      "--animation-direction",
-      direction === "left" ? "forwards" : "reverse"
-    );
-  }
-
-  function setSpeed() {
-    if (!containerRef.current) return;
-    containerRef.current.style.setProperty(
-      "--animation-duration",
-      speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s"
-    );
-  }
+  useEffect(() => {
+    addAnimation();
+  }, [addAnimation]);
 
   return (
     <div

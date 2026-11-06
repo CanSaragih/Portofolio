@@ -94,7 +94,8 @@ const SYSTEM_PROMPT = `You are Can Whardana Saragih's personal AI assistant with
 `;
 
 export async function chatWithGemini(prompt: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+  const modelName = process.env.GEMINI_MODEL || "gemini-1.5-flash";
+  const model = genAI.getGenerativeModel({ model: modelName });
   const result = await model.generateContent(
     `${SYSTEM_PROMPT}\n\nUser: ${prompt}`
   );

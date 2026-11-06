@@ -1,7 +1,7 @@
 import React from "react";
 import { Timeline } from "@/components/ui/timeline";
 import { workExperience } from "@/data/WorkExperience";
-import { virtualInternships } from "@/data/VirtualInterenships";
+import { virtualInternships } from "@/data/VirtualInternships";
 
 export function Experience() {
   const timelineData = [
