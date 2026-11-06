@@ -2,17 +2,19 @@ import { useState, useRef, useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 import { FaRobot, FaUser } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { useTypewriterEffect } from "../hooks/useTypewriterEffect";
 
 interface Message {
   id: string;
   content: string;
   isUser: boolean;
   timestamp: Date;
+  isTyping?: boolean;
 }
 
 const formatMessageContent = (content: string) => {
   // Replace variations of Can's name with bold formatting
-  const nameVariations = ["Can Whardana Saragih", "Feronicha Charly"];
+  const nameVariations = ["Can Whardana Saragih"];
 
   let formattedContent = content;
 
@@ -42,6 +44,26 @@ const renderFormattedText = (text: string) => {
   });
 };
 
+const TypewriterMessage = ({ content }: { content: string }) => {
+  const messageEndRef = useRef<HTMLDivElement>(null);
+
+  const { displayedText } = useTypewriterEffect({
+    text: content,
+    delay: 15,
+  });
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [displayedText]);
+
+  return (
+    <span className="text-sm leading-relaxed whitespace-pre-wrap">
+      {renderFormattedText(displayedText)}
+      <div ref={messageEndRef} />
+    </span>
+  );
+};
+
 export function ChatBox() {
   const [isOpen, setIsOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -50,6 +72,7 @@ export function ChatBox() {
   const [isLoading, setIsLoading] = useState(false);
   const [messageCounter, setMessageCounter] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [typingMessageId, setTypingMessageId] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -71,7 +94,6 @@ export function ChatBox() {
   const handleSendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
 
-    // Generate ID menggunakan counter untuk menghindari Date.now()
     const userMessageId = `user-${messageCounter}`;
     setMessageCounter((prev) => prev + 1);
 
@@ -93,9 +115,15 @@ export function ChatBox() {
         body: JSON.stringify({ message: content }),
       });
 
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => "");
+        throw new Error(
+          `API error: ${response.status} - ${response.statusText} - ${errorText}`
+        )
+      }
+
       const data = await response.json();
 
-      // Generate ID untuk bot message
       const botMessageId = `bot-${messageCounter + 1}`;
       setMessageCounter((prev) => prev + 1);
 
@@ -104,9 +132,16 @@ export function ChatBox() {
         content: formatMessageContent(data.response),
         isUser: false,
         timestamp: new Date(),
+        isTyping: true,
       };
 
       setMessages((prev) => [...prev, botMessage]);
+      setTypingMessageId(botMessageId);
+
+      // Remove typing indicator after typewriter completes
+      setTimeout(() => {
+        setTypingMessageId(null);
+      }, data.response.length * 25 + 500);
     } catch (error) {
       console.error("Error sending message:", error);
 
@@ -182,9 +217,9 @@ export function ChatBox() {
       {!isOpen && (
         <button
           onClick={openChat}
-          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gradient-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
+          className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-gray-200 hover:bg-gray-300 hover:border-5 hover:border-[#c3c7cf] transition-all duration-400 shadow-xl hover:shadow-2xl transform hover:scale-105 cursor-pointer"
         >
-          <FaRobot className="text-white w-7 h-7" />
+          <FaRobot className="text-black w-6 h-6" />
         </button>
       )}
 
@@ -253,6 +288,7 @@ export function ChatBox() {
 
           {/* Messages Area with staggered animation */}
           <div
+            data-lenis-prevent
             className={`overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-slate-50/30 to-white transition-all duration-600 delay-250 ${
               messages.length === 0 ? "h-60" : "h-[380px]"
             } ${
@@ -302,11 +338,17 @@ export function ChatBox() {
                         : "bg-white text-slate-800 border border-slate-100 rounded-bl-sm"
                     }`}
                   >
-                    <p className="text-sm leading-relaxed whitespace-pre-wrap">
-                      {message.isUser
-                        ? message.content
-                        : renderFormattedText(message.content)}
-                    </p>
+                    {message.isUser ? (
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {message.content}
+                      </p>
+                    ) : message.isTyping && typingMessageId === message.id ? (
+                      <TypewriterMessage content={message.content} />
+                    ) : (
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                        {renderFormattedText(message.content)}
+                      </p>
+                    )}
                   </div>
                 </div>
               ))
@@ -362,11 +404,13 @@ export function ChatBox() {
                 </button>
                 <button
                   onClick={() =>
-                    handleChipClick("What tech stack does he use?")
+                    handleChipClick(
+                      "Can you explain how to create the My Skills section?"
+                    )
                   }
                   className="px-3 py-2 text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full text-slate-700 transition-all duration-200 hover:shadow-sm whitespace-nowrap cursor-pointer"
                 >
-                  What tech stack does he use?
+                  Can you explain how to create the My Skills section?
                 </button>
                 <button
                   onClick={() =>

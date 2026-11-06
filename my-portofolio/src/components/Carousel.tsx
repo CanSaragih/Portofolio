@@ -106,7 +106,29 @@ export default function Carousel({
   };
 
   if (!mounted) {
-    return <div className={`relative w-full ${className}`}>Loading...</div>;
+    return (
+      <div className={`relative w-full ${className}`}>
+        <div className="relative overflow-hidden">
+          <div className="flex">
+            <div
+              className={`w-full flex-shrink-0 grid gap-3 sm:gap-4 lg:gap-6 ${
+                currentItemsPerView === 1
+                  ? "grid-cols-1"
+                  : currentItemsPerView === 2
+                  ? "grid-cols-1 md:grid-cols-2"
+                  : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              }`}
+            >
+              {children.slice(0, currentItemsPerView).map((child, idx) => (
+                <div key={idx} className="w-full">
+                  {child}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -164,7 +186,7 @@ export default function Carousel({
         <>
           <button
             onClick={prevSlide}
-            className={`absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-sm border border-purple-500/30 text-white hover:bg-purple-500/20 hover:border-purple-400/50 transition-all duration-300 group ${
+            className={`absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 rounded-full bg-[#1f1f21] backdrop-blur-sm border border-[#27272d]  text-white hover:bg-green-500/10 hover:border-green-500/50 transition-all duration-300 group ${
               screenSize === "mobile" ? "scale-90" : ""
             }`}
             aria-label="Previous slide"
@@ -173,7 +195,7 @@ export default function Carousel({
           </button>
           <button
             onClick={nextSlide}
-            className={`absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 rounded-full bg-white/10 backdrop-blur-sm border border-purple-500/30 text-white hover:bg-purple-500/20 hover:border-purple-400/50 transition-all duration-300 group ${
+            className={`absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-10 p-2 sm:p-3 rounded-full bg-[#1f1f21] backdrop-blur-sm border border-[#27272d] text-white hover:bg-green-500/10 hover:border-green-500/50 transition-all duration-300 group ${
               screenSize === "mobile" ? "scale-90" : ""
             }`}
             aria-label="Next slide"
@@ -192,8 +214,8 @@ export default function Carousel({
               onClick={() => goToSlide(index)}
               className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
                 index === currentIndex
-                  ? "bg-purple-500 scale-125"
-                  : "bg-gray-600 hover:bg-purple-400/50"
+                  ? "bg-green-500 scale-125 shadow-md" // warna aktif
+                  : "bg-[#3d4442] hover:bg-green-400/50" // warna tidak aktif + hover
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />

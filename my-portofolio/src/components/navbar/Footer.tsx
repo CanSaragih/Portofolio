@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { easeInOut } from "framer-motion";
 
 export default function Footer() {
   const fadeInUp = {
@@ -8,7 +9,7 @@ export default function Footer() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
+        ease: easeInOut,
       },
     },
   };
