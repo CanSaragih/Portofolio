@@ -31,7 +31,10 @@ export function ContactSection() {
       className="relative z-10 min-h-screen text-black bg-white bg-[url('/textures/beige-paper.png')] bg-repeat"
     >
       {/* Full-width container for the 3D lanyard */}
-      <div className="hidden lg:block absolute left-0 w-full lg:w-1/2 h-full">
+      <div
+        className="hidden lg:block absolute left-0 w-full lg:w-1/2 h-full"
+        data-lenis-prevent
+      >
         <div className="w-full h-full relative -mt-12 min-h-screen">
           <Lanyard
             position={[0, 0, 25]}

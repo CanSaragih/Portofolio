@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Kanit } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import "./globals.css";
 
 const kanit = Kanit({
@@ -39,18 +40,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={kanit.variable} suppressHydrationWarning>
       <body className="font-sans antialiased bg-[#171717] text-white">
-        <Toaster
-          position="top-center"
-          toastOptions={{
-            duration: 4200,
-            style: {
-              margin: 0,
-              padding: "12px 16px",
-              maxWidth: "90vw",
-            },
-          }}
-        />
-        {children}
+        <SmoothScrollProvider>
+          <Toaster
+            position="top-center"
+            toastOptions={{
+              duration: 4200,
+              style: {
+                margin: 0,
+                padding: "12px 16px",
+                maxWidth: "90vw",
+              },
+            }}
+          />
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );

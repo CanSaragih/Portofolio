@@ -343,8 +343,18 @@ export function FullscreenNav({
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
+    if (typeof window !== "undefined" && window.__lenis) {
+      if (isOpen) {
+        window.__lenis.stop();
+      } else {
+        window.__lenis.start();
+      }
+    }
     return () => {
       document.body.style.overflow = "";
+      if (typeof window !== "undefined" && window.__lenis) {
+        window.__lenis.start();
+      }
     };
   }, [isOpen]);
 
@@ -418,6 +428,7 @@ export function FullscreenNav({
 
       <nav
         ref={overlayRef}
+        data-lenis-prevent
         style={{ clipPath: closedInitial, backgroundColor: overlayBg }}
         className={`fixed inset-0 z-[99990] flex flex-col items-center justify-center gap-2 overflow-y-auto ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"

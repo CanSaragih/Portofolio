@@ -53,18 +53,26 @@ export function HeroSection() {
   }, []);
 
   const handleScrollDown = () => {
-    const aboutEl = document.querySelector("#about");
-    if (aboutEl) {
-      aboutEl.scrollIntoView({ behavior: "smooth" });
+    if (typeof window !== "undefined" && window.__lenis) {
+      window.__lenis.scrollTo("#about", { offset: -80, duration: 1.2 });
+    } else {
+      const aboutEl = document.querySelector("#about");
+      if (aboutEl) {
+        aboutEl.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 
   const handleContactClick = () => {
-    const contactEl = document.querySelector("#contact");
-    if (contactEl) {
-      contactEl.scrollIntoView({ behavior: "smooth" });
+    if (typeof window !== "undefined" && window.__lenis) {
+      window.__lenis.scrollTo("#contact", { duration: 1.2 });
     } else {
-      window.location.href = "mailto:canwhardana@gmail.com";
+      const contactEl = document.querySelector("#contact");
+      if (contactEl) {
+        contactEl.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = "mailto:canwhardana@gmail.com";
+      }
     }
   };
 

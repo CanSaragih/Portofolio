@@ -22,16 +22,27 @@ export default function Nav() {
       }
 
       if (href === "#home") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (typeof window !== "undefined" && window.__lenis) {
+          window.__lenis.scrollTo(0, { duration: 1.2 });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
         return;
       }
 
       const element = document.querySelector(href);
       if (element) {
         const yOffset = -80; // offset for comfortable spacing
-        const y =
-          element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({ top: y, behavior: "smooth" });
+        if (typeof window !== "undefined" && window.__lenis) {
+          window.__lenis.scrollTo(element as HTMLElement, {
+            offset: yOffset,
+            duration: 1.2,
+          });
+        } else {
+          const y =
+            element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({ top: y, behavior: "smooth" });
+        }
       }
     },
     [pathname, router]
@@ -41,7 +52,11 @@ export default function Nav() {
     if (pathname !== "/") {
       router.push("/");
     } else {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (typeof window !== "undefined" && window.__lenis) {
+        window.__lenis.scrollTo(0, { duration: 1.2 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     }
   }, [pathname, router]);
 

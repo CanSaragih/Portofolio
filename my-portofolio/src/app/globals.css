@@ -59,9 +59,18 @@ body {
     "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Enhanced smooth scrolling */
-html {
-  scroll-behavior: smooth !important;
+/* Lenis smooth scrolling base setup */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
 }
 
 body {
@@ -69,12 +78,6 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  scroll-behavior: smooth !important;
-}
-
-/* Ensure all elements can scroll smoothly */
-* {
-  scroll-behavior: smooth !important;
 }
 
 /* Remove LocomotiveScroll CSS that might interfere */

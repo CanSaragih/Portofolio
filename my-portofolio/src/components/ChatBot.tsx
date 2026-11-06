@@ -288,6 +288,7 @@ export function ChatBox() {
 
           {/* Messages Area with staggered animation */}
           <div
+            data-lenis-prevent
             className={`overflow-y-auto p-4 space-y-3 bg-gradient-to-b from-slate-50/30 to-white transition-all duration-600 delay-250 ${
               messages.length === 0 ? "h-60" : "h-[380px]"
             } ${
