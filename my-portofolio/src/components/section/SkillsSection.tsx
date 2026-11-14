@@ -36,12 +36,12 @@ export function SkillsSection() {
           whileInView="animate"
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
-          className="text-center mb-10 sm:mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
-          <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-4">
+          <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-3 sm:mb-4">
             My Skills
           </h2>
-          <p className="text-sm sm:text-base text-zinc-400 max-w-xl mx-auto">
+          <p className="text-xs sm:text-base text-zinc-400 max-w-xl mx-auto px-2">
             Technologies and tools I use to build scalable, interactive, and
             high-performance applications.
           </p>
@@ -53,7 +53,7 @@ export function SkillsSection() {
           whileInView="animate"
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeInUp}
-          className="flex justify-center mb-10 sm:mb-14"
+          className="flex justify-center mb-8 sm:mb-14"
         >
           <CategoryFilter
             options={categoryOptions}
