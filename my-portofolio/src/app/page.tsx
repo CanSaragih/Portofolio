@@ -14,7 +14,7 @@ import { ContactSection } from "@/components/section/ContactSection";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#171717] text-white overflow-x-hidden relative">
+    <main className="min-h-screen bg-[#171717] text-white overflow-x-clip relative">
       <ParticleBackground />
       <ChatBox />
       <Nav />

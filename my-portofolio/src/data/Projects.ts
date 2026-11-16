@@ -1,40 +1,62 @@
-export const projects = [
+import type { Project } from "@/components/section/ProjectCard";
+
+export const projects: Project[] = [
   {
-    image: "/Img-project/Planorama.png",
-    name: "Planorama",
-    url: "https://github.com/CanSaragih/IP-RMT60",
+    image: "/Img-project/sipdhub.png",
+    name: "SIPD HUB — Pusdatin Kemendagri",
     description:
-      "An AI-powered travel planning platform that helps users generate personalized itineraries andestimate trip budgets. Features include Google-integrated location search, dynamic trip saving, and a clean.",
+      "A national data integration and analytical visualization portal built for the Ministry of Home Affairs (Pusdatin Kemendagri) to support evidence-based regional development planning and budgeting across ministries and local governments, powered by automated Apache Airflow (DAG) and Onyx data pipelines.",
     tech: [
+      "React.js",
       "Express.js",
       "Sequelize",
       "PostgreSQL",
-      "Supabase",
-      "React",
-      "Tailwind CSS",
-      "Gemini API",
-      "Google Places API",
+      "Apache Airflow (DAG)",
+      "Onyx",
     ],
-    demo: "https://planorama-brown.vercel.app",
+    demo: "https://sipdhub.kemendagri.go.id/dev-2026/",
   },
   {
-    image: "/Img-project/todolist.png",
-    name: "Todo List",
-    url: "https://github.com/CanSaragih/nodewave-fe-assessment",
+    image: "/Img-project/sipadu.png",
+    name: "SIPADU — Bappedalitbang Bogor",
     description:
-      "A simple and intuitive todo list application that helps users manage their tasks efficiently. Features include task categorization, due dates, and a clean user interface.",
+      "An integrated regional data management and AI-assisted analytics platform for Bappedalitbang Bogor Regency managing 2,200+ official datasets. Features automated AI narrative insights ('Narasi AI Otomatis'), interactive charts, and a structured JSON REST API for cross-agency integration.",
+    tech: ["PHP", "CodeIgniter", "MySQL", "JavaScript", "REST API", "AI Analytics"],
+    demo: "https://ai.bogorkab.go.id/",
+  },
+  {
+    image: "/Img-project/piki.png",
+    name: "DPP PIKI — Organization Portal",
+    description:
+      "The official digital portal and member information system for Persatuan Intelegensia Kristen Indonesia (PIKI), delivering seamless member registration, organization profiles, Satu Data integration, news publications, and smooth scroll-driven animations.",
     tech: [
-      "Typescript",
       "Next.js",
-      "Tailwind Css",
-      "Shadcn UI",
-      "React Query",
-      "Zod",
-      "Zustand",
-      "Axios ",
-      "Sonner",
+      "Express.js",
+      "Prisma",
+      "PostgreSQL",
+      "GSAP",
+      "Lenis",
+      "Tailwind CSS",
     ],
-    demo: "https://nodewave-fe-assessment-beta.vercel.app",
+    demo: "https://dpp-piki.org/",
+  },
+  {
+    image: "/Img-project/kopdes.png",
+    name: "SIMPUL Merah Putih (KOPDES HUB)",
+    url: "https://github.com/orgs/KOPDES-HUB/repositories",
+    description:
+      "An integrated digital cooperative ecosystem (TOP 100 Hackathon Digital Cooperatives Expo 2026) unifying digital member cards (KTA), savings management, e-voting, e-RAT digital assemblies, and a cooperative learning management system.",
+    tech: ["Next.js", "Express.js", "Prisma", "Tailwind CSS"],
+    demo: "https://kopdes-psi.vercel.app",
+  },
+  {
+    image: "/Img-project/jhonipurba.png",
+    name: "Law Office Jhoni H P Purba, S.H.",
+    url: "https://github.com/CanSaragih/lawoffice-johni",
+    description:
+      "A modern, responsive web presence for a legal practice in Bogor providing civil, criminal, family law, and consultation services, crafted with clean editorial typography and fluid Framer Motion interactions.",
+    tech: ["Next.js", "Tailwind CSS", "Framer Motion"],
+    demo: "https://jhonipurba.vercel.app",
   },
   {
     image: "/Img-project/ShopHub.png",
@@ -44,91 +66,5 @@ export const projects = [
       "A responsive e-commerce web app where users can browse products, manage wishlists, and experience smooth shopping. Built with Next.js, TypeScript, and styled using Tailwind CSS.",
     tech: ["Next.js", "TypeScript", "Tailwind CSS", "MongoDB"],
     demo: "https://shophub-ivory.vercel.app",
-  },
-  {
-    image: "/Img-project/camguard.png",
-    name: "CamGuard",
-    url: "https://github.com/CanSaragih/Camera-Dashboard",
-    description:
-      "A responsive admin dashboard for monitoring camera status and system performance, featuring role-based access, real-time data charts, and animated UI interactions.",
-    tech: [
-      "React.js",
-      "TypeScript",
-      "Vite",
-      "Tailwind CSS",
-      "Recharts",
-      "Axios",
-      "framer-motion",
-    ],
-    demo: "https://camera-dashboard-two.vercel.app/",
-  },
-  {
-    image: "/Img-project/SocialMediaApp.png",
-    name: "Social Media App",
-    url: "https://github.com/H8-FSJS-P3S5/gc01-CanSaragih",
-    description:
-      "A fullstack mobile social media app where users can post, follow, and interact in real-time. Powered by React Native, GraphQL, and Redis for fast and dynamic user experience.",
-
-    tech: ["React Native", "Apollo Server", "GraphQL", "MongoDB", "Redis"],
-    demo: "https://shorturl.at/IAYEp",
-  },
-  {
-    image: "/Img-project/ChatVerse.png",
-    name: "ChatVerse",
-    url: "https://github.com/GROP-PROJECT-P2",
-    description:
-      "A fullstack real-time group chat application with AI assistant",
-    tech: [
-      "React",
-      "React Context",
-      "Express.js",
-      "Sequelize",
-      "Tailwind CSS",
-      "Socket.io",
-      "OpenAI API",
-    ],
-  },
-  {
-    image: "/Img-project/ParkGo.png",
-    name: "ParkGo",
-    url: "https://github.com/orgs/Parkir-Cepat/repositories",
-    description:
-      "A real-time mobile app that helps users find and book nearby parking spots with ease. It features live availability, secure payments, and Google Maps integration for accurate navigation.",
-
-    tech: [
-      "React Native",
-      "Apollo Server",
-      "Express JS",
-      "GraphQL",
-      "MongoDB",
-      "Redis",
-      "Socket.IO",
-      "Midtrans API",
-      "Google Places API",
-    ],
-  },
-
-  {
-    image: "/Img-project/InstaLook.png",
-    name: "InstaLook",
-    url: "https://github.com/CanSaragih/SocialMedia-Instagram",
-    description: "A fullstack web-based Instagram-like social media platform",
-    tech: [
-      "Express.js",
-      "Sequelize",
-      "PostgreSQL",
-      "EJS",
-      "HTML",
-      "CSS Bootstrap",
-      "JavaScript",
-    ],
-  },
-  {
-    image: "/Img-project/quickkick.png",
-    name: "QuickKick",
-    url: "https://github.com/andikarahmadisaputra/quickkick",
-    description:
-      "A fullstack web-based football match schedule application with real-time updates.",
-    tech: ["HTML", "CSS Bootstrap", "Javascript DOM"],
   },
 ];

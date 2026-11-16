@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { Bot } from "lucide-react";
 import { useChat } from "@/hooks/useChat";
+import { AiOrbLottie } from "./chat/AiOrbLottie";
 import { ChatDrawer } from "./chat/ChatDrawer";
 
 export function ChatBox() {
@@ -19,7 +19,7 @@ export function ChatBox() {
 
   return (
     <>
-      {/* Floating Circular Bot Icon Trigger */}
+      {/* Floating White Circular Lottie AI Trigger */}
       <button
         ref={triggerRef}
         type="button"
@@ -27,21 +27,17 @@ export function ChatBox() {
         aria-expanded={isOpen}
         aria-hidden={isOpen}
         tabIndex={isOpen ? -1 : 0}
-        aria-label="Open Can Assistant chat"
-        className={`fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#1f1f23] hover:bg-[#27272d] border border-white/15 hover:border-[#ffaa40]/60 text-[#ffaa40] shadow-2xl shadow-black/75 flex items-center justify-center transition-all duration-300 cursor-pointer ${
+        aria-label="Open Can Saragih AI Assistant"
+        className={`fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 w-15 h-15 rounded-full bg-white border border-zinc-200/90 shadow-[0_12px_35px_-6px_rgba(116,124,236,0.25),0_4px_14px_rgba(0,0,0,0.3)] flex items-center justify-center overflow-hidden transition-all duration-300 cursor-pointer ${
           isOpen
             ? "opacity-0 scale-75 pointer-events-none"
-            : "opacity-100 scale-100 hover:scale-105"
+            : "opacity-100 scale-100 hover:scale-105 hover:border-indigo-300"
         }`}
       >
-        <Bot className="w-6 h-6" />
-        <span
-          className="absolute top-0.5 right-0.5 w-3 h-3 rounded-full bg-emerald-400 ring-2 ring-[#171717]"
-          aria-hidden="true"
-        />
+        <AiOrbLottie className="w-14 h-14" />
       </button>
 
-      {/* Bottom-Right Floating Chat Form with Sidebar Slide-In/Out Animation */}
+      {/* Bottom-Right Light Floating Chat Card with GSAP Reveal Animation */}
       <ChatDrawer
         isOpen={isOpen}
         onRequestClose={() => setIsOpen(false)}
@@ -52,7 +48,6 @@ export function ChatBox() {
         onStopGenerating={stopGenerating}
         onClearMessages={clearMessages}
         onRetryLast={retryLastMessage}
-        modelLabel="Online"
       />
     </>
   );

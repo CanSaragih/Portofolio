@@ -1,142 +1,65 @@
-import React from "react";
-import { Timeline } from "@/components/ui/timeline";
+"use client";
+
+import { useMemo } from "react";
+import { motion } from "framer-motion";
+import { Code2, Database, Palette } from "lucide-react";
+import TimeLine_01, {
+  type TimeLine_01Entry,
+} from "@/components/ui/release-time-line";
 import { workExperience } from "@/data/WorkExperience";
-import { virtualInternships } from "@/data/VirtualInternships";
+import { fadeInUp } from "@/lib/animations";
+
+const EXPERIENCE_ICONS = [Database, Code2, Palette];
 
 export function Experience() {
-  const timelineData = [
-    {
-      title: "Work Experience",
-      content: (
-        <div className="space-y-6">
-          {workExperience.map((exp, i) => (
-            <div
-              key={i}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-[#1f1f21] via-[#252527] to-[#2a2a2c] border border-neutral-700/40 hover:border-neutral-500/60 transition-all duration-500 hover:shadow-2xl hover:shadow-black/20"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-neutral-400/[0.03] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              <div className="relative z-10">
-                <div className="flex items-start justify-between mb-3">
-                  <h4 className="font-bold text-xl text-neutral-100 group-hover:text-neutral-50 transition-colors duration-300">
-                    {exp.position}
-                  </h4>
-                  <div className="h-2 w-2 rounded-full bg-neutral-400 group-hover:bg-neutral-300 transition-colors duration-300" />
-                </div>
-
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="px-3 py-1 text-xs font-medium bg-neutral-800/60 text-neutral-300 rounded-full border border-neutral-600/40 group-hover:border-neutral-500/50 transition-colors duration-300">
-                    {exp.company}
-                  </span>
-                  <span className="text-neutral-500 text-sm">•</span>
-                  <span className="text-neutral-400 text-sm">{exp.title}</span>
-                </div>
-
-                <div className="space-y-2">
-                  {exp.responsibilities.map((r, j) => (
-                    <div key={j} className="flex items-start gap-3">
-                      <div className="mt-2 h-1.5 w-1.5 rounded-full bg-neutral-500 group-hover:bg-neutral-400 transition-colors duration-300 flex-shrink-0" />
-                      <p className="text-neutral-300 text-sm leading-relaxed group-hover:text-neutral-200 transition-colors duration-300">
-                        {r}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      title: "Virtual Internships",
-      content: (
-        <div className="space-y-6">
-          {virtualInternships.map((exp, i) => (
-            <div
-              key={i}
-              className="group relative p-6 rounded-2xl bg-gradient-to-br from-[#1f1f21] via-[#252527] to-[#2a2a2c] border border-neutral-700/40 hover:border-neutral-500/60 transition-all duration-500 hover:shadow-2xl hover:shadow-black/20"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] via-transparent to-neutral-400/[0.03] rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-              <div className="relative z-10">
-                <div className="flex items-start justify-between mb-3">
-                  <h4 className="font-bold text-xl text-neutral-100 group-hover:text-neutral-50 transition-colors duration-300">
-                    {exp.position}
-                  </h4>
-                  <div className="h-2 w-2 rounded-full bg-neutral-400 group-hover:bg-neutral-300 transition-colors duration-300" />
-                </div>
-
-                <div className="flex items-center gap-2 mb-4">
-                  <span className="px-3 py-1 text-xs font-medium bg-neutral-800/60 text-neutral-300 rounded-full border border-neutral-600/40 group-hover:border-neutral-500/50 transition-colors duration-300">
-                    {exp.company}
-                  </span>
-                  <span className="text-neutral-500 text-sm">•</span>
-                  <span className="text-neutral-400 text-sm">{exp.title}</span>
-                </div>
-
-                <div className="space-y-2 mb-4">
-                  {exp.responsibilities.map((r, j) => (
-                    <div key={j} className="flex items-start gap-3">
-                      <div className="mt-2 h-1.5 w-1.5 rounded-full bg-neutral-500 group-hover:bg-neutral-400 transition-colors duration-300 flex-shrink-0" />
-                      <p className="text-neutral-300 text-sm leading-relaxed group-hover:text-neutral-200 transition-colors duration-300">
-                        {r}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Enhanced certificate viewer */}
-                {exp.certificate && (
-                  <div className="mt-6 p-4 rounded-xl bg-gradient-to-br from-neutral-900/60 to-neutral-800/60 border border-neutral-600/40">
-                    <div className="relative overflow-hidden rounded-lg">
-                      <iframe
-                        src={exp.certificate}
-                        className="w-full h-64 md:h-80 rounded-lg border border-neutral-600/50"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
-                    </div>
-
-                    <div className="flex items-center justify-between mt-4">
-                      <span className="text-xs text-neutral-400 font-medium">
-                        Certificate Preview
-                      </span>
-                      <a
-                        href={exp.certificate}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-neutral-300 bg-neutral-800/50 hover:bg-neutral-700/60 border border-neutral-600/40 hover:border-neutral-500/60 rounded-lg transition-all duration-300 group/link"
-                      >
-                        <span>View Certificate</span>
-                        <svg
-                          className="w-4 h-4 transform group-hover/link:translate-x-1 transition-transform duration-300"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                          />
-                        </svg>
-                      </a>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-  ];
+  const entries: TimeLine_01Entry[] = useMemo(
+    () =>
+      workExperience.map((exp, index) => ({
+        id: exp.id,
+        icon: EXPERIENCE_ICONS[index] ?? Code2,
+        title: exp.position,
+        subtitle: `${exp.company} • ${exp.title}`,
+        meta: exp.client
+          ? `${exp.client}${exp.location ? ` (${exp.location})` : ""}`
+          : exp.location,
+        badge: exp.badge,
+        description: exp.description,
+        items: exp.responsibilities,
+        tags: exp.tech,
+        button: exp.url
+          ? {
+              url: exp.url,
+              text: exp.urlLabel ?? "Visit Live Site",
+            }
+          : undefined,
+      })),
+    [],
+  );
 
   return (
-    <div className="relative w-full overflow-clip">
-      <Timeline data={timelineData} />
-    </div>
+    <section
+      id="experience"
+      className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 relative z-10 bg-[#171717]"
+    >
+      <div className="max-w-6xl mx-auto">
+        <motion.div
+          initial="initial"
+          whileInView="animate"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={fadeInUp}
+          className="text-center mb-12 sm:mb-16"
+        >
+          <h2 className="text-3xl text-zinc-100 sm:text-4xl lg:text-7xl font-extrabold mb-3 sm:mb-4">
+            Experience
+          </h2>
+          <p className="text-sm sm:text-[1.0625rem] leading-[1.6] text-pretty text-zinc-400 max-w-xl mx-auto px-2">
+            Over a year building fullstack web systems and data pipelines for
+            government institutions, backed by 5+ years of visual design.
+          </p>
+        </motion.div>
+
+        <TimeLine_01 entries={entries} />
+      </div>
+    </section>
   );
 }

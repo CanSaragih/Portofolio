@@ -1,13 +1,32 @@
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { FileText, GraduationCap } from "lucide-react";
 import { TextReveal } from "@/components/magicui/text-reveal";
+import {
+  StaggerTestimonials,
+  type StaggerCardItem,
+} from "@/components/ui/stagger-testimonials";
 import { schoolExperience } from "@/data/Schools";
-import { InfiniteMovingCardsDemo } from "@/components/section/Education";
 import { fadeInUp } from "@/lib/animations";
 
 export function AboutSection() {
+  const educationItems: StaggerCardItem[] = useMemo(
+    () =>
+      schoolExperience.map((school, index) => ({
+        id: `${school.institution}-${index}`,
+        title: school.institution,
+        subtitle: school.program,
+        description: school.description,
+        metaLeft: school.duration,
+        metaRight: school.totalDuration,
+        badge: index === schoolExperience.length - 1 ? "Bootcamp" : "Academic",
+        href: school.url,
+        hrefLabel: "Transcript",
+      })),
+    [],
+  );
+
   return (
     <section
       id="about"
@@ -51,82 +70,31 @@ export function AboutSection() {
           </div>
         </div>
 
-        {/* Education Timeline / Cards */}
+        {/* Education Staggered Showcase */}
         <div className="relative">
           <motion.div
             initial="initial"
             whileInView="animate"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeInUp}
-            className="text-center mb-8 sm:mb-6"
+            className="text-center mb-4 sm:mb-6"
           >
-            <h3 className="text-2xl sm:text-2xl lg:text-4xl font-bold text-zinc-100">
+            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-zinc-100">
               Education
             </h3>
           </motion.div>
 
-          {/* Mobile: Clean vertical stacked layout */}
-          <div className="block md:hidden">
-            <div className="space-y-6">
-              {schoolExperience.map((school, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className="bg-[#1f1f21] backdrop-blur-lg rounded-2xl p-4 sm:p-6 border-2 border-[#27272d] shadow-lg shadow-purple-500/10"
-                >
-                  <div className="flex items-center justify-between mb-4 gap-2">
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[#7278c7] to-[#8e94ef] rounded-lg flex items-center justify-center flex-shrink-0">
-                        <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-100" />
-                      </div>
-
-                      {school.url && (
-                        <a
-                          href={school.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1 sm:gap-1.5 px-2 py-1 bg-[#27272d] rounded-md hover:bg-[#8b90e0]/20 transition-all duration-300 group border border-[#27272d] hover:border-[#8b90e0]/50"
-                          title="View Transcript"
-                        >
-                          <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#8b90e0] group-hover:scale-110 transition-transform duration-200" />
-                          <span className="text-xs text-[#8b90e0] font-medium">
-                            Transcript
-                          </span>
-                        </a>
-                      )}
-                    </div>
-
-                    <div className="text-right">
-                      <p className="text-gray-400 text-xs leading-tight whitespace-nowrap">
-                        {school.duration}
-                      </p>
-                      <p className="text-[#959bf5] text-xs font-medium whitespace-nowrap">
-                        {school.totalDuration}
-                      </p>
-                    </div>
-                  </div>
-
-                  <h4 className="text-base sm:text-lg font-semibold text-white mb-2 leading-tight">
-                    {school.institution}
-                  </h4>
-                  <p className="text-[#959bf5] text-sm mb-3">
-                    {school.program}
-                  </p>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    {school.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop: Horizontal moving cards */}
-          <div className="hidden md:block">
-            <InfiniteMovingCardsDemo />
-          </div>
+          <motion.div
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true, amount: 0.15 }}
+            variants={fadeInUp}
+          >
+            <StaggerTestimonials
+              items={educationItems}
+              ariaLabel="Education timeline"
+            />
+          </motion.div>
         </div>
       </div>
     </section>

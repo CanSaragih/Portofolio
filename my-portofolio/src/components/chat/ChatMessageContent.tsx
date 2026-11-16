@@ -31,7 +31,7 @@ function renderInlineTokens(text: string, keyPrefix: string): React.ReactNode[] 
 
     if (token.startsWith("**") && token.endsWith("**")) {
       nodes.push(
-        <strong key={key} className="font-semibold text-white">
+        <strong key={key} className="font-semibold text-zinc-950">
           {token.slice(2, -2)}
         </strong>,
       );
@@ -39,7 +39,7 @@ function renderInlineTokens(text: string, keyPrefix: string): React.ReactNode[] 
       nodes.push(
         <code
           key={key}
-          className="px-1.5 py-0.5 rounded bg-white/10 text-[#ffaa40] font-mono text-[12px]"
+          className="px-1.5 py-0.5 rounded bg-zinc-100 border border-zinc-200 text-indigo-700 font-mono text-[12px]"
         >
           {token.slice(1, -1)}
         </code>,
@@ -55,7 +55,7 @@ function renderInlineTokens(text: string, keyPrefix: string): React.ReactNode[] 
             href={href}
             target={isExternal ? "_blank" : undefined}
             rel={isExternal ? "noopener noreferrer" : undefined}
-            className="text-[#ffaa40] underline underline-offset-2 hover:text-[#ffc370] transition-colors break-words"
+            className="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 transition-colors break-words"
           >
             {linkMatch[1]}
           </a>,
@@ -70,7 +70,7 @@ function renderInlineTokens(text: string, keyPrefix: string): React.ReactNode[] 
           href={token}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-[#ffaa40] underline underline-offset-2 hover:text-[#ffc370] transition-colors break-all"
+          className="text-indigo-600 underline underline-offset-2 hover:text-indigo-800 transition-colors break-all"
         >
           {token}
         </a>,
@@ -104,7 +104,7 @@ export function ChatMessageContent({
 
   if (isUser) {
     return (
-      <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
+      <p className="text-sm leading-relaxed whitespace-pre-wrap break-words text-white">
         {content}
       </p>
     );
@@ -137,7 +137,7 @@ export function ChatMessageContent({
         }
       >
         {listItems.items.map((item, idx) => (
-          <li key={idx} className="text-sm leading-relaxed text-zinc-200">
+          <li key={idx} className="text-sm leading-relaxed text-zinc-700">
             {renderInlineTokens(item, `li-${keySuffix}-${idx}`)}
           </li>
         ))}
@@ -177,7 +177,7 @@ export function ChatMessageContent({
     const headingMatch = /^#{1,3}\s+(.+)$/.exec(trimmed);
     if (headingMatch) {
       blocks.push(
-        <p key={`h-${index}`} className="text-sm font-semibold text-white mt-1.5 mb-0.5">
+        <p key={`h-${index}`} className="text-sm font-semibold text-zinc-950 mt-1.5 mb-0.5">
           {renderInlineTokens(headingMatch[1], `h-${index}`)}
         </p>,
       );
@@ -185,7 +185,7 @@ export function ChatMessageContent({
     }
 
     blocks.push(
-      <p key={`p-${index}`} className="text-sm leading-relaxed text-zinc-200 break-words">
+      <p key={`p-${index}`} className="text-sm leading-relaxed text-zinc-700 break-words">
         {renderInlineTokens(rawLine, `p-${index}`)}
       </p>,
     );
@@ -194,29 +194,29 @@ export function ChatMessageContent({
   flushList(lines.length);
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-1.5">
       <div className="space-y-1">
         {blocks}
         {isStreamingThis && (
           <span
-            className="inline-block w-1.5 h-4 align-middle ml-1 bg-[#ffaa40] animate-pulse rounded-sm"
+            className="inline-block w-1.5 h-4 align-middle ml-1 bg-indigo-500 animate-pulse rounded-sm"
             aria-hidden="true"
           />
         )}
       </div>
 
       {!isStreamingThis && content.trim().length > 0 && (
-        <div className="flex justify-end pt-1">
+        <div className="flex justify-start pt-0.5">
           <button
             type="button"
             onClick={handleCopy}
-            className="inline-flex items-center gap-1 text-[11px] text-zinc-400 hover:text-zinc-200 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-zinc-500 hover:text-zinc-900 transition-colors cursor-pointer"
             aria-label="Copy response"
           >
             {copied ? (
               <>
-                <Check className="w-3 h-3 text-emerald-400" />
-                <span className="text-emerald-400">Copied</span>
+                <Check className="w-3 h-3 text-emerald-600" />
+                <span className="text-emerald-700">Copied</span>
               </>
             ) : (
               <>
@@ -230,4 +230,3 @@ export function ChatMessageContent({
     </div>
   );
 }
-
