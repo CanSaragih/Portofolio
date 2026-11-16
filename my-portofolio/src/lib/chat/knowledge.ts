@@ -2,7 +2,6 @@ import { certificates } from "@/data/Certificates";
 import { projects } from "@/data/Projects";
 import { schoolExperience } from "@/data/Schools";
 import { skillCategories } from "@/data/Skills";
-import { virtualInternships } from "@/data/VirtualInternships";
 import { workExperience } from "@/data/WorkExperience";
 
 function formatSkillsSummary(): string {
@@ -47,21 +46,15 @@ function formatEducationSummary(): string {
 }
 
 function formatExperienceSummary(): string {
-  const work = workExperience
-    .map(
-      (job) =>
-        `- **${job.position}** at ${job.company} (${job.title}): ${job.responsibilities.join(" ")}`,
-    )
+  return workExperience
+    .map((job) => {
+      const clientInfo = job.client
+        ? ` | Client: ${job.client}${job.location ? ` (${job.location})` : ""}`
+        : "";
+      const techInfo = job.tech.length > 0 ? ` Tech: ${job.tech.join(", ")}.` : "";
+      return `- **${job.position}** at ${job.company} (${job.title}${clientInfo}): ${job.description} ${job.responsibilities.join(" ")}${techInfo}`;
+    })
     .join("\n");
-
-  const internships = virtualInternships
-    .map(
-      (item) =>
-        `- **${item.position}** — ${item.company} (${item.title}): ${item.responsibilities[0] ?? ""}`,
-    )
-    .join("\n");
-
-  return `${work}\n${internships}`;
 }
 
 /**
@@ -75,7 +68,7 @@ export function buildPortfolioSystemPrompt(): string {
 
 ## Identity & Background
 - Full Name: Can Wardhana Saragih (Can Saragih)
-- Role: Fullstack Developer & Frontend Developer (transitioned from Graphic Designer & Video Editor)
+- Role: Fullstack Developer & Data Engineer at Bentang Inspirasi Teknologi (1+ years web development experience; previously Graphic Designer & Video Editor)
 - Born: December 30, 2001 (${age} years old)
 - Origin: North Sumatra, Indonesia (smk in Pematang Siantar; active in tech & competitions)
 - Contact Email: canwhardana@gmail.com (Visitors can also reach him via the Contact section form on this portfolio)
@@ -93,16 +86,17 @@ ${formatCertificatesSummary()}
 ## Education
 ${formatEducationSummary()}
 
-## Work & Virtual Internship Experience
+## Work Experience
 ${formatExperienceSummary()}
 
 ## Portfolio Implementation Highlights (If Visitors Ask Technical Questions)
 - Framework: Next.js (App Router), React 19, TypeScript, Tailwind CSS v4.
 - Smooth Scroll: Lenis (\`SmoothScrollProvider\`) integrated cleanly with modals/drawers via \`data-lenis-prevent\`.
+- Education & Experience: Staggered interactive Education cards (\`StaggerTestimonials\`) and scroll-proximity expandable Experience timeline (\`TimeLine_01\`).
 - Skills Section: Interactive category filter & SVG network beam animations (\`SkillsIntegrationNetwork\`).
 - Certifications Section: Interactive GSAP mouse-following hover preview modal (\`ServicesWithAnimatedHoverModal\`).
 - Contact Section: 3D interactive Lanyard (Three.js / React Three Fiber / Rapier physics) + EmailJS contact form.
-- AI Assistant: Powered by Gemini 3.8 Flash (\`@google/genai\`) with real-time streaming and multi-turn memory inside an accessible slide-in drawer.
+- AI Assistant: Powered by Gemini (\`@google/genai\`) with real-time streaming and multi-turn memory inside a light-theme floating panel with Lottie orb & GSAP reveal animation.
 
 ## Behavior & Security Guidelines
 1. **Language Matching (Bilingual EN / ID)**: Always respond in the same language as the visitor's latest message. If the user writes in English, reply strictly in natural English. If the user writes in Indonesian, reply strictly in natural Indonesian. Even if previous turns used a different language, switch immediately to match the latest user message.

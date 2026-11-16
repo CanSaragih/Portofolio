@@ -231,34 +231,27 @@ body {
   }
 }
 
-/* Chatbot Floating Bottom-Right Card with Sidebar Slide-In/Out Animation (Top-Layer) */
+/* Chatbot Floating Bottom-Right Card (Component-Specific Light Theme + GSAP Reveal) */
 dialog.chat-floating {
+  color-scheme: only light;
   inset: auto 1rem 1rem auto;
   margin: 0;
   padding: 0;
   width: calc(100vw - 2rem);
-  max-width: 396px;
-  height: min(560px, calc(100svh - 2rem));
+  max-width: 400px;
+  height: min(590px, calc(100svh - 2rem));
   max-height: calc(100svh - 2rem);
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #171717;
-  color: #f4f4f5;
+  border-radius: 1.25rem;
+  border: 1px solid #e4e4e7;
+  background-color: #ffffff;
+  color: #09090b;
+  accent-color: #4f46e5;
   overflow: hidden;
-  opacity: 0;
-  transition-property: opacity, translate, display, overlay;
-  transition-duration: 0.36s;
-  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  transition-behavior: allow-discrete;
 
   @media (min-width: 640px) {
     inset: auto 1.5rem 1.5rem auto;
-    height: min(580px, calc(100svh - 3rem));
+    height: min(600px, calc(100svh - 3rem));
     max-height: calc(100svh - 3rem);
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    translate: calc(100% + 2rem) 0;
   }
 }
 
@@ -268,24 +261,8 @@ dialog.chat-floating:is([open], :popover-open) {
   overscroll-behavior: contain;
 }
 
-dialog.chat-floating:is([open], :popover-open):where(:not([data-closing])) {
-  opacity: 1;
-
-  @starting-style {
-    opacity: 0;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    translate: 0 0;
-
-    @starting-style {
-      translate: calc(100% + 2rem) 0;
-    }
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
+@media (forced-colors: active) {
   dialog.chat-floating {
-    transition-duration: 0.12s;
+    border: 2px solid CanvasText;
   }
 }
